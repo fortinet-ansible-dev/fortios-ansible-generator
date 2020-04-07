@@ -1,0 +1,26 @@
+#! /bin/sh
+
+
+get_schema_version()
+{
+    var0=`cat fgt_schema.json |grep '^  \"version\"'`
+    if [ $? -ne 0 ]; then
+        echo "can not resolve version from schema"
+        exit
+    fi
+    version=`echo $var0|tr -d ' \",' |cut -d ':' -f 2`
+    echo "$version"
+}
+
+
+version=$(get_schema_version)
+echo "generating online document $version"
+
+srcs=`find -name 'fortios*py' |grep "./output/$version/"`
+
+
+for f in $srcs
+do
+    docfile=`echo $f |sed 's/\.py$/.rst/g'`
+    echo $docfile
+done
