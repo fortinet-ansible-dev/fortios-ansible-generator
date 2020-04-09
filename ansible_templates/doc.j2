@@ -54,7 +54,7 @@ str
         {%- for key,value in dict |dictsort %}
         {{value['name']}}:
             description:
-                - {%if ":" in value['help'] -%}"{%-endif-%}{{ value['help'] }} {%- if 'datasource' in value %} Source {{value['datasource']|join(' ')}}.{%-endif-%}{%if ":" in value['help'] -%}"{%-endif-%}
+                - {%if ":" in value['help'] or value['help'].startswith('{') -%}'{%-endif-%}{{ value['help'].replace('\n', '').replace('\'', '"').replace('\t', ' ') }} {%- if 'datasource' in value %} Source {{value['datasource']|join(' ')}}.{%-endif-%}{%if ":" in value['help'] or value['help'].startswith('{') -%}'{%-endif-%}
             {%- if key == mkey %}
             required: true
             {%- endif %}

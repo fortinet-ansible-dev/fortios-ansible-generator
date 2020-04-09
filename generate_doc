@@ -34,6 +34,7 @@ srcs=`find -name 'fortios*py' |grep "./output/$version/"`
 for f in $srcs
 do
     docfile=`echo $f |sed 's/\.py$/.rst/g'`
-    echo "processing file: $BGre$f$RCol"
+    echo "processing sphinx document: $BGre$f$RCol"
     python3 ./generate_doc.py $f $docfile
+    #cp $docfile /root/tmp/ansible-collection-sphinx/docgen
 done

@@ -52,9 +52,13 @@ def generate_parameters(params, layer):
             ddata += generate_parameters(param['suboptions'], layer + 1)
             ddata += ' ' * (layer + 1) * 4 + '</ul>\n'
         else:
-            
-            print('incomplete schema: key:%s key_type:%s' % (key, key_type))
-           #assert(False)
+            ddata += ' ' * layer * 4 + '<li>'
+            ddata += ' <span class="li-head">' + key + '</span>'
+            ddata += ' - %s' % (key_desc)
+            ddata += ' <span class="li-normal">type: %s</span>' % (key_type)
+            ddata += '</li>\n' 
+            #print('incomplete schema: key:%s key_type:%s' % (key, key_type))
+            #assert(False)
     return ddata
 
 def format_example(example):
