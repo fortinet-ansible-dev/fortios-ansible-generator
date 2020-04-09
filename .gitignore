@@ -108,3 +108,6 @@ output/
 settings.json
 test/*.py
 *.not_validated
+
+galaxy_output/
+cookies

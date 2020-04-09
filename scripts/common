@@ -25,16 +25,3 @@ get_schema_version()
 }
 
 
-version=$(get_schema_version)
-echo "generating online document $version"
-
-srcs=`find -name 'fortios*py' |grep "./output/$version/"`
-
-
-for f in $srcs
-do
-    docfile=`echo $f |sed 's/\.py$/.rst/g'`
-    echo "processing sphinx document: $BGre$f$RCol"
-    python3 ./generate_doc.py $f $docfile
-    #cp $docfile /root/tmp/ansible-collection-sphinx/docgen
-done

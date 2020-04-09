@@ -1,0 +1,22 @@
+![Fortinet logo|](https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Fortinet_logo.svg/320px-Fortinet_logo.svg.png)
+
+## FortiOS Ansible Collection
+***
+
+The collection is the FortiOS Ansible Automation project. It includes the modules that are able to  configure FortiOS and FortiGate by allowing the user to configure firewall features. 
+
+## Installation
+This collection is distributed via [ansible-galaxy](https://galaxy.ansible.com/), the installation steps are as follows:
+
+1. Install or upgrade to Ansible 2.9+
+2. Download this collection from galaxy: `ansible-galaxy collection install fortinet.fortios:{{__galaxy_version__}}`
+
+## Requirements
+* Ansible 2.9+ is required to support the newer Ansible Collections format
+* fortiosapi>=0.9.8
+
+## Supported FortiOS Versions
+Tested with FOS {{__fortios_version__}}
+
+## Modules
+The collection provides the following modules:

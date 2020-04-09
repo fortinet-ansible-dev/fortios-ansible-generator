@@ -1,0 +1,61 @@
+#! /bin/sh
+
+. ./scripts/common
+
+version=$(get_schema_version)
+
+echo "Generating galaxy collection for FOS $Gre$version$RCol"
+
+srcs=`find -name 'fortios_*.py' |grep "./output/$version/"`
+mods=''
+
+
+#1. copy the template to the output folder
+collection_root="galaxy_output/$version/collection"
+mkdir -p $collection_root
+rm -rf $collection_root/*
+cp -R galaxy_templates/collection/*  $collection_root/
+
+#2. replace version-specific data
+if [ $# -ne 1 ]; then
+    echo $BRed"Error: please specify the galaxy version$RCol"
+    exit 1
+fi
+
+fortios_version="$version"
+galaxy_version="$1"
+collection_branch_version="fos/$version"
+
+echo "galaxy version: $Gre$galaxy_version$RCol, fortios version: $Gre$fortios_version$RCol git branch: $Gre$collection_branch_version$RCol"
+
+sed -i "s={{__galaxy_version__}}=$galaxy_version=g" $collection_root/galaxy.yml
+sed -i "s={{__fortios_version__}}=$fortios_version=g" $collection_root/galaxy.yml
+sed -i "s={{__collection_branch_version__}}=$collection_branch_version=g" $collection_root/galaxy.yml
+
+sed -i "s={{__galaxy_version__}}=$galaxy_version=g" $collection_root/README.md.part1
+sed -i "s={{__fortios_version__}}=$fortios_version=g" $collection_root/README.md.part1
+
+
+inventory_string='\n'
+
+for f in $srcs
+do
+    rstfile=`echo $f | sed "s/.py$/.rst/g"`
+    mod=`basename $f |sed 's/\.py$//'`
+    desc=`cat $rstfile |grep "^$mod -- " |sed "s/^$mod -- //"`
+    inventory_string=$inventory_string"* \`$mod\`  $desc\n"
+done
+mv $collection_root/README.md.part1 $collection_root/README.md
+
+echo $inventory_string | sort >> $collection_root/README.md
+cat $collection_root/README.md.part2 >> $collection_root/README.md
+rm -f $collection_root/README.md.part2
+
+#3. copy module files 
+for f in $srcs
+do
+    cp $f $collection_root/plugins/modules/
+done
+
+
+echo "generated collection: $Gre$collection_root$RCol"
