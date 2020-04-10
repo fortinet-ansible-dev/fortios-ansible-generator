@@ -1,0 +1,38 @@
+#! /bin/sh
+
+. ./scripts/common
+
+echo $Gre"Steps to generate Galaxy collection and Sphinx document for FortiOS:"
+echo "\t1). Downlaod schema from the Fortigate device"
+echo "\t2). Generate raw Ansible modules"
+echo "\t3). Generate raw sphinx .rst documents"
+echo "\t4). Generate Galaxy collection repository"
+echo "\t5). Generate Sphinx document repository"
+echo "$RCol"
+
+ask_for_proceed() {
+    printf $BYel"do you want to proceed? [yes/no]$RCol"
+    read option
+    if [ "$option" != "yes" ]; then
+	    exit 1
+    fi
+}
+
+ask_for_proceed
+
+#1: FIXME: download the schema to fgt_schema.json
+
+#2
+python2 ./scripts/generate_modules.py
+
+
+#3
+sh scripts/generate_doc
+
+#4: the galaxy version argument $1
+sh scripts/generate_collection  $1
+
+
+#5
+sh scripts/generate_sphinx_doc
+

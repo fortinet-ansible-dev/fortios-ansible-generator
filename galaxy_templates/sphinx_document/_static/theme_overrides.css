@@ -1,0 +1,108 @@
+/* override table width restrictions */
+@media screen and (min-width: 767px) {
+
+   .wy-table-responsive table td {
+      /* !important prevents the common CSS stylesheets from overriding
+         this as on RTD they are loaded after this stylesheet */
+      white-space: normal !important;
+   }
+
+   .wy-table-responsive {
+      overflow: visible !important;
+   }
+}
+table.documentation-table {
+  border-collapse: collapse;
+  border-left:1px;
+}
+
+th {
+  background-color: #85BEE4;
+  color: white;
+}
+
+tr:hover {background-color: #E7F2FA;}
+
+table.documentation-table, th, td {
+  padding: 6px;
+  border: 1px solid black;
+}
+
+.li-head{
+	border-radius: 0%;
+	background-color: #EEEEEE;
+	padding-left: 8px;
+	padding-right: 8px;
+	background-position-y: 9%;
+	font-family: Consolas;
+	color: #fa7d2a;
+	border-left:solid #fcc29b 3px;
+}
+.li-normal{
+	background-color: #F2F2F2;
+	border-radius: 5%;
+	padding-left: 8px;
+	padding-right: 8px;
+	font-family: Consolas;
+	font-size: 9pt;
+	color: #999999;
+	/* border-left:solid #CCCCCC 1px; */
+}
+.li-required{
+	background-color: #F2F2F2;
+	border-radius: 5%;
+	padding-left: 8px;
+	padding-right: 8px;
+	font-family: Consolas;
+	font-size: 9pt;
+	color: rgb(255, 142, 142);
+	/* border-left:solid #CCCCCC 1px; */
+}
+
+.li-return{
+	border-radius: 0%;
+	background-color: #EEEEEE;
+	padding-left: 8px;
+	padding-right: 8px;
+	background-position-y: 9%;
+	font-family: Consolas;
+	color: #009de6;
+	border-left:solid #bbe1fa 3px;
+}
+
+* {
+margin: 0; 
+padding: 0;
+}
+
+.ul-all{
+	margin-left: 0px;
+}
+
+.ul-self{
+	margin-left: 30px;
+}
+
+.wy-side-nav-search {
+    background: #ff893a;
+}
+
+.caption-text {
+	color: #ff893a;
+}
+
+.wy-nav-content {
+    max-width: none;
+}
+
+/* 
+.wy-nav-top {
+	background: #ff2c32;
+}
+
+.wy-nav-side {
+	background: #ffe8d7;
+}
+.rst-versions .rst-current-version {
+	background: #22ffff;
+} */

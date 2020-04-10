@@ -7,7 +7,6 @@ version=$(get_schema_version)
 echo "Generating galaxy collection for FOS $Gre$version$RCol"
 
 srcs=`find -name 'fortios_*.py' |grep "./output/$version/"`
-mods=''
 
 
 #1. copy the template to the output folder

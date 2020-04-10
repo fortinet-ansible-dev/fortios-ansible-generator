@@ -1,0 +1,26 @@
+#! /bin/sh
+
+. ./scripts/common
+
+version=$(get_schema_version)
+
+echo "Generating sphinx document for FOS $Gre$version$RCol"
+
+srcs=`find -name 'fortios_*.py' |grep "./output/$version/"`
+
+#1. copy the template to output directory
+sphinxdoc_root="galaxy_output/$version/sphnix_document"
+mkdir -p $sphinxdoc_root
+rm -rf $sphinxdoc_root/*
+cp -R galaxy_templates/sphinx_document/*  $sphinxdoc_root/
+mkdir -p $sphinxdoc_root/gen
+
+
+#2 copy all rst files to the target directory
+for f in $srcs
+do
+    docfile=`echo $f |sed 's/\.py$/.rst/g'`
+    cp $docfile $sphinxdoc_root/gen
+done
+
+echo "generated sphinx documents: $Gre$sphinxdoc_root$RCol"
