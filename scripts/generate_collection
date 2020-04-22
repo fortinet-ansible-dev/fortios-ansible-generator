@@ -23,7 +23,7 @@ fi
 
 fortios_version="$version"
 galaxy_version="$1"
-collection_branch_version="fos/$version"
+collection_branch_version="fos_$version/galaxy_$galaxy_version"
 
 echo "galaxy version: $Gre$galaxy_version$RCol, fortios version: $Gre$fortios_version$RCol git branch: $Gre$collection_branch_version$RCol"
 
@@ -34,6 +34,10 @@ sed -i "s={{__collection_branch_version__}}=$collection_branch_version=g" $colle
 sed -i "s={{__galaxy_version__}}=$galaxy_version=g" $collection_root/README.md.part1
 sed -i "s={{__fortios_version__}}=$fortios_version=g" $collection_root/README.md.part1
 
+python3 scripts/generate_galaxy_version.py  $galaxy_version >> $collection_root/README.md.part1
+echo >> $collection_root/README.md.part1
+echo '## Modules' >> $collection_root/README.md.part1
+echo 'The collection provides the following modules:' >> $collection_root/README.md.part1
 
 inventory_string='\n'
 

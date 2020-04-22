@@ -1,0 +1,54 @@
+#! /bin/bash
+
+. ./scripts/common
+
+UPSTREAM='git@github.com:fortinet-ansible-dev/ansible-galaxy-fortios-collection.git'
+version=$(get_schema_version)
+galaxy_version="$1"
+collection_branch_version="fos_$version/galaxy_$galaxy_version"
+collection_root="galaxy_output/$version/collection"
+
+
+upload_collection_git()
+{
+    pushd `pwd`
+    cd $collection_root
+    git init
+    git remote add upstream $UPSTREAM
+    git checkout -b $collection_branch_version
+    git add .
+    git commit -m "init/update fos/$version: releasing galaxy fortinet.fortios:$galaxy_version"
+    git push upstream $collection_branch_version
+    popd
+}
+
+printf "Ready to upload $BGre$collection_branch_version$RCol to $BGre$UPSTREAM$RCol: [yes/no]?"
+read proceed
+
+if [ "${proceed}" = "yes" ]; then
+   upload_collection_git
+fi
+
+
+SPHINX_UPSTREAM='git@github.com:fortinet-ansible-dev/ansible-galaxy-fortios-sphinxdoc.git'
+sphinx_root="galaxy_output/$version/sphnix_document"
+sphinx_branch_version="galaxy-$galaxy_version"
+
+upload_sphinx_git()
+{
+    pushd `pwd`
+    cd $sphinx_root
+    git init
+    git remote add sphinx_upstream $SPHINX_UPSTREAM
+    git checkout -b $sphinx_branch_version
+    git add .
+    git commit -m "init/update fos/$version: releasing galaxy fortinet.fortios:$galaxy_version"
+    git push sphinx_upstream $sphinx_branch_version
+    popd
+}
+
+printf "Ready to upload $BGre$sphinx_branch_version$RCol to $BGre$SPHINX_UPSTREAM$RCol: [yes/no]?"
+read proceed
+if [ "${proceed}" = "yes" ]; then
+    upload_sphinx_git
+fi

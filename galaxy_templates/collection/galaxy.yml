@@ -19,7 +19,7 @@ tags:
     - firewall
     - security
     - fortinet
-repository: "https://github.com/fortinet-ansible-dev/ansible-galaxy-fortios-collection/{{__collection_branch_version__}}"
-documentation: "https://ansible-galaxy-fortios-docs.readthedocs.io/en/latest/"
+repository: "https://github.com/fortinet-ansible-dev/ansible-galaxy-fortios-collection/tree/{{__collection_branch_version__}}"
+documentation: "https://ansible-galaxy-fortios-docs.readthedocs.io/en/galaxy-{{__galaxy_version__}}"
 homepage: "https://www.fortinet.com"
 issues: "https://github.com/fortinet-ansible-dev/ansible-galaxy-fortios-collection/issues"

@@ -16,7 +16,3 @@ This collection is distributed via [ansible-galaxy](https://galaxy.ansible.com/)
 * fortiosapi>=0.9.8
 
 ## Supported FortiOS Versions
-Tested with FOS {{__fortios_version__}}
-
-## Modules
-The collection provides the following modules:
