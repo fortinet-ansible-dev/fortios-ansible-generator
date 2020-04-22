@@ -111,3 +111,4 @@ test/*.py
 
 galaxy_output/
 cookies
+fgt_schema.json

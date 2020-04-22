@@ -3,7 +3,7 @@
 . ./scripts/common
 
 echo $Gre"Steps to generate Galaxy collection and Sphinx document for FortiOS:"
-echo "\t1). Downlaod schema from the Fortigate device"
+echo "\t1). Download schema from the Fortigate device"
 echo "\t2). Generate raw Ansible modules"
 echo "\t3). Generate raw sphinx .rst documents"
 echo "\t4). Generate Galaxy collection repository"
@@ -20,7 +20,8 @@ ask_for_proceed() {
 
 ask_for_proceed
 
-#1: FIXME: download the schema to fgt_schema.json
+#1: download the schema to fgt_schema.json
+sh ./scripts/download_fgt_schema.sh
 
 #2
 python2 ./scripts/generate_modules.py
