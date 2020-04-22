@@ -21,7 +21,7 @@ ask_for_proceed() {
 ask_for_proceed
 
 #1: download the schema to fgt_schema.json
-sh ./scripts/download_fgt_schema.sh
+./scripts/download_fgt_schema.sh
 
 #2
 python2 ./scripts/generate_modules.py
