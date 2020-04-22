@@ -25,6 +25,8 @@
 {%- set counter = {'id':2} %}
 EXAMPLES = '''
 - hosts: localhost
+  collections:
+    - fortinet.fortios
   vars:
    host: "192.168.122.40"
    username: "admin"
