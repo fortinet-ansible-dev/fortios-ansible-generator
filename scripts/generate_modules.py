@@ -107,6 +107,9 @@ def renderModule(schema, version, special_attributes, valid_identifiers, version
     file_loader = FileSystemLoader('ansible_templates')
     env = Environment(loader=file_loader,
                       lstrip_blocks=False, trim_blocks=False)
+    if 'children' not in schema['schema']:
+        print('warning: not a valid schema, skip.')
+        return
 
     schema['schema'] = hyphenToUnderscore(schema['schema'])
 
