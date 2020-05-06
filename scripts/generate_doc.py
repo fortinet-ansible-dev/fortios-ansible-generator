@@ -85,7 +85,7 @@ def generate_return(doc_ret):
 
 def generate_document(mod, dst):
     ddata = ''
-    mod_doc = yaml.load(mod.DOCUMENTATION)
+    mod_doc = yaml.load(mod.DOCUMENTATION, Loader=yaml.FullLoader)
     mod_name = mod_doc['module']
     mod_sht_desc = mod_doc['short_description']
 
@@ -143,7 +143,7 @@ def generate_document(mod, dst):
     ddata += 'Common return values are documented: https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values, the following are the fields unique to this module:\n\n'
     ddata += '.. raw:: html\n\n'
 
-    mod_ret = yaml.load(mod.RETURN)
+    mod_ret = yaml.load(mod.RETURN, Loader=yaml.FullLoader)
     ddata += '    ' + '<ul>\n\n'
     ddata += generate_return(mod_ret)
     ddata += '    ' + '</ul>\n\n'

@@ -5,7 +5,7 @@ import sys
 def main():
     target_version = sys.argv[1]
     versions = None
-    with open('galaxy_version.yml') as f:
+    with open('galaxy_version.json') as f:
         versions = json.loads(f.read())
     fos_versions = list(versions.keys())
     fos_versions.sort()

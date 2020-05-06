@@ -7,11 +7,10 @@ version=$(get_schema_version)
 galaxy_version="$1"
 collection_branch_version="fos_$version/galaxy_$galaxy_version"
 collection_root="galaxy_output/$version/collection"
-
+cwd=`pwd`
 
 upload_collection_git()
 {
-    pushd `pwd`
     cd $collection_root
     git init
     git remote add upstream $UPSTREAM
@@ -19,7 +18,7 @@ upload_collection_git()
     git add .
     git commit -m "init/update fos/$version: releasing galaxy fortinet.fortios:$galaxy_version"
     git push upstream $collection_branch_version
-    popd
+    cd $cwd
 }
 
 printf "Ready to upload $BGre$collection_branch_version$RCol to $BGre$UPSTREAM$RCol: [yes/no]?"
@@ -36,7 +35,6 @@ sphinx_branch_version="galaxy-$galaxy_version"
 
 upload_sphinx_git()
 {
-    pushd `pwd`
     cd $sphinx_root
     git init
     git remote add sphinx_upstream $SPHINX_UPSTREAM
@@ -44,7 +42,7 @@ upload_sphinx_git()
     git add .
     git commit -m "init/update fos/$version: releasing galaxy fortinet.fortios:$galaxy_version"
     git push sphinx_upstream $sphinx_branch_version
-    popd
+    cd $cwd
 }
 
 printf "Ready to upload $BGre$sphinx_branch_version$RCol to $BGre$SPHINX_UPSTREAM$RCol: [yes/no]?"
