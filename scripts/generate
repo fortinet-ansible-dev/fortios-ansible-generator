@@ -11,6 +11,11 @@ echo "\t5). Generate Sphinx document repository"
 echo "\t6). Update git repository"
 echo "$RCol"
 
+if [ $# -ne 1 ]; then
+    echo $BRed"Error: please specify the galaxy version$RCol"
+    exit 1
+fi
+
 ask_for_proceed() {
     printf $BYel"do you want to proceed? [yes/no]$RCol"
     read option

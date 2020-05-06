@@ -178,6 +178,10 @@ def main():
     sys.path.append(dirname)
     basename = os.path.basename(src)
 
+    # also import the galaxy directory
+    cwd = os.getcwd()
+    sys.path.append(cwd + '/galaxy_output')
+
     if not basename.endswith('.py'):
         raise Exception('source file is not a Python file')
     modname = basename[:-3]

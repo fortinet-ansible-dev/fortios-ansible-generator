@@ -120,12 +120,15 @@ def renderModule(schema, version, special_attributes, valid_identifiers, version
     path = replaceSpecialChars(original_path)
     name = replaceSpecialChars(original_name)
     module_name = "fortios_" + path + "_" + name
-
-    try:
+    if module_name in version_added:
         module_version_added = version_added[module_name]
-    except KeyError:
-        print("cannot find", module_name)
-        return
+    else:
+        module_version_added = '2.10'
+    #try:
+    #    module_version_added = version_added[module_name]
+    #except KeyError:
+    #    print("cannot find", module_name)
+    #    return
 
     special_attributes_flattened = [','.join(x for x in elem) for elem in special_attributes]
 

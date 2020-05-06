@@ -2,6 +2,9 @@
 
 . ./scripts/common 
 
+mkdir -p galaxy_output/ansible_collections/fortinet/fortios
+ln -s `pwd`/galaxy_templates/collection/plugins `pwd`/galaxy_output/ansible_collections/fortinet/fortios  2>/dev/null
+
 version=$(get_schema_version)
 echo "generating online document $version"
 
