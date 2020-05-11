@@ -17,7 +17,7 @@ upload_collection_git()
     git checkout -b $collection_branch_version
     git add .
     git commit -m "init/update fos/$version: releasing galaxy fortinet.fortios:$galaxy_version"
-    git push upstream $collection_branch_version
+    git push upstream $collection_branch_version -f
     cd $cwd
 }
 
@@ -41,7 +41,7 @@ upload_sphinx_git()
     git checkout -b $sphinx_branch_version
     git add .
     git commit -m "init/update fos/$version: releasing galaxy fortinet.fortios:$galaxy_version"
-    git push sphinx_upstream $sphinx_branch_version
+    git push sphinx_upstream $sphinx_branch_version -f
     cd $cwd
 }
 
