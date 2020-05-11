@@ -16,7 +16,7 @@ upload_collection_git()
     git remote add upstream $UPSTREAM
     git checkout -b $collection_branch_version
     git add .
-    git commit -m "init/update fos/$version: releasing galaxy fortinet.fortios:$galaxy_version"
+    git commit -m "init/update fos/$version: releasing galaxy fortinet.fortios:$galaxy_version `date`"
     git push upstream $collection_branch_version -f
     cd $cwd
 }
@@ -40,7 +40,7 @@ upload_sphinx_git()
     git remote add sphinx_upstream $SPHINX_UPSTREAM
     git checkout -b $sphinx_branch_version
     git add .
-    git commit -m "init/update fos/$version: releasing galaxy fortinet.fortios:$galaxy_version"
+    git commit -m "init/update fos/$version: releasing galaxy fortinet.fortios:$galaxy_version `date`"
     git push sphinx_upstream $sphinx_branch_version -f
     cd $cwd
 }
