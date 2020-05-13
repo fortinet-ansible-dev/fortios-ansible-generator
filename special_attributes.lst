@@ -12,5 +12,6 @@
                           ["notify_hosts6"] ],
     "system_snmp_community": [ ["events"] ],
     "vpn_ipsec_phase2_interface": [ ["proposal"] ],
-    "vpn_ipsec_phase1_interface": [ ["proposal"] ]
+    "vpn_ipsec_phase1_interface": [ ["proposal"] ],
+    "fortios_vpn_ssl_settings": [ ["banned_cipher"] ]
 }
