@@ -228,6 +228,11 @@ def jinjaExecutor(number=None):
                 replaceSpecialChars(fgt_sch_results[number]['path']) + \
                 '/test_fortios_' + replaceSpecialChars(fgt_sch_results[number]['path']) + '_' + replaceSpecialChars(fgt_sch_results[number]['name']) + '.py'
 
+    # copy licence modules
+    licence_output_folder = './output/' + fgt_schema['version'] + '/licence'
+    os.popen('mkdir -p ' + licence_output_folder)
+    os.popen('cp ./galaxy_templates/licence_modules/* ' + licence_output_folder)
+
     print("\n\n\033[0mExecuting autopep8 ....")
     # Note this is done with popen and not with autopep8.fix_code in order to get the multiprocessig optimization, only available from CLI
     os.popen('autopep8 --aggressive --max-line-length 160 --jobs 8 --ignore E402 --in-place --recursive ' + autopep_files)
