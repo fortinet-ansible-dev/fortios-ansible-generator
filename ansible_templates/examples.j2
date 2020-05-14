@@ -24,23 +24,19 @@
 {%- endmacro -%}
 {%- set counter = {'id':2} %}
 EXAMPLES = '''
-- hosts: localhost
+- hosts: fortigates
   collections:
     - fortinet.fortios
+  connection: httpapi
   vars:
-   host: "192.168.122.40"
-   username: "admin"
-   password: ""
    vdom: "root"
-   ssl_verify: "False"
+   ansible_httpapi_use_ssl: yes
+   ansible_httpapi_validate_certs: no
+   ansible_httpapi_port: 443
   tasks:
   - name: {{schema['schema']['help']}}
     {{module_name}}:
-      host:  "{{ '{{' }} host {{ '}}' }}"
-      username: "{{ '{{' }} username {{ '}}' }}"
-      password: "{{ '{{' }} password {{ '}}' }}"
-      vdom:  "{{ '{{' }} vdom {{ '}}' }}"
-      https: "False"{%if "mkey" in schema['schema']%}
+      vdom:  "{{ '{{' }} vdom {{ '}}' }}"{%if "mkey" in schema['schema']%}
       state: "present"{%endif%}
       {{path}}_{{name}}:
           {{- example_attributes(schema['schema']['children']) }}

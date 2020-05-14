@@ -110,10 +110,9 @@ author:
     - Miguel Angel Munoz (@mamunozgonzalez)
     - Nicolas Thomas (@thomnico)
 notes:
-    - Requires fortiosapi library developed by Fortinet
-    - Run as a local_action in your playbook
+    - Legacy fortiosapi has been deprecated, httpapi is the preferred way to run playbooks
 requirements:
-    - fortiosapi>=0.9.8
+    - ansible>=2.9.0
 options:
     host:
         description:

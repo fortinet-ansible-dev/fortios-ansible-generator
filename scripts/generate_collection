@@ -12,7 +12,7 @@ srcs=`find -name 'fortios_*.py' |grep "./output/$version/"`
 #1. copy the template to the output folder
 collection_root="galaxy_output/$version/collection"
 mkdir -p $collection_root
-rm -rf $collection_root/*
+rm -rf $collection_root/* $collection_root/.git
 cp -R galaxy_templates/collection/*  $collection_root/
 
 #2. replace version-specific data

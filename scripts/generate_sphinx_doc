@@ -11,7 +11,7 @@ srcs=`find -name 'fortios_*.py' |grep "./output/$version/"`
 #1. copy the template to output directory
 sphinxdoc_root="galaxy_output/$version/sphnix_document"
 mkdir -p $sphinxdoc_root
-rm -rf $sphinxdoc_root/*
+rm -rf $sphinxdoc_root/* $sphinxdoc_root/.git
 cp -R galaxy_templates/sphinx_document/*  $sphinxdoc_root/
 mkdir -p $sphinxdoc_root/gen
 

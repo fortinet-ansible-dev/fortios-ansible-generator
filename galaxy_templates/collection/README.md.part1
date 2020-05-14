@@ -13,6 +13,5 @@ This collection is distributed via [ansible-galaxy](https://galaxy.ansible.com/)
 
 ## Requirements
 * Ansible 2.9+ is required to support the newer Ansible Collections format
-* fortiosapi>=0.9.8
 
 ## Supported FortiOS Versions
