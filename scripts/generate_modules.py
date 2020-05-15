@@ -229,7 +229,7 @@ def jinjaExecutor(number=None):
                 '/test_fortios_' + replaceSpecialChars(fgt_sch_results[number]['path']) + '_' + replaceSpecialChars(fgt_sch_results[number]['name']) + '.py'
 
     # there is an escape letter in fortios_vpn_ssl_settings.py, replace it.
-    os.popen("sed -i 's/Encode \\\\2F sequence/Encode \\\\ 2F sequence/g' ./output/" + fgt_schema['version'] + "/vpn_ssl/fortios_vpn_ssl_settings.py")
+    os.popen("sed -i 's/Encode \\\\2F sequence/Encode 2F sequence/g' ./output/" + fgt_schema['version'] + "/vpn_ssl/fortios_vpn_ssl_settings.py")
 
     # copy licence modules
     licence_output_folder = './output/' + fgt_schema['version'] + '/licence'
