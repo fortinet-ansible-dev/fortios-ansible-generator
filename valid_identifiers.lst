@@ -3,5 +3,8 @@
     "802_1X_settings":"settings_802_1X",
     "802_1X":"set_802_1X",
     "802.1_tlvs":"tlvs_802dot1",
-    "802.3_tlvs":"tlvs_802dot3"
+    "802.3_tlvs":"tlvs_802dot3",
+    "[1|2]": "set_1_2",
+    "[1]": "set_1",
+    "[wtp_id]": "set_wtp_id"
 }
