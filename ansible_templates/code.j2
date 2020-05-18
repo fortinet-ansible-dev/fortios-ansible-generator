@@ -211,7 +211,7 @@ str
                     "choices": [
                         {%- for v in value["options"] -%}
                         "{{ v["name"] }}"{% if not loop.last %}, {%endif-%}
-                        {%- if loop.index % 3 == 0 and not loop.last %}
+                        {%- if loop.index % 1 == 0 and not loop.last %}
                         {% endif -%}
                         {%- endfor -%} ]
                     {%- endif -%}

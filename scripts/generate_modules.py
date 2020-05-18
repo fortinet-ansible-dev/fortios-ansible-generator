@@ -249,6 +249,10 @@ def jinjaExecutor(number=None):
     os.popen("sed -i 's/filtered_data =/filtered_data = \\\/' ./output/" + fgt_schema['version'] + "/wireless_controller_hotspot20/fortios_wireless_controller_hotspot20_anqp_network_auth_type.py")
     os.popen("sed -i 's/filtered_data =/filtered_data = \\\/' ./output/" + fgt_schema['version'] + "/wireless_controller_hotspot20/fortios_wireless_controller_hotspot20_anqp_roaming_consortium.py")
     os.popen("sed -i 's/filtered_data =/filtered_data = \\\/' ./output/" + fgt_schema['version'] + "/wireless_controller_hotspot20/fortios_wireless_controller_hotspot20_h2qp_conn_capability.py")
+    os.popen("sed -i 's/    underscore_to_hyphen/        underscore_to_hyphen/' ./output/" + fgt_schema['version'] + "/wireless_controller_hotspot20/fortios_wireless_controller_hotspot20_anqp_ip_address_type.py")
+    os.popen("sed -i 's/    underscore_to_hyphen/        underscore_to_hyphen/' ./output/" + fgt_schema['version'] + "/wireless_controller_hotspot20/fortios_wireless_controller_hotspot20_anqp_network_auth_type.py")
+    os.popen("sed -i 's/    underscore_to_hyphen/        underscore_to_hyphen/' ./output/" + fgt_schema['version'] + "/wireless_controller_hotspot20/fortios_wireless_controller_hotspot20_anqp_roaming_consortium.py")
+    os.popen("sed -i 's/    underscore_to_hyphen/        underscore_to_hyphen/' ./output/" + fgt_schema['version'] + "/wireless_controller_hotspot20/fortios_wireless_controller_hotspot20_h2qp_conn_capability.py")
     os.popen("find . -name 'test_fortios_router_bfd*.py' -exec rm {} \\;")
 
 if __name__ == "__main__":
