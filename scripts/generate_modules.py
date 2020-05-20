@@ -11,7 +11,7 @@ def replaceSpecialChars(str):
 
 
 def getModuleName(path, name):
-    return replaceSpecialChars(path) + "_" + replaceSpecialChars(name)
+    return replaceSpecialChars(path.lower()) + "_" + replaceSpecialChars(name.lower())
 
 
 def searchProperBreakableChar(line, startingPosition):
@@ -120,8 +120,8 @@ def renderModule(schema, version, special_attributes, valid_identifiers, version
     description = ""
     original_path = schema['path']
     original_name = schema['name']
-    path = replaceSpecialChars(original_path)
-    name = replaceSpecialChars(original_name)
+    path = replaceSpecialChars(original_path).lower()
+    name = replaceSpecialChars(original_name).lower()
     module_name = "fortios_" + path + "_" + name
     if module_name in version_added:
         module_version_added = version_added[module_name]
