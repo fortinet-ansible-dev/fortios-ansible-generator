@@ -41,17 +41,28 @@ description:
 version_added: "2.9"
 """
 
+import json
 from ansible.plugins.httpapi import HttpApiBase
 from ansible.module_utils.basic import to_text
 from ansible.module_utils.six.moves import urllib
 import re
-
+from datetime import datetime
 
 class HttpApi(HttpApiBase):
     def __init__(self, connection):
         super(HttpApi, self).__init__(connection)
 
         self._ccsrftoken = ''
+        self._system_version = None
+        self._ansible_fos_version = '{{__fortios_version__}}'
+        self._ansible_galaxy_version = '{{__galaxy_version__}}'
+        self._log = open("/tmp/fortios.ansible.log", "a")
+
+    def log(self, msg):
+        log_message = str(datetime.now())
+        log_message += ": " + str(msg) + '\n'
+        self._log.write(log_message)
+        self._log.flush()
 
     def set_become(self, become_context):
         """
@@ -66,12 +77,15 @@ class HttpApi(HttpApiBase):
 
         data = "username=" + urllib.parse.quote(username) + "&secretkey=" + urllib.parse.quote(password) + "&ajax=1"
         dummy, result_data = self.send_request(url='/logincheck', data=data, method='POST')
+        self.log('login with user: %s %s' % (username, 'succeeds' if result_data[0] == '1' else 'fails'))
         if result_data[0] != '1':
             raise Exception('Wrong credentials. Please check')
+        # If we succeed to login, we retrieve the system status first
+        self.update_system_version()
 
     def logout(self):
         """ Call to implement session logout."""
-
+        self.log('logout')
         self.send_request(url='/logout', method="POST")
 
     def update_auth(self, response, response_text):
@@ -94,7 +108,7 @@ class HttpApi(HttpApiBase):
                     self._ccsrftoken = csrftoken_search.group(1)
 
         headers['x-csrftoken'] = self._ccsrftoken
-
+        self.log('update x-csrftoken: %s' % (self._ccsrftoken))
         return headers
 
     def handle_httperror(self, exc):
@@ -122,3 +136,29 @@ class HttpApi(HttpApiBase):
             return response.status, to_text(response_data.getvalue())
         except Exception as err:
             raise Exception(err)
+
+    def update_system_version(self):
+        """
+        retrieve the system status of fortigate device
+        """
+        url = '/api/v2/cmdb/non/existing/path'
+        status, result = self.send_request(url=url)
+        self._system_version = json.loads(result)['version']
+        self.log('system version: %s' % (self._system_version))
+        self.log('ansible version: %s' % (self._ansible_fos_version))
+
+    def get_system_version(self):
+        if not self._system_version:
+            raise Exception('Wrong calling stack, httpapi must login!')
+        system_version_words = self._system_version.split('.')
+        ansible_version_words = self._ansible_fos_version.split('.')
+        result = dict()
+        result['system_version'] = self._system_version
+        result['ansible_collection_version'] = self._ansible_fos_version + ' (galaxy: %s)' % (self._ansible_galaxy_version)
+        result['matched'] = system_version_words[0] == ansible_version_words[0] and system_version_words[1] == ansible_version_words[1]
+        if not result['matched']:
+            result['message'] = 'Please follow steps in FortiOS versioning notes: https://github.com/fortinet-ansible-dev/fortios-galaxy-version-notes'
+        else:
+            result['message'] = 'versions match'
+        return result
+
