@@ -30,7 +30,8 @@ echo "galaxy version: $Gre$galaxy_version$RCol, fortios version: $Gre$fortios_ve
 sed -i "s={{__galaxy_version__}}=$galaxy_version=g" $collection_root/galaxy.yml
 sed -i "s={{__fortios_version__}}=$fortios_version=g" $collection_root/galaxy.yml
 sed -i "s={{__collection_branch_version__}}=$collection_branch_version=g" $collection_root/galaxy.yml
-
+sed -i "s={{__galaxy_version__}}=$galaxy_version=g" $collection_root/plugins/httpapi/fortios.py
+sed -i "s={{__fortios_version__}}=$fortios_version=g" $collection_root/plugins/httpapi/fortios.py
 sed -i "s={{__galaxy_version__}}=$galaxy_version=g" $collection_root/README.md.part1
 sed -i "s={{__fortios_version__}}=$fortios_version=g" $collection_root/README.md.part1
 
