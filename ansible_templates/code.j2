@@ -272,6 +272,9 @@ def main():
         is_error, has_changed, result = fortios_{{path}}(module.params, fos)
         fos.logout()
 
+    if versions_check_result and versions_check_result['matched'] is False:
+        module.warn("Ansible has detected version mismatch between FortOS system and galaxy, see more details by specifying option -vvv")
+
     if not is_error:
         if versions_check_result and versions_check_result['matched'] is False:
             module.exit_json(changed=has_changed, version_check_warning=versions_check_result, meta=result)
