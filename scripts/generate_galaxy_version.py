@@ -17,7 +17,7 @@ def main():
     fos_versions = list(versions.keys())
     fos_versions.sort(key=version_key)
 
-    print('| FOS version|Galaxy  Version| Release date|Install Path |')
+    print('| FOS version|Galaxy  Version| Release date|Path to Install |')
     print('|----------|:-------------:|:-------------:|:------:|')
 
     for fos in fos_versions:
@@ -28,5 +28,6 @@ def main():
                 continue
             date = versions[fos][galaxy]
             print('|%s|%s %s|%s|`ansible-galaxy collection install fortinet.fortios:%s`|' % (fos, galaxy, '`latest`' if galaxy == galaxy_versions[-1] else '', date, galaxy))
+    print('\n__Note__: Use `-f` option (i.e. `ansible-galaxy collection install -f fortinet.fortios:x.x.x`) to renew your existing local installation.\n')
 if __name__ == '__main__':
     main()
