@@ -51,9 +51,9 @@ device’s hostname:
 
 there are several options which might need you special care:
 
--  **``connection``** : ``httpapi`` is preferred.
--  **``collections``** : The namespace must be ``fortinet.fortios``
--  **``ansible_httpapi_use_ssl``** and **``ansible_httpapi_port``**: by
+-  **connection** : ``httpapi`` is preferred.
+-  **collections** : The namespace must be ``fortinet.fortios``
+-  **ansible_httpapi_use_ssl** and **ansible_httpapi_port**: by
    default when your fortiOS device is licensed, the https is enabled.
    there is one exception: module ``fortios_system_vmlicense`` allows
    you to upload the licence with http, in this case, you should set
