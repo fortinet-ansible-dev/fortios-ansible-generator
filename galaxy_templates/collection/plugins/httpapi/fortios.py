@@ -48,6 +48,7 @@ from ansible.module_utils.six.moves import urllib
 import re
 from datetime import datetime
 
+
 class HttpApi(HttpApiBase):
     def __init__(self, connection):
         super(HttpApi, self).__init__(connection)
@@ -161,4 +162,3 @@ class HttpApi(HttpApiBase):
         else:
             result['message'] = 'versions match'
         return result
-
