@@ -6,15 +6,24 @@
 Welcome to Ansible Galaxy FortiOS Collection Documentation!
 ===========================================================
 
+|
+
+**FOS Galaxy versioning**
+
 .. toctree::
    :glob:
+   :maxdepth: 1
 
-   gen/*
+   version.rst
 
+**User's Guide**
 
-Indices and tables
-==================
+.. toctree::
+   :glob:
+   :maxdepth: 1
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   install.rst
+   playbook.rst
+   help.rst
+   modules.rst
+

@@ -158,7 +158,7 @@ class HttpApi(HttpApiBase):
         result['ansible_collection_version'] = self._ansible_fos_version + ' (galaxy: %s)' % (self._ansible_galaxy_version)
         result['matched'] = system_version_words[0] == ansible_version_words[0] and system_version_words[1] == ansible_version_words[1]
         if not result['matched']:
-            result['message'] = 'Please follow steps in FortiOS versioning notes: https://github.com/fortinet-ansible-dev/fortios-galaxy-version-notes'
+            result['message'] = 'Please follow steps in FortiOS versioning notes: https://ansible-galaxy-fortios-docs.readthedocs.io/en/latest/version.html'
         else:
             result['message'] = 'versions match'
         return result
