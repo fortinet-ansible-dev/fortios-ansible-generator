@@ -8,7 +8,7 @@ Welcome to Ansible Galaxy FortiOS Collection Documentation!
 
 |
 
-**FOS Galaxy versioning**
+**FortiOS/Galaxy Version Mapping Guide**
 
 .. toctree::
    :glob:
