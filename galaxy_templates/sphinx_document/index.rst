@@ -6,20 +6,19 @@
 Welcome to Ansible Galaxy FortiOS Collection Documentation!
 ===========================================================
 
-|
-
-**FortiOS/Galaxy Version Mapping Guide**
+The FortiOS Ansible Collection provides Ansible modules for configuring FortiOS appliances.
 
 .. toctree::
    :glob:
+   :caption: FortiOS/Galaxy Version Mapping Guide
    :maxdepth: 1
 
    version.rst
 
-**User's Guide**
 
 .. toctree::
    :glob:
+   :caption: User's Guide
    :maxdepth: 1
 
    install.rst
