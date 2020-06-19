@@ -41,7 +41,7 @@ sh scripts/generate_collection  $1
 
 
 #5
-sh scripts/generate_sphinx_doc
+sh scripts/generate_sphinx_doc $1
 
 #6
 sh ./scripts/release_galaxy $1

@@ -3,6 +3,7 @@
 . ./scripts/common
 
 version=$(get_schema_version)
+galaxy_version="$1"
 
 echo "Generating sphinx document for FOS $Gre$version$RCol"
 
@@ -15,6 +16,8 @@ rm -rf $sphinxdoc_root/* $sphinxdoc_root/.git
 cp -R galaxy_templates/sphinx_document/*  $sphinxdoc_root/
 mkdir -p $sphinxdoc_root/gen
 
+#1.cond. substitutue some tags
+sed -i "s={{__galaxy_version__}}=$galaxy_version=g" $sphinxdoc_root/index.rst
 
 #2 copy all rst files to the target directory
 for f in $srcs

@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Ansible Galaxy FortiOS Collection Documentation!
-===========================================================
+Welcome to Ansible Galaxy FortiOS Collection Documentation {{__galaxy_version__}}!
+============================================================================
 
 The FortiOS Ansible Collection provides Ansible modules for configuring FortiOS appliances.
 
@@ -25,4 +25,12 @@ The FortiOS Ansible Collection provides Ansible modules for configuring FortiOS 
    playbook.rst
    help.rst
    modules.rst
+
+
+.. toctree::
+   :glob:
+   :maxdepth: 1
+   :caption: Appendices
+
+   release.rst
 
