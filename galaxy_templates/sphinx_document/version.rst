@@ -4,7 +4,7 @@ FortiOS Galaxy Versioning
 The `FortiOS galaxy
 collection <https://galaxy.ansible.com/fortinet/fortios>`__ is
 accommodating for all major FortiOS releases. Please choose the right
-Galaxy colllection to install from the following table in case of any
+Galaxy collection to install from the following table in case of any
 compatibility issues.
 
 +---------------+---------------------+----------------+-----------------------------------------------------------------+

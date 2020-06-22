@@ -4,6 +4,36 @@ Release Notes
 
 |
 
+Multiversions Note
+------------------
+The FortiOS Galaxy namespace: ``fortinet.fortios`` hosts Ansible modules
+for multiple FortiOS major releases.
+
+A mismatched Ansible collection version for a FortiOS device can cause a
+warning:
+
+::
+
+    [WARNING]: Ansible has detected version mismatch between FortOS system and galaxy, see more details by specifying option -vvv
+
+you can find more details with ``-vvv`` option when running a
+playbook:
+
+::
+
+        ...
+        "version_check_warning": {
+            "ansible_collection_version": "v6.0.0 (galaxy: 1.0.13)",
+            "matched": false,
+            "message": "Please follow steps in FortiOS versioning notes: https://ansible-galaxy-fortios-docs.readthedocs.io/en/latest/version.html",
+            "system_version": "v6.2.0"
+        }
+        ...
+
+**Simply installing a matched FortiOS collection can prevent potential
+compatibility issues.**
+
+
 Release Galaxy 1.0.10 … 10.0.13
 -------------------------------
 
@@ -11,6 +41,7 @@ Release Galaxy 1.0.10 … 10.0.13
 
 Release Targets
 ^^^^^^^^^^^^^^^
+There are multiple Galaxy releases dedicated to different FortiOS major releases.
 
 -  fos\_v6.0.0/galaxy\_1.0.13
 -  fos\_v6.0.5/galaxy\_1.0.12
