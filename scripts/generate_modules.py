@@ -101,7 +101,7 @@ def removeDefaultCommentsInFGTDoc(str):
     str = re.sub(regex, r"\g<1>", str)
     return str
 
-def renderModule(schema, version, special_attributes, valid_identifiers, version_added):
+def renderModule(schema, version, special_attributes, valid_identifiers, version_added, supports_check_mode):
 
     # Generate module
     file_loader = FileSystemLoader('ansible_templates')
@@ -193,6 +193,8 @@ def jinjaExecutor(number=None):
     valid_identifiers = json.loads(valid_identifiers_file)
     version_added_file = open('version_added.json').read()
     version_added_json = json.loads(version_added_file)
+    check_mode_support_file = open('check_mode_support.txt').read()
+    check_mode_support_set = set(check_mode_support_file.split('\n'))
 
     autopep_files = './output/' + fgt_schema['version']
 
@@ -208,7 +210,8 @@ def jinjaExecutor(number=None):
                              fgt_schema['version'],
                              special_attributes[module_name] if module_name in special_attributes else [],
                              valid_identifiers,
-                             version_added_json)
+                             version_added_json,
+                             module_name in check_mode_support_set)
                 real_counter += 1
     else:
         module_name = getModuleName(fgt_sch_results[number]['path'], fgt_sch_results[number]['name'])
@@ -216,7 +219,8 @@ def jinjaExecutor(number=None):
                      fgt_schema['version'],
                      special_attributes[module_name] if module_name in special_attributes else [],
                      valid_identifiers,
-                     version_added_json)
+                     version_added_json,
+                     module_name in check_mode_support_set)
 
         autopep_files = './output/' + \
                 fgt_schema['version'] + '/' + \

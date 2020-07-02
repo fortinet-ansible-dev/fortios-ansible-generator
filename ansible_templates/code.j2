@@ -85,8 +85,62 @@ def valid_attr_to_invalid_attrs(data):
         data = new_data
 
     return data
-{% endif %}
+{% endif -%}
+
+{% if supports_check_mode -%}
+def serialize(data):
+    if type(data) == str and ' ' in data:
+        return serialize(data.split(' '))
+    if type(data) == list and len(data) > 0:
+        if type(data[0]) == dict:
+            list_to_order = []
+            for dt in data:
+                ret = {}
+                for key, value in dt.items():
+                    ret[key] = serialize(value)
+                list_to_order.append(ret)
+
+            return sorted(list_to_order, key=lambda dt: str(dt.items()))
+        else:
+            return sorted(data)
+
+    if type(data) == dict:
+        result = {}
+        for key, value in data.items():
+            result[key] = serialize(value)
+
+        return result
+
+    return data
+
+def is_same_comparison(reorder_current, reorder_filtered):
+    for key, value in reorder_filtered.items():
+        if key not in reorder_current:
+            return False
+
+        if type(value) == dict:
+            if not is_same_comparison(reorder_current[key], value):
+                return False
+        elif type(value) == list:
+            if len(value) != len(reorder_current[key]):
+                return False
+            if type(value[0]) == dict:
+                for current_dict in reorder_current[key]:
+                    if not is_same_comparison(current_dict, value[0]):
+                        return False
+            elif reorder_current[key] != value:
+                return False
+        elif reorder_current[key] != value:
+            return False
+
+    return True
+{% endif -%}
+
+{% if supports_check_mode -%}
+def {{path}}_{{name}}(data, fos, check_mode=False):
+{% else -%}
 def {{path}}_{{name}}(data, fos):
+{%- endif %}
     vdom = data['vdom']
     {%- if "mkey" in schema['schema'] %}
     {% if module_version_added == 2.8 %}if 'state' in data and data['state']:
@@ -104,6 +158,40 @@ def {{path}}_{{name}}(data, fos):
     converted_data = valid_attr_to_invalid_attrs(filtered_data)
     {%- endif %}
 
+    {% if supports_check_mode -%}
+    # check_mode starts from here
+    if check_mode:
+        mkey = fos.get_mkey('system', 'interface', filtered_data, vdom=vdom)
+        current_data = fos.get('system', 'interface', vdom=vdom, mkey=mkey)
+        is_existed = current_data and current_data.get('http_status') == 200 \
+            and type(current_data.get('results')) == list \
+            and len(current_data['results']) > 0
+
+        # 2. if it exists and the state is 'present' then compare current settings with desired
+        if state == 'present':
+            if mkey is None:
+                return False, True, filtered_data
+
+            # if mkey exists then compare each other
+            # record exits and they're matched or not
+            if is_existed:
+                is_same = is_same_comparison(
+                    serialize(current_data['results'][0]), serialize(filtered_data))
+                return False, not is_same, filtered_data
+
+            # record does not exist
+            return False, True, filtered_data
+
+        if state == 'absent':
+            if mkey is None:
+                return False, False, filtered_data
+
+            if is_existed:
+                return False, True, filtered_data
+            return False, False, filtered_data
+
+        return True, False, {'reason: ': 'Must provide state parameter'}
+    {% endif -%}
     {% if "mkey" in schema['schema'] %}
     if state == "present":
         return fos.set('{{original_path}}',
@@ -131,17 +219,23 @@ def {{path}}_{{name}}(data, fos):
                     vdom=vdom)
     {%endif%}
 
-
 def is_successful_status(status):
     return status['status'] == "success" or \
         status['http_method'] == "DELETE" and status['http_status'] == 404
 
-
+{% if supports_check_mode -%}
+def fortios_{{path}}(data, fos, check_mode):
+{% else -%}
 def fortios_{{path}}(data, fos):
-
+{% endif %}
     if data['{{path}}_{{name}}']:
+    {%- if supports_check_mode %}
+        resp = {{path}}_{{name}}(data, fos, check_mode)
+    if check_mode:
+        return resp
+{%- else %}
         resp = {{path}}_{{name}}(data, fos)
-
+{% endif %}
     return not is_successful_status(resp), \
         resp['status'] == "success" and \
         (resp['revision_changed'] if 'revision_changed' in resp else True), \
@@ -243,7 +337,7 @@ def main():
     }
 
     module = AnsibleModule(argument_spec=fields,
-                           supports_check_mode=False)
+                           supports_check_mode={% if supports_check_mode %}True{% else %}False{% endif %})
 
     # legacy_mode refers to using fortiosapi instead of HTTPAPI
     legacy_mode = 'host' in module.params and module.params['host'] is not None and \
@@ -256,7 +350,11 @@ def main():
             connection = Connection(module._socket_path)
             fos = FortiOSHandler(connection)
 
+            {% if supports_check_mode -%}
+            is_error, has_changed, result = fortios_{{path}}(module.params, fos, module.check_mode)
+            {% else -%}
             is_error, has_changed, result = fortios_{{path}}(module.params, fos)
+            {% endif -%}
             versions_check_result = connection.get_system_version()
         else:
             module.fail_json(**FAIL_SOCKET_MSG)
@@ -269,7 +367,11 @@ def main():
         fos = FortiOSAPI()
 
         login(module.params, fos)
+        {% if supports_check_mode -%}
+        is_error, has_changed, result = fortios_{{path}}(module.params, fos, module.check_mode)
+        {% else -%}
         is_error, has_changed, result = fortios_{{path}}(module.params, fos)
+        {% endif -%}
         fos.logout()
 
     if versions_check_result and versions_check_result['matched'] is False:
