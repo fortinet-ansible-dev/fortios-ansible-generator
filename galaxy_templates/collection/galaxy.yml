@@ -10,7 +10,9 @@ authors:
     - Jie Xue (@JieX19)
     - Miguel Angel Munoz (@mamunozgonzalez)
     - Nicolas Thomas (@thomnico)
-dependencies: { }
+dependencies: {
+    "ansible.netcommon": "*"
+}
 license:
     - "MIT"
 tags:
