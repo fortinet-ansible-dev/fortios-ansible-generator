@@ -129,6 +129,12 @@ options:
             - FortiOS or FortiGate password.
         type: str
         default: ""
+    access_token:
+        description:
+            - Token-based authentication.
+              Generated from GUI of Fortigate.
+        type: str
+        required: false
     vdom:
         description:
             - Virtual domain, among those defined previously. A vdom is a
@@ -148,8 +154,8 @@ options:
         default: true{% if module_version_added == 2.8 %}
         version_added: 2.9{%endif%}
     {%-if "mkey" in schema['schema'] %}
-    state: 
-        description: 
+    state:
+        description:
             - Indicates whether to create or remove the object.{% if module_version_added == 2.8 %}
               This attribute was present already in previous version in a deeper level.
               It has been moved out to this outer level.{%endif%}
@@ -166,8 +172,8 @@ options:
         default: null
         type: dict
         suboptions:{% if module_version_added == 2.8 and "mkey" in schema['schema'] %}
-            state: 
-                description: 
+            state:
+                description:
                     - B(Deprecated)
                     - Starting with Ansible 2.9 we recommend using the top-level 'state' parameter.
                     - HORIZONTALLINE

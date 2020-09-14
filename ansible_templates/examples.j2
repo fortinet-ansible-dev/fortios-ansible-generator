@@ -1,13 +1,13 @@
 {% macro example_attributes(dict) -%}
       {%- for key, value in dict | dictsort %}
-        {{value['name']}}: 
+        {{value['name']}}:
       {%- if counter.update({'id': counter['id']+1 }) -%}{%-endif-%}
       {%- set id = counter['id']-%}
       {%- if 'datasource' in value -%} {%- set ds = " (source " + value['datasource']|join(' ') + ")" -%} {%-endif-%}
       {%- if value['category'] == 'table' %}
-         - {{- example_attributes(value['children']) |indent}} 
+         - {{- example_attributes(value['children']) |indent}}
       {%- elif value['category'] == 'complex'%}
-         {{- example_attributes(value['children']) |indent}} 
+         {{- example_attributes(value['children']) |indent}}
       {%- elif key == 'comment' %} "{{value['help']}}{{ds}}"
       {%- elif key == 'name' %} "default_name_{{id}}{{ds}}"
       {%- elif key == 'id' %}  "{{id}}{{ds}}"
@@ -37,7 +37,8 @@ EXAMPLES = '''
   - name: {{schema['schema']['help']}}
     {{module_name}}:
       vdom:  "{{ '{{' }} vdom {{ '}}' }}"{%if "mkey" in schema['schema']%}
-      state: "present"{%endif%}
+      state: "present"
+      access_token: "<your_own_value>"{%endif%}
       {{path}}_{{name}}:
           {{- example_attributes(schema['schema']['children']) }}
 '''
