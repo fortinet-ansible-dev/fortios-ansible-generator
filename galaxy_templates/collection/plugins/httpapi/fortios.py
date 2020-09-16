@@ -82,6 +82,8 @@ class HttpApi(HttpApiBase):
 
     def login(self, username, password):
         """Call a defined login endpoint to receive an authentication token."""
+        if (username == None or password == None) and self.get_access_token() is None:
+            raise Exception('Please provide access token or username/password to login')
 
         if self.get_access_token() == None:
             self.log('login with username and password')
