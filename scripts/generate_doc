@@ -5,6 +5,13 @@
 mkdir -p galaxy_output/ansible_collections/fortinet/fortios
 ln -s `pwd`/galaxy_templates/collection/plugins `pwd`/galaxy_output/ansible_collections/fortinet/fortios  2>/dev/null
 
+sys_ansible_collection_path=`python3 ./scripts/ansible_collection_path.py`
+sys_ansible_collection_found=$?
+
+if [ $sys_ansible_collection_found -eq 0 ]; then
+    mv -f $sys_ansible_collection_path/ansible_collections $sys_ansible_collection_path/ansible_collections.bak
+fi
+
 version=$(get_schema_version)
 echo "generating online document $version"
 
@@ -18,3 +25,7 @@ do
     python3 ./scripts/generate_doc.py $f $docfile
     #cp $docfile /root/tmp/ansible-collection-sphinx/docgen
 done
+
+if [ $sys_ansible_collection_found -eq 0 ]; then
+    mv -f $sys_ansible_collection_path/ansible_collections.bak $sys_ansible_collection_path/ansible_collections
+fi

@@ -2,22 +2,8 @@
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.connection import Connection
 from ansible_collections.fortinet.fortios.plugins.module_utils.fortios.fortios import FortiOSHandler
+from ansible_collections.fortinet.fortios.plugins.module_utils.fortios.fortios import check_legacy_fortiosapi
 from ansible_collections.fortinet.fortios.plugins.module_utils.fortimanager.common import FAIL_SOCKET_MSG
-
-
-def login(data, fos):
-    host = data['host']
-    username = data['username']
-    password = data['password']
-    ssl_verify = data['ssl_verify']
-
-    fos.debug('on')
-    if 'https' in data and not data['https']:
-        fos.https('off')
-    else:
-        fos.https('on')
-
-    fos.login(host, username, password, verify=ssl_verify)
 
 
 def filter_{{path}}_{{name}}_data(json):
@@ -317,13 +303,8 @@ str
 {%- endmacro %}
 def main():
     fields = {
-        "host": {"required": False, "type": "str"},
-        "username": {"required": False, "type": "str"},
-        "password": {"required": False, "type": "str", "default": "", "no_log": True},
         "access_token": {"required": False, "type": "str", "no_log": True},
         "vdom": {"required": False, "type": "str", "default": "root"},
-        "https": {"required": False, "type": "bool", "default": True},
-        "ssl_verify": {"required": False, "type": "bool", "default": True},
         {%if "mkey" in schema['schema'] %}"state": {"required": {% if module_version_added == 2.8 %}False{% else %}True{% endif %}, "type": "str",
                         "choices": ["present", "absent"]},
         {%endif-%}
@@ -337,46 +318,26 @@ def main():
         }
     }
 
+    check_legacy_fortiosapi()
     module = AnsibleModule(argument_spec=fields,
                            supports_check_mode={% if supports_check_mode %}True{% else %}False{% endif %})
 
-    # legacy_mode refers to using fortiosapi instead of HTTPAPI
-    legacy_mode = 'host' in module.params and module.params['host'] is not None and \
-                  'username' in module.params and module.params['username'] is not None and \
-                  'password' in module.params and module.params['password'] is not None
-
     versions_check_result = None
-    if not legacy_mode:
-        if module._socket_path:
-            connection = Connection(module._socket_path)
-            if 'access_token' in module.params:
-                connection.set_option('access_token', module.params['access_token'])
+    if module._socket_path:
+        connection = Connection(module._socket_path)
+        if 'access_token' in module.params:
+            connection.set_option('access_token', module.params['access_token'])
 
-            fos = FortiOSHandler(connection)
+        fos = FortiOSHandler(connection)
 
-            {% if supports_check_mode -%}
-            is_error, has_changed, result = fortios_{{path}}(module.params, fos, module.check_mode)
-            {% else -%}
-            is_error, has_changed, result = fortios_{{path}}(module.params, fos)
-            {% endif -%}
-            versions_check_result = connection.get_system_version()
-        else:
-            module.fail_json(**FAIL_SOCKET_MSG)
-    else:
-        try:
-            from fortiosapi import FortiOSAPI
-        except ImportError:
-            module.fail_json(msg="fortiosapi module is required")
-
-        fos = FortiOSAPI()
-
-        login(module.params, fos)
         {% if supports_check_mode -%}
         is_error, has_changed, result = fortios_{{path}}(module.params, fos, module.check_mode)
         {% else -%}
         is_error, has_changed, result = fortios_{{path}}(module.params, fos)
         {% endif -%}
-        fos.logout()
+        versions_check_result = connection.get_system_version()
+    else:
+        module.fail_json(**FAIL_SOCKET_MSG)
 
     if versions_check_result and versions_check_result['matched'] is False:
         module.warn("Ansible has detected version mismatch between FortOS system and galaxy, see more details by specifying option -vvv")
