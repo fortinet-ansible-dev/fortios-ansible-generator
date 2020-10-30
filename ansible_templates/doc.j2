@@ -104,9 +104,9 @@ description:
 version_added: "{{module_version_added}}"
 author:
     - Link Zheng (@chillancezen)
+    - Jie Xue (@JieX19)
     - Hongbin Lu (@fgtdev-hblu)
     - Frank Shen (@frankshen01)
-    - Jie Xue (@JieX19)
     - Miguel Angel Munoz (@mamunozgonzalez)
     - Nicolas Thomas (@thomnico)
 notes:
@@ -114,21 +114,6 @@ notes:
 requirements:
     - ansible>=2.9.0
 options:
-    host:
-        description:
-            - FortiOS or FortiGate IP address.
-        type: str
-        required: false
-    username:
-        description:
-            - FortiOS or FortiGate username.
-        type: str
-        required: false
-    password:
-        description:
-            - FortiOS or FortiGate password.
-        type: str
-        default: ""
     access_token:
         description:
             - Token-based authentication.
@@ -142,17 +127,6 @@ options:
               used as a different unit.
         type: str
         default: root
-    https:
-        description:
-            - Indicates if the requests towards FortiGate must use HTTPS protocol.
-        type: bool
-        default: true
-    ssl_verify:
-        description:
-            - Ensures FortiGate certificate must be verified by a proper CA.
-        type: bool
-        default: true{% if module_version_added == 2.8 %}
-        version_added: 2.9{%endif%}
     {%-if "mkey" in schema['schema'] %}
     state:
         description:
