@@ -38,7 +38,8 @@ import traceback
 
 from ansible.module_utils._text import to_text
 from ansible.module_utils.basic import env_fallback
-
+from ansible.module_utils.basic import _load_params
+import sys
 import json
 
 try:
@@ -86,6 +87,18 @@ fortios_error_codes = {
     '-61': "Command error"
 }
 
+
+def check_legacy_fortiosapi():
+    params = _load_params()
+    legacy_schemas = ['host', 'username', 'password', 'ssl_verify', 'https']
+    legacy_params = []
+    for param in legacy_schemas:
+        if param in params:
+            legacy_params.append(param)
+    if len(legacy_params):
+        error_message = 'Legacy fortiosapi parameters %s detected, please use HTTPAPI instead!' % (str(legacy_params))
+        sys.stderr.write(error_message)
+        sys.exit(1)
 # END DEPRECATED
 
 
