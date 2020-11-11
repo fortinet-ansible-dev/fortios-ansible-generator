@@ -13,5 +13,6 @@
     "system_snmp_community": [ ["events"] ],
     "vpn_ipsec_phase2_interface": [ ["proposal"] ],
     "vpn_ipsec_phase1_interface": [ ["proposal"] ],
-    "vpn_ssl_settings": [ ["banned_cipher"] ]
+    "vpn_ssl_settings": [ ["banned_cipher"] ],
+    "firewall_schedule_recurring": [ ["day"] ]
 }
