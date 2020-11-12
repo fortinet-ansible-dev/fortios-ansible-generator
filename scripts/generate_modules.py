@@ -133,6 +133,10 @@ def renderModule(schema, version, special_attributes, valid_identifiers, version
     #    print("cannot find", module_name)
     #    return
 
+    mkeyname = None
+    if 'mkey' in schema['schema']:
+        mkeyname = schema['schema']['mkey']
+
     special_attributes_flattened = [','.join(x for x in elem) for elem in special_attributes]
 
     template = env.get_template('doc.j2')

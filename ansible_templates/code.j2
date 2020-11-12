@@ -302,6 +302,7 @@ str
                 {% endfor -%}
 {%- endmacro %}
 def main():
+    mkeyname = {% if mkeyname -%} '{{mkeyname}}' {%- else -%} None {%- endif %}
     fields = {
         "access_token": {"required": False, "type": "str", "no_log": True},
         "vdom": {"required": False, "type": "str", "default": "root"},
@@ -328,7 +329,7 @@ def main():
         if 'access_token' in module.params:
             connection.set_option('access_token', module.params['access_token'])
 
-        fos = FortiOSHandler(connection)
+        fos = FortiOSHandler(connection, mkeyname)
 
         {% if supports_check_mode -%}
         is_error, has_changed, result = fortios_{{path}}(module.params, fos, module.check_mode)
