@@ -57,19 +57,6 @@ try:
 except ImportError:
     HAS_PYFG = False
 
-fortios_argument_spec = dict(
-    file_mode=dict(type='bool', default=False),
-    config_file=dict(type='path'),
-    host=dict(),
-    username=dict(fallback=(env_fallback, ['ANSIBLE_NET_USERNAME'])),
-    password=dict(fallback=(env_fallback, ['ANSIBLE_NET_PASSWORD']), no_log=True),
-    timeout=dict(type='int', default=60),
-    vdom=dict(type='str'),
-    backup=dict(type='bool', default=False),
-    backup_path=dict(type='path'),
-    backup_filename=dict(type='str'),
-)
-
 fortios_required_if = [
     ['file_mode', False, ['host', 'username', 'password']],
     ['file_mode', True, ['config_file']],
@@ -104,8 +91,9 @@ def check_legacy_fortiosapi():
 
 class FortiOSHandler(object):
 
-    def __init__(self, conn):
+    def __init__(self, conn, module_mkeyname=None):
         self._conn = conn
+        self._mkeyname = module_mkeyname
 
     def cmdb_url(self, path, name, vdom=None, mkey=None):
 
@@ -147,12 +135,7 @@ class FortiOSHandler(object):
             return json.loads(to_text(result_data))
 
     def get_mkeyname(self, path, name, vdom=None):
-        schema = self.schema(path, name, vdom=vdom)
-        try:
-            keyname = schema['mkey']
-        except KeyError:
-            return False
-        return keyname
+        return self._mkeyname
 
     def get_mkey(self, path, name, data, vdom=None):
 
