@@ -41,4 +41,13 @@ EXAMPLES = '''
       access_token: "<your_own_value>"{%endif%}
       {{path}}_{{name}}:
           {{- example_attributes(schema['schema']['children']) }}
+{% if movable %}
+  - name: move {{path}}.{{name}}
+    {{module_name}}:
+      vdom:  "root"
+      action: "move"
+      self: "<mkey of self identifier>"
+      after: "<mkey of target identifier>"
+     #before: "<mkey of target identifier>"
+{% endif %}
 '''

@@ -111,6 +111,10 @@ author:
     - Nicolas Thomas (@thomnico)
 notes:
     - Legacy fortiosapi has been deprecated, httpapi is the preferred way to run playbooks
+    {% if movable -%}
+    - Adjust object order by moving self after(before) another.
+    - Only one of [after, before] must be specified when action is moving an object.
+{% endif %}
 requirements:
     - ansible>=2.9.0
 options:
@@ -127,6 +131,26 @@ options:
               used as a different unit.
         type: str
         default: root
+    {% if movable -%}
+    action:
+        description:
+            - the action indiactor to move an object in the list
+        type: str
+        choices:
+            - move
+    self:
+        description:
+            - mkey of self identifier
+        type: str
+    after:
+        description:
+            - mkey of target identifier
+        type: str
+    before:
+        description:
+            - mkey of target identifier
+        type: str
+{% endif %}
     {%-if "mkey" in schema['schema'] %}
     state:
         description:

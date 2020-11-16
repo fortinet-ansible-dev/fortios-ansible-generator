@@ -101,7 +101,7 @@ def removeDefaultCommentsInFGTDoc(str):
     str = re.sub(regex, r"\g<1>", str)
     return str
 
-def renderModule(schema, version, special_attributes, valid_identifiers, version_added, supports_check_mode):
+def renderModule(schema, version, special_attributes, valid_identifiers, version_added, supports_check_mode, movable=False):
 
     # Generate module
     file_loader = FileSystemLoader('ansible_templates')
@@ -200,6 +200,9 @@ def jinjaExecutor(number=None):
     check_mode_support_file = open('check_mode_support.txt').read()
     check_mode_support_set = set(check_mode_support_file.split('\n'))
 
+    movable_modules_file = open('movable_modules.lst').read()
+    movable_modules = json.loads(movable_modules_file)
+
     autopep_files = './output/' + fgt_schema['version']
 
     if not number:
@@ -215,7 +218,8 @@ def jinjaExecutor(number=None):
                              special_attributes[module_name] if module_name in special_attributes else [],
                              valid_identifiers,
                              version_added_json,
-                             module_name in check_mode_support_set)
+                             module_name in check_mode_support_set,
+                             module_name in movable_modules)
                 real_counter += 1
     else:
         module_name = getModuleName(fgt_sch_results[number]['path'], fgt_sch_results[number]['name'])

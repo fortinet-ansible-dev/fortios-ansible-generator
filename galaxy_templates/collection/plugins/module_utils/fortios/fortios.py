@@ -91,8 +91,9 @@ def check_legacy_fortiosapi():
 
 class FortiOSHandler(object):
 
-    def __init__(self, conn, module_mkeyname=None):
+    def __init__(self, conn, mod, module_mkeyname=None):
         self._conn = conn
+        self._module = mod
         self._mkeyname = module_mkeyname
 
     def cmdb_url(self, path, name, vdom=None, mkey=None):
@@ -170,6 +171,9 @@ class FortiOSHandler(object):
         url = self.cmdb_url(path, name, vdom, mkey)
 
         status, result_data = self._conn.send_request(url=url, params=parameters, data=json.dumps(data), method='PUT')
+
+        if parameters and 'action' in parameters and parameters['action'] == 'move':
+            return self.formatresponse(result_data, vdom=vdom)
 
         if status == 404 or status == 405 or status == 500:
             return self.post(path, name, data, vdom, mkey)

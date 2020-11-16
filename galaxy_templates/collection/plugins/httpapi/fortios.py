@@ -155,6 +155,18 @@ class HttpApi(HttpApiBase):
             return url + '&' + token_pair if '?' in url else url + '?' + token_pair
         return url
 
+    def _concat_params(self, url, params):
+        if not params or not len(params):
+            return url
+        url = url + '?' if '?' not in url else url
+        for param_key in params:
+            param_value = params[param_key]
+            if url[-1] == '?':
+                url += '%s=%s' % (param_key, param_value)
+            else:
+                url += '&%s=%s' % (param_key, param_value)
+        return url
+
     def send_request(self, **message_kwargs):
         """
         Responsible for actual sending of data to the connection httpapi base plugin.
@@ -168,7 +180,10 @@ class HttpApi(HttpApiBase):
             url = self._concat_token(message_kwargs.get('url', '/'))
         data = message_kwargs.get('data', '')
         method = message_kwargs.get('method', 'GET')
+        params = message_kwargs.get('params', {})
 
+        url = self._concat_params(url, params)
+        self.log('send request: METHOD:%s URL:%s DATA:%s' % (method, url, data))
         try:
             response, response_data = self.connection.send(url, data, method=method)
 
