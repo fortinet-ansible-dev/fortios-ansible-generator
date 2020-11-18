@@ -194,6 +194,8 @@ def {{path}}_{{name}}(data, fos):
                           '{{original_name}}',
                           mkey=filtered_data['{{schema['schema']['mkey']|replace('_', '-')}}'],
                           vdom=vdom)
+    else:
+        fos._module.fail_json(msg='state must be present or absent!')
     {%else%}
     return fos.set('{{original_path}}',
                     '{{original_name}}',
@@ -209,18 +211,48 @@ def is_successful_status(status):
     return status['status'] == "success" or \
         status['http_method'] == "DELETE" and status['http_status'] == 404
 
+{% if movable %}
+def move_fortios_{{path}}(data, fos):
+    if not data['self'] or (not data['after'] and not data['before']):
+        fos._module.fail_json(msg='self, after(or before) must not be empty')
+    vdom = data['vdom']
+    params_set = dict()
+    params_set['action'] = 'move'
+    if data['after']:
+        params_set['after'] = data['after']
+    if data['before']:
+        params_set['before'] = data['before']
+    return fos.set('{{original_path}}',
+                   '{{original_name}}',
+                   data=None,
+                   mkey=data['self'],
+                   vdom=vdom,
+                   parameters=params_set)
+
+{%- endif %}
+
 {% if supports_check_mode -%}
 def fortios_{{path}}(data, fos, check_mode):
-{% else -%}
+{% else %}
 def fortios_{{path}}(data, fos):
 {% endif %}
+    {% if movable -%}
+    if data['action'] == 'move':
+        resp = move_fortios_{{path}}(data, fos)
+    elif data['{{path}}_{{name}}']:
+    {%- else -%}
     if data['{{path}}_{{name}}']:
+    {%- endif -%}
     {%- if supports_check_mode %}
         resp = {{path}}_{{name}}(data, fos, check_mode)
+    else:
+        fos._module.fail_json(msg='missing task body: %s' % ('{{path}}_{{name}}'))
     if check_mode:
         return resp
 {%- else %}
         resp = {{path}}_{{name}}(data, fos)
+    else:
+        fos._module.fail_json(msg='missing task body: %s' % ('{{path}}_{{name}}'))
 {% endif %}
     return not is_successful_status(resp), \
         resp['status'] == "success" and \
@@ -306,7 +338,13 @@ def main():
     fields = {
         "access_token": {"required": False, "type": "str", "no_log": True},
         "vdom": {"required": False, "type": "str", "default": "root"},
-        {%if "mkey" in schema['schema'] %}"state": {"required": {% if module_version_added == 2.8 %}False{% else %}True{% endif %}, "type": "str",
+        {%if movable -%}
+        "action": {"type": "str", "required": False, "choices": ["move"]},
+        "self": {"type": "str", "required": False},
+        "before": {"type": "str", "required": False},
+        "after": {"type": "str", "required": False},
+        {%endif-%}
+        {%if "mkey" in schema['schema'] %}"state": {"required": {% if module_version_added == 2.8 or movable %}False{% else %}True{% endif %}, "type": "str",
                         "choices": ["present", "absent"]},
         {%endif-%}
         "{{path}}_{{name}}": {
@@ -329,7 +367,7 @@ def main():
         if 'access_token' in module.params:
             connection.set_option('access_token', module.params['access_token'])
 
-        fos = FortiOSHandler(connection, mkeyname)
+        fos = FortiOSHandler(connection, module, mkeyname)
 
         {% if supports_check_mode -%}
         is_error, has_changed, result = fortios_{{path}}(module.params, fos, module.check_mode)
