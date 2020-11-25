@@ -182,6 +182,39 @@ def renderModule(schema, version, special_attributes, valid_identifiers, version
     print("\033[0mFile generated: " + 'output/' + version + '/\033[37mfortios_' + path + '_' + name + '_example.yml')
     print("\033[0mFile generated: " + 'output/' + version + '/\033[37mtest_fortios_' + path + '_' + name + '.py')
 
+def convert_mkey_type(mkey_type):
+    if mkey_type is None:
+        return None
+    if mkey_type == 'integer':
+        return "<class 'int'>"
+    return "<class 'str'>"
+
+def renderFactModule(schema_results, version):
+    # Generate module
+    file_loader = FileSystemLoader('ansible_templates')
+    env = Environment(loader=file_loader,
+                      lstrip_blocks=False, trim_blocks=False)
+
+    template = env.get_template('fact.j2')
+
+    selector_definitions = {
+            schema_result['path'] + "_" + schema_result['name']: {
+                'mkey': schema_result['schema'].get('mkey', None),
+                'mkey_type': convert_mkey_type(schema_result['schema'].get('mkey_type', None)),
+            }
+            for schema_result in schema_results
+            if 'diagnose' not in schema_result['path'] and 'execute' not in schema_result['path']
+        }
+
+    output = template.render(**locals())
+
+    output_path = 'output/' + version + '/fortios_configuration_fact.py'
+    file = open(output_path, 'w')
+    output = splitLargeLines(output)
+    file.write(output)
+    file.close()
+
+    return output_path
 
 def jinjaExecutor(number=None):
 
@@ -238,6 +271,9 @@ def jinjaExecutor(number=None):
                 fgt_schema['version'] + '/' + \
                 replaceSpecialChars(fgt_sch_results[number]['path']) + \
                 '/test_fortios_' + replaceSpecialChars(fgt_sch_results[number]['path']) + '_' + replaceSpecialChars(fgt_sch_results[number]['name']) + '.py'
+
+
+    autopep_files += ' ' + renderFactModule(fgt_sch_results, fgt_schema['version'])
 
     # there is an escape letter in fortios_vpn_ssl_settings.py, replace it.
     os.popen("sed -i 's/Encode \\\\2F sequence/Encode 2F sequence/g' ./output/" + fgt_schema['version'] + "/vpn_ssl/fortios_vpn_ssl_settings.py")
