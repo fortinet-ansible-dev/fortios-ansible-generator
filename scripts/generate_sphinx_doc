@@ -26,4 +26,10 @@ do
     cp $docfile $sphinxdoc_root/gen
 done
 
+files_to_move_upward=fortios_facts.rst fortios_configuration_fact.rst
+for f in $files_to_move_upward
+do
+    mv $sphinxdoc_root/gen/$f $sphinxdoc_root/
+done
+
 echo "generated sphinx documents: $Gre$sphinxdoc_root$RCol"

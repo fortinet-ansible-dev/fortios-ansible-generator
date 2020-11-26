@@ -20,10 +20,18 @@ in our case we create a file named ``hosts``:
 
    [fortigates]
    fortigate01 ansible_host=192.168.190.130 ansible_user="admin" ansible_password="password"
-   fortigate01 ansible_host=192.168.190.131 ansible_user="admin" ansible_password="password"
+   fortigate02 ansible_host=192.168.190.131 ansible_user="admin" ansible_password="password"
+   fortigate03 ansible_host=192.168.190.132 fortios_access_token=<your access token>
 
    [fortigates:vars]
    ansible_network_os=fortinet.fortios.fortios
+
+FortiOS supports two ways to authenticate Ansible: ``ansible_user`` and ``ansible_password`` pair based; ``fortios_access_token`` access token based.
+Access token based way is prefered as it is safer without any password explosure and access token guarantees request source location is wanted. 
+
+
+for how to generate an API token, visit page `FortiOS API Spec`_.
+
 
 Write the playbook
 ~~~~~~~~~~~~~~~~~~
@@ -33,7 +41,7 @@ device’s hostname:
 
 ::
 
-   - hosts: fortigates
+   - hosts: fortigate03
      connection: httpapi
      collections:
      - fortinet.fortios
@@ -46,6 +54,7 @@ device’s hostname:
       - name: Configure global attributes.
         fortios_system_global:
            vdom:  "{{ vdom }}"
+           access_token: "{{ fortios_access_token }}" #if you prefer access token based authentication, add this line.
            system_global:
                hostname: 'CustomHostName'
 
@@ -58,9 +67,6 @@ there are several options which might need you special care:
    there is one exception: module ``fortios_system_vmlicense`` allows
    you to upload the licence with http, in this case, you should set
    ``ansible_httpapi_use_ssl: no`` and ``ansible_httpapi_port: 80``
--  Don’t specify ``host``, ``username``, ``password``, ``https`` or
-   ``ssl_verify`` under second level options(``fortios_system_global``
-   in the above example)
 
 Run the playbook
 ~~~~~~~~~~~~~~~~
@@ -71,3 +77,5 @@ Run the playbook
 
 you can also observe the verbose output by adding option at the tail:
 ``-vvv``.
+
+.. _FortiOS API Spec: https://fndn.fortinet.net/index.php?/fortiapi/1-fortios/92/
