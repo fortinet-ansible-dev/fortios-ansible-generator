@@ -308,4 +308,4 @@ def jinjaExecutor(number=None):
 
 if __name__ == "__main__":
 
-    jinjaExecutor(8)
+    jinjaExecutor()
