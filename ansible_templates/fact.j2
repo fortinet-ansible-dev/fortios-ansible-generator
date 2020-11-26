@@ -37,7 +37,7 @@ def validate_mkey(params):
     if not mkey_value:
         return False, {"message": "param '" + mkey + "' is required"}
     if type(mkey_value) != mkey_type:
-        return False, {"message": "param '" + mkey + "' does not match, " + mkey_type + " required"}
+        return False, {"message": "param '" + mkey + "' does not match, " + str(mkey_type) + " required"}
 
     return True, {}
 
@@ -97,8 +97,6 @@ def main():
         is_error, has_changed, result = fortios_configuration_fact(module.params, fos)
         if not is_error:
             versions_check_result = connection.get_system_version()
-        else:
-            module.fail_json(**FAIL_SOCKET_MSG)
     else:
         module.fail_json(**FAIL_SOCKET_MSG)
 

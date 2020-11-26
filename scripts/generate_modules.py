@@ -4,6 +4,7 @@ import json
 import autopep8
 import os
 import re
+import sys
 
 def replaceSpecialChars(str):
     return str.replace('-', '_').replace('.', '_').replace('+', 'plus')
@@ -307,5 +308,6 @@ def jinjaExecutor(number=None):
     os.popen("find . -name 'test_fortios_router_bfd*.py' -exec rm {} \\;")
 
 if __name__ == "__main__":
-
-    jinjaExecutor()
+    print("args " + str(sys.argv))
+    arg = int(sys.argv[1]) if len(sys.argv) > 1 else None
+    jinjaExecutor(arg)
