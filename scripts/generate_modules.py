@@ -186,8 +186,8 @@ def convert_mkey_type(mkey_type):
     if mkey_type is None:
         return None
     if mkey_type == 'integer':
-        return "<class 'int'>"
-    return "<class 'str'>"
+        return 'int'
+    return 'str'
 
 def renderFactModule(schema_results, version):
     # Generate module
@@ -214,6 +214,7 @@ def renderFactModule(schema_results, version):
     file.write(output)
     file.close()
 
+    print('generated config fact in ' + output_path)
     return output_path
 
 def jinjaExecutor(number=None):
@@ -307,4 +308,4 @@ def jinjaExecutor(number=None):
 
 if __name__ == "__main__":
 
-    jinjaExecutor()
+    jinjaExecutor(8)

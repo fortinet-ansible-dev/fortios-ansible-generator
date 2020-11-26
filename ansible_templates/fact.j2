@@ -2,31 +2,19 @@
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.connection import Connection
 from ansible_collections.fortinet.fortios.plugins.module_utils.fortios.fortios import FortiOSHandler
+from ansible_collections.fortinet.fortios.plugins.module_utils.fortios.fortios import check_legacy_fortiosapi
 from ansible_collections.fortinet.fortios.plugins.module_utils.fortimanager.common import FAIL_SOCKET_MSG
 
 MODULE_MKEY_DEFINITONS = {
     {% for selector, definition in selector_definitions.items() -%}
     "{{selector}}": {
         {% for k, v in definition.items() -%}
-             "{{k}}": "{{v}}",
+             "{{k}}": {% if k != 'mkey_type' %} "{{v}}" {% else %} {{v}} {% endif %},
         {% endfor -%}
     },
     {% endfor -%}
 }
 
-def login(data, fos):
-    host = data['host']
-    username = data['username']
-    password = data['password']
-    ssl_verify = data['ssl_verify']
-
-    fos.debug('on')
-    if 'https' in data and not data['https']:
-        fos.https('off')
-    else:
-        fos.https('on')
-
-    fos.login(host, username, password, verify=ssl_verify)
 
 def is_successful_status(status):
     return status['status'] == "success" or \
@@ -37,17 +25,18 @@ def validate_mkey(params):
     selector_params = params.get('params', {})
     definition = MODULE_MKEY_DEFINITONS.get(selector, {})
 
-    if len(selector_params) == 0 or len(definition) == 0:
+    if not selector_params or len(selector_params) == 0 or len(definition) == 0:
         return True, {}
 
     mkey = definition['mkey']
     mkey_type = definition['mkey_type']
-    if mkey_type == str(None):
+    if mkey_type == None:
         return False, {"message": "params are not allowed for " + selector}
     mkey_value = selector_params.get(mkey)
+
     if not mkey_value:
         return False, {"message": "param '" + mkey + "' is required"}
-    if str(type(mkey_value)) != mkey_type:
+    if type(mkey_value) != mkey_type:
         return False, {"message": "param '" + mkey + "' does not match, " + mkey_type + " required"}
 
     return True, {}
@@ -60,7 +49,7 @@ def fortios_configuration_fact(params, fos):
     selector = params['selector']
     selector_params = params['params']
     mkey_name = MODULE_MKEY_DEFINITONS[selector]['mkey']
-    mkey_value = selector_params.get(mkey_name)
+    mkey_value = selector_params.get(mkey_name) if selector_params else None
 
     [path, name] = selector.split('_')
 
@@ -93,43 +82,25 @@ def main():
         }
     }
 
+    check_legacy_fortiosapi()
     module = AnsibleModule(argument_spec=fields,
                            supports_check_mode=False)
 
-    # legacy_mode refers to using fortiosapi instead of HTTPAPI
-    legacy_mode = 'host' in module.params and module.params['host'] is not None and \
-                  'username' in module.params and module.params['username'] is not None and \
-                  'password' in module.params and module.params['password'] is not None
-
     versions_check_result = None
-    if not legacy_mode:
-        if module._socket_path:
-            connection = Connection(module._socket_path)
-            if 'access_token' in module.params:
-                connection.set_option('access_token', module.params['access_token'])
+    if module._socket_path:
+        connection = Connection(module._socket_path)
+        if 'access_token' in module.params:
+            connection.set_option('access_token', module.params['access_token'])
 
-            fos = FortiOSHandler(connection)
+        fos = FortiOSHandler(connection, module)
 
-            is_error, has_changed, result = fortios_configuration_fact(module.params, fos)
-            if not is_error:
-                versions_check_result = connection.get_system_version()
+        is_error, has_changed, result = fortios_configuration_fact(module.params, fos)
+        if not is_error:
+            versions_check_result = connection.get_system_version()
         else:
             module.fail_json(**FAIL_SOCKET_MSG)
     else:
-        try:
-            from fortiosapi import FortiOSAPI
-        except ImportError:
-            module.fail_json(msg="fortiosapi module is required")
-
-        fos = FortiOSAPI()
-
-        login(module.params, fos)
-        {% if supports_check_mode -%}
-        is_error, has_changed, result = fortios_configuration_fact(module.params, fos, module.check_mode)
-        {% else -%}
-        is_error, has_changed, result = fortios_configuration_fact(module.params, fos)
-        {% endif -%}
-        fos.logout()
+        module.fail_json(**FAIL_SOCKET_MSG)
 
     if versions_check_result and versions_check_result['matched'] is False:
         module.warn("Ansible has detected version mismatch between FortOS system and galaxy, see more details by specifying option -vvv")
