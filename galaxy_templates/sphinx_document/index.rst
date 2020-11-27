@@ -24,8 +24,14 @@ The FortiOS Ansible Collection provides Ansible modules for configuring FortiOS 
    install.rst
    playbook.rst
    help.rst
-   modules.rst
 
+.. toctree::
+   :glob:
+   :caption: modules index
+   :maxdepth: 1
+
+   modules.rst
+   fact.rst
 
 .. toctree::
    :glob:

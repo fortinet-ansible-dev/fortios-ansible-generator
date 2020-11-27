@@ -36,9 +36,8 @@ author:
     - Miguel Angel Munoz (@mamunozgonzalez)
     - Nicolas Thomas (@thomnico)
 notes:
-    - Support both legacy mode (local_action) and httpapi
-    - Legacy mode run as a local_action in your playbook, requires fortiosapi library developed by Fortinet
-    - httpapi mode is the new recommend way for network modules
+    - httpapi mode is the new recommended way for any network modules
+    - the module is going to be deprecated in next major release.
 requirements:
     - fortiosapi>=0.9.8
 options:

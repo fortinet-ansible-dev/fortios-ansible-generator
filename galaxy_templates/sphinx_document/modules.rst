@@ -1,5 +1,5 @@
 
-FortiOS Ansible Galaxy modules list
+Configuration Modules
 ===================================
 
 .. toctree::
