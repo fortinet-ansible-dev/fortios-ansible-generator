@@ -165,13 +165,16 @@ def generate_document(mod, dst):
     with open(dst, 'w') as f:
         f.write(ddata)
 
-
+except_list = ['fortios_configuration_fact.rst']
 def main():
     if len(sys.argv) != 3:
         print('incomplete arguments list')
         sys.exit(-1)
     src = absolute_path(sys.argv[1])
     dst = absolute_path(sys.argv[2])
+    for f in except_list:
+        if dst.endswith(f):
+            return
     if not os.path.isfile(src):
         raise Exception('source file not given')
     dirname = os.path.dirname(src)
