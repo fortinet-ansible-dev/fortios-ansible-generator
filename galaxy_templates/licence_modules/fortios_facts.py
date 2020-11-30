@@ -25,7 +25,7 @@ DOCUMENTATION = '''
 ---
 module: fortios_facts
 version_added: "2.9"
-short_description: Get facts about fortios devices.
+short_description: Get facts about fortios devices (about to be deprecated).
 description:
     - Collects facts from network devices running the fortios operating
       system. This module places the facts gathered in the fact tree keyed by the
@@ -39,7 +39,7 @@ notes:
     - httpapi mode is the new recommended way for any network modules
     - the module is going to be deprecated in next major release.
 requirements:
-    - fortiosapi>=0.9.8
+    - galaxy collection fortinet.fortios
 options:
     host:
         description:

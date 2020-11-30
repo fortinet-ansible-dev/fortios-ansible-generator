@@ -5,7 +5,6 @@ import autopep8
 import os
 import re
 
-
 def replaceSpecialChars(str):
     return str.replace('-', '_').replace('.', '_').replace('+', 'plus')
 
@@ -247,6 +246,9 @@ def jinjaExecutor(number=None):
     licence_output_folder = './output/' + fgt_schema['version'] + '/licence'
     os.popen('mkdir -p ' + licence_output_folder)
     os.popen('cp ./galaxy_templates/licence_modules/* ' + licence_output_folder)
+
+    from generate_modules_utility import generate_cofiguration_fact_rst
+    generate_cofiguration_fact_rst(fgt_sch_results, fgt_schema['version'])
 
     print("\n\n\033[0mExecuting autopep8 ....")
     # Note this is done with popen and not with autopep8.fix_code in order to get the multiprocessig optimization, only available from CLI

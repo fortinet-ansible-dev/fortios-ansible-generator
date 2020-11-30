@@ -1,0 +1,134 @@
+/*
+ CSS for the main interaction
+*/
+.accordion > input[name="collapse"] {
+  display: none;
+  
+  /*position: absolute;
+  left: -100vw;*/
+}
+
+.accordion label,
+.accordion .content{
+ /*max-width: 620px;*/
+  margin: 0 auto;
+ }
+
+
+.accordion .content {
+  background: auto;
+  overflow: hidden;
+  height: 0;
+  transition: 0.5s;
+  /*box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.3);*/
+}
+
+.accordion > input[name="collapse"]:checked ~ .content {
+  /*height: 380px;*/
+  transition: height 0.5s;
+}
+
+.accordion label {
+  display: block;
+ 
+}
+
+
+/* For Desktop */
+@media only screen and (min-width: 620px){
+
+
+.accordion > input[name="collapse"]:checked ~ .content {
+  height: auto;
+}
+
+}
+
+
+
+.accordion {
+  margin-bottom: 1em;
+}
+
+.accordion > input[name="collapse"]:checked ~ .content {
+  border-top: 0;
+  transition: 0.3s;
+}
+
+.accordion .handle {
+  margin: 0;
+  font-size: 16px;
+  
+}
+
+.accordion label {
+  color: #FF8C00;
+  cursor: pointer;
+  font-weight: normal;
+  padding: 10px;
+  background: auto;
+  user-select: none;
+  
+}
+
+.accordion label:hover,
+.accordion label:focus {
+  background: #252525;
+}
+
+.accordion .handle label:before {
+  font-family: FontAwesome;
+  content: "\f107";
+  display: inline-block;
+  margin-right: 10px;
+  font-size: 1em;
+  line-height: 1.556em;
+  vertical-align: middle;
+  transition: 0.4s;
+  
+}
+
+.accordion > input[name="collapse"]:checked ~ .handle label:before {
+    transform: rotate(180deg);
+    transform-origin: center;
+    transition: 0.4s;
+}
+
+
+/*
+ Demo purposes only
+*/
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+body {
+  background: #ccc;
+  padding: 10px;
+}
+
+a {
+  color: #06c;
+}
+
+p {
+  margin: 0 0 1em;
+  padding: 10px;
+}
+
+h1 {
+  margin: 0 0 1.5em;
+  font-weight: 600;
+  font-size: 1.5em;
+}
+
+.accordion p:last-child {
+  margin-bottom: 0;
+}
+.container{
+    max-width: 620px;
+    margin: 0 auto;
+}
+
