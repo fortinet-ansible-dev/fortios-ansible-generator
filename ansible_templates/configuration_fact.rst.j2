@@ -45,7 +45,7 @@ Parameters
         <div class="content">
         <ul class="ul-self">
         {% for selector in selectors -%}
-            <li><span class="li-normal">{{selector}}</span> {% if selectors[selector]['mkey'] %} <span class="li-required">- param: {{ selectors[selector]['mkey'] }}</span>  <span class="li-required">type: {{ selectors[selector]['mkey_type'] }}</span>{% endif%}</li>
+            <li><span class="li-normal">{{selector}}</span> {% if selectors[selector]['mkey'] %} <span class="li-required">param: {{ selectors[selector]['mkey'] }}</span>  <span class="li-required">type: {{ selectors[selector]['mkey_type'] }}</span>{% endif%}</li>
         {% endfor -%}
         </ul>
         </div>

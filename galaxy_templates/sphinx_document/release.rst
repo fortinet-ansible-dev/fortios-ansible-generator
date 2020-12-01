@@ -33,6 +33,34 @@ playbook:
 **Simply installing a matched FortiOS collection can prevent potential
 compatibility issues.**
 
+Release Galaxy 1.1.0 … 1.1.2
+-----------------------------
+
+|
+
+Release Targets
+^^^^^^^^^^^^^^^
+There are multiple Galaxy releases dedicated to different FortiOS major releases.
+
+- fos\_v6.2.0/galaxy\_1.1.0
+- fos\_v6.4.0/galaxy\_1.1.1
+- fos\_v6.0.0/galaxy\_1.1.2
+
+
+Features
+^^^^^^^^
+
+- Support check mode for modules.
+- Deprecate ``fortiosapi`` legacy connection mode.
+- Support access token based authentication.
+- Fully support fact gathering for all configuration API (``fortios_configuration_fact``).
+- Suport Ansible 2.10 base framework.
+- Support moving objects to different orders (``fortios_firewall_policy``).
+
+Bug Fixes
+^^^^^^^^^
+
+- Github Issue #65
 
 Release Galaxy 1.0.10 … 10.0.13
 -------------------------------
@@ -47,6 +75,7 @@ There are multiple Galaxy releases dedicated to different FortiOS major releases
 -  fos\_v6.0.5/galaxy\_1.0.12
 -  fos\_v6.4.0/galaxy\_1.0.11
 -  fos\_v6.2.0/galaxy\_1.0.10
+
 
 New Modules
 ^^^^^^^^^^^
