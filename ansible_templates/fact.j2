@@ -1,0 +1,118 @@
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.connection import Connection
+from ansible_collections.fortinet.fortios.plugins.module_utils.fortios.fortios import FortiOSHandler
+from ansible_collections.fortinet.fortios.plugins.module_utils.fortios.fortios import check_legacy_fortiosapi
+from ansible_collections.fortinet.fortios.plugins.module_utils.fortimanager.common import FAIL_SOCKET_MSG
+
+MODULE_MKEY_DEFINITONS = {
+    {% for selector, definition in selector_definitions.items() -%}
+    "{{selector}}": {
+        {% for k, v in definition.items() -%}
+             "{{k}}": {% if k != 'mkey_type' %} "{{v}}" {% else %} {{v}} {% endif %},
+        {% endfor -%}
+    },
+    {% endfor -%}
+}
+
+
+def is_successful_status(status):
+    return status['status'] == "success" or \
+        status['http_method'] == "DELETE" and status['http_status'] == 404
+
+def validate_mkey(params):
+    selector = params['selector']
+    selector_params = params.get('params', {})
+    definition = MODULE_MKEY_DEFINITONS.get(selector, {})
+
+    if not selector_params or len(selector_params) == 0 or len(definition) == 0:
+        return True, {}
+
+    mkey = definition['mkey']
+    mkey_type = definition['mkey_type']
+    if mkey_type == None:
+        return False, {"message": "params are not allowed for " + selector}
+    mkey_value = selector_params.get(mkey)
+
+    if not mkey_value:
+        return False, {"message": "param '" + mkey + "' is required"}
+    if type(mkey_value) != mkey_type:
+        return False, {"message": "param '" + mkey + "' does not match, " + str(mkey_type) + " required"}
+
+    return True, {}
+
+def fortios_configuration_fact(params, fos):
+    isValid, result = validate_mkey(params)
+    if not isValid:
+        return True, False, result
+
+    selector = params['selector']
+    selector_params = params['params']
+    mkey_name = MODULE_MKEY_DEFINITONS[selector]['mkey']
+    mkey_value = selector_params.get(mkey_name) if selector_params else None
+
+    [path, name] = selector.split('_')
+
+    fact = None
+    if mkey_value:
+        fact = fos.get(path, name, vdom=params['vdom'], mkey=mkey_value)
+    else:
+        fact = fos.get(path, name, vdom=params['vdom'])
+
+    return not is_successful_status(fact), False, fact
+
+def main():
+    fields = {
+        "host": {"required": False, "type": "str"},
+        "username": {"required": False, "type": "str"},
+        "password": {"required": False, "type": "str", "default": "", "no_log": True},
+        "access_token": {"required": False, "type": "str", "no_log": True},
+        "vdom": {"required": False, "type": "str", "default": "root"},
+        "https": {"required": False, "type": "bool", "default": True},
+        "ssl_verify": {"required": False, "type": "bool", "default": True},
+        "params": {"required": False, "type": "dict" },
+        "selector": {
+            "required": True,
+            "type": "str",
+            "options": [
+                {% for selector in selector_definitions.keys() -%}
+                "{{selector}}",
+                {% endfor -%}
+            ],
+        }
+    }
+
+    check_legacy_fortiosapi()
+    module = AnsibleModule(argument_spec=fields,
+                           supports_check_mode=False)
+
+    versions_check_result = None
+    if module._socket_path:
+        connection = Connection(module._socket_path)
+        if 'access_token' in module.params:
+            connection.set_option('access_token', module.params['access_token'])
+
+        fos = FortiOSHandler(connection, module)
+
+        is_error, has_changed, result = fortios_configuration_fact(module.params, fos)
+        if not is_error:
+            versions_check_result = connection.get_system_version()
+    else:
+        module.fail_json(**FAIL_SOCKET_MSG)
+
+    if versions_check_result and versions_check_result['matched'] is False:
+        module.warn("Ansible has detected version mismatch between FortOS system and galaxy, see more details by specifying option -vvv")
+
+    if not is_error:
+        if versions_check_result and versions_check_result['matched'] is False:
+            module.exit_json(changed=has_changed, version_check_warning=versions_check_result, meta=result)
+        else:
+            module.exit_json(changed=has_changed, meta=result)
+    else:
+        if versions_check_result and versions_check_result['matched'] is False:
+            module.fail_json(msg="Error in repo", version_check_warning=versions_check_result, meta=result)
+        else:
+            module.fail_json(msg="Error in repo", meta=result)
+
+if __name__ == '__main__':
+    main()
