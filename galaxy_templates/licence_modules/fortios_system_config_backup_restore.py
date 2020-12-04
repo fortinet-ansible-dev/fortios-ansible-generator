@@ -52,42 +52,66 @@ options:
     password:
         type: str
         required: false
+        description:
+            - password of fortigate
     username:
         type: str
         required: false
+        description:
+            - username of fortigate
     description:
         type: str
         required: false
+        description:
+            -  descriptive text
     vdom:
         type: str
         required: false
         default: root
+        description:
+            - vdom to operate on
     config:
         type: str
         required: false
+        description:
+            - configuration to restore
     mkey:
         type: str
         required: false
+        description:
+            - primary key
     https:
         type: bool
         required: false
         default: true
+        description:
+            - use https or not
     ssl_verify:
         type: bool
         required: false
         default: true
+        description:
+            - enable ssl verification or not
     backup:
         type: str
         required: false
+        description:
+            - content to backup
     scope:
         type: str
         required: true
+        description:
+            - scope to operation on
     filename:
         type: str
         required: true
+        description:
+            - the file name
     commands:
         type: str
         required: false
+        description:
+            - the command
 requirements:
     - ansible>=2.9.0
 '''
@@ -113,7 +137,7 @@ EXAMPLES = '''
      backup: "yes"
      https: True
      ssl_verify: False
-     scope: "global" or "vdom"
+     scope: "global or vdom"
      filename: "/tmp/backup_test"
   - name: Restore global or a_specific_vdom settings
     fortios_system_config_backup_restore:
@@ -124,7 +148,7 @@ EXAMPLES = '''
      vdom:  "{{ vdom }}"
      https: True
      ssl_verify: False
-     scope: "global" or "vdom"
+     scope: "global or vdom"
      filename: "/tmp/backup_test"
 
 '''
@@ -188,7 +212,7 @@ version:
 
 '''
 from ansible.module_utils.basic import *
-from fortiosapi import FortiOSAPI
+# from fortiosapi import FortiOSAPI
 import json
 from argparse import Namespace
 import logging
@@ -198,7 +222,7 @@ from ansible.module_utils.connection import Connection
 from ansible_collections.fortinet.fortios.plugins.module_utils.fortios.fortios import FortiOSHandler
 from ansible_collections.fortinet.fortios.plugins.module_utils.fortimanager.common import FAIL_SOCKET_MSG
 
-#fos = FortiOSAPI()
+# fos = FortiOSAPI()
 formatter = logging.Formatter(
     '%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
 logger = logging.getLogger('fortiosapi')
@@ -265,7 +289,7 @@ def check_diff(data):
                         'backup' + remote_filename,
                         vdom=data['vdom'],
                         parameters=parameters)
-    #version = fos.get_version()
+    # version = fos.get_version()
 
     if resp.status_code == 200:
         filtered_remote_config_file = remove_sensitive_data(resp.content)
@@ -303,7 +327,7 @@ def fortigate_backup(fos, data):
                        vdom=data['vdom'],
                        parameters=parameters)
 
-    #version = fos.get_version()
+    # version = fos.get_version()
     backup_content = ""
 
     if 'status' in resp:  # Old versions use this mechanism
@@ -346,7 +370,7 @@ def fortigate_backup(fos, data):
 
 # Make sure the specific VDOM exists in the fortigate before restoring it. Using fortios_system_vdom module to create a VDOM.
 def fortigate_upload(fos, data):
-    if data['diff'] == True:
+    if data['diff']:
         return check_diff(data)
 
     # get the scope ['global' | 'VDOM']
@@ -364,7 +388,7 @@ def fortigate_upload(fos, data):
                       parameters=parameters,
                       vdom=data['vdom'],
                       files=files)
-    #version = fos.get_version()
+    # version = fos.get_version()
 
     if resp.status_code == 200:
         return False, True, {
