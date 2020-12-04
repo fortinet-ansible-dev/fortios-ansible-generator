@@ -364,3 +364,4 @@ class AnsibleFortios(object):
         return FortiConfig(block_name, block_type)
 
 # END DEPRECATED
+

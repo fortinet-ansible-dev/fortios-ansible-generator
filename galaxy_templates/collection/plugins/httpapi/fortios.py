@@ -82,10 +82,10 @@ class HttpApi(HttpApiBase):
 
     def login(self, username, password):
         """Call a defined login endpoint to receive an authentication token."""
-        if (username == None or password == None) and self.get_access_token() is None:
+        if (username is None or password is None) and self.get_access_token() is None:
             raise Exception('Please provide access token or username/password to login')
 
-        if self.get_access_token() == None:
+        if self.get_access_token() is None:
             self.log('login with username and password')
             data = "username=" + urllib.parse.quote(username) + "&secretkey=" + urllib.parse.quote(password) + "&ajax=1"
             dummy, result_data = self.send_request(url='/logincheck', data=data, method='POST')
@@ -96,13 +96,12 @@ class HttpApi(HttpApiBase):
         else:
             self.log('login with access token')
             self.send_request(url='/logincheck')
-            status, _ = self.send_request(url = '/api/v2/cmdb/system/interface?vdom=root&action=schema')
+            status, _ = self.send_request(url='/api/v2/cmdb/system/interface?vdom=root&action=schema')
 
             if status == 401:
                 raise Exception('Invalid access token. Please check')
 
         self.update_system_version()
-
 
     def logout(self):
         """ Call to implement session logout."""
@@ -117,7 +116,7 @@ class HttpApi(HttpApiBase):
         :return: Dictionary containing headers
         """
 
-        if self.get_access_token() == None:
+        if self.get_access_token() is None:
             headers = {}
 
             for attr, val in response.getheaders():
@@ -138,7 +137,6 @@ class HttpApi(HttpApiBase):
             return {
                 "Accept": "application/json"
             }
-
 
     def handle_httperror(self, exc):
         """
@@ -176,7 +174,7 @@ class HttpApi(HttpApiBase):
         """
 
         url = message_kwargs.get('url', '/')
-        if self.get_access_token() != None:
+        if self.get_access_token() is not None:
             url = self._concat_token(message_kwargs.get('url', '/'))
         data = message_kwargs.get('data', '')
         method = message_kwargs.get('method', 'GET')
