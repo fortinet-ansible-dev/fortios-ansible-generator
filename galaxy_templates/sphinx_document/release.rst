@@ -33,6 +33,24 @@ playbook:
 **Simply installing a matched FortiOS collection can prevent potential
 compatibility issues.**
 
+Release Galaxy 1.1.3 … 1.1.5
+-----------------------------
+
+Release Targets
+^^^^^^^^^^^^^^^
+There are multiple Galaxy releases dedicated to different FortiOS major releases.
+
+- fos\_v6.2.0/galaxy\_1.1.3
+- fos\_v6.4.0/galaxy\_1.1.4
+- fos\_v6.0.0/galaxy\_1.1.5
+
+Bug Fixes
+^^^^^^^^^
+
+- Fixed a fatal error: ``mkey`` not recognized in plugin due to wrong naming convention.
+
+
+
 Release Galaxy 1.1.0 … 1.1.2
 -----------------------------
 
