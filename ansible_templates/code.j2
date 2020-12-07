@@ -334,7 +334,7 @@ str
                 {% endfor -%}
 {%- endmacro %}
 def main():
-    mkeyname = {% if mkeyname -%} '{{mkeyname}}' {%- else -%} None {%- endif %}
+    mkeyname = {% if mkeyname -%} '{{mkeyname|replace("_", "-")}}' {%- else -%} None {%- endif %}
     fields = {
         "access_token": {"required": False, "type": "str", "no_log": True},
         "vdom": {"required": False, "type": "str", "default": "root"},
