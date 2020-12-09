@@ -1,6 +1,7 @@
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.connection import Connection
+from ansible.utils.display import Display
 from ansible_collections.fortinet.fortios.plugins.module_utils.fortios.fortios import FortiOSHandler
 from ansible_collections.fortinet.fortios.plugins.module_utils.fortimanager.common import FAIL_SOCKET_MSG
 
@@ -148,6 +149,8 @@ def {{path}}_{{name}}(data, fos):
     elif 'state' in data['{{path}}_{{name}}'] and data['{{path}}_{{name}}']['state']:
         state = data['{{path}}_{{name}}']['state']
     else:
+        d = Display()
+        d.warning('No state is provided. Assuming "Present".')
         state = True{% else %}state = data['state']{% endif %}
     {%- endif %}
     {{path}}_{{name}}_data = data['{{path}}_{{name}}']
@@ -168,7 +171,7 @@ def {{path}}_{{name}}(data, fos):
             and len(current_data['results']) > 0
 
         # 2. if it exists and the state is 'present' then compare current settings with desired
-        if state == 'present':
+        if state == 'present' or state == True:
             if mkey is None:
                 return False, True, filtered_data
 
@@ -193,7 +196,7 @@ def {{path}}_{{name}}(data, fos):
         return True, False, {'reason: ': 'Must provide state parameter'}
     {% endif -%}
     {% if "mkey" in schema['schema'] %}
-    if state == "present":
+    if state == "present" or state == True:
         return fos.set('{{original_path}}',
                        '{{original_name}}',
                        {% if vi|length > 0 -%}
