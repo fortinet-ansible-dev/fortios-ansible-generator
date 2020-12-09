@@ -1,7 +1,6 @@
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.connection import Connection
-from ansible.utils.display import Display
 from ansible_collections.fortinet.fortios.plugins.module_utils.fortios.fortios import FortiOSHandler
 from ansible_collections.fortinet.fortios.plugins.module_utils.fortimanager.common import FAIL_SOCKET_MSG
 
@@ -149,8 +148,6 @@ def {{path}}_{{name}}(data, fos):
     elif 'state' in data['{{path}}_{{name}}'] and data['{{path}}_{{name}}']['state']:
         state = data['{{path}}_{{name}}']['state']
     else:
-        d = Display()
-        d.warning('No state is provided. Assuming "Present".')
         state = True{% else %}state = data['state']{% endif %}
     {%- endif %}
     {{path}}_{{name}}_data = data['{{path}}_{{name}}']
@@ -342,6 +339,16 @@ def main():
 
     module = AnsibleModule(argument_spec=fields,
                            supports_check_mode={% if supports_check_mode %}True{% else %}False{% endif %})
+                           
+    if not (
+            '{{path}}_{{name}}' in module.params and \
+            module.params['{{path}}_{{name}}'] is not None and \
+            'options' in module.params['{{path}}_{{name}}'] and \
+            module.params['{{path}}_{{name}}']['options'] is not None and \
+            'state' in module.params['{{path}}_{{name}}']['options'] and \
+            module.params['{{path}}_{{name}}']['options']['state'] is not None
+    ):
+        module.warn("state was not provided. Assuming present.")
 
     # legacy_mode refers to using fortiosapi instead of HTTPAPI
     legacy_mode = 'host' in module.params and module.params['host'] is not None and \
