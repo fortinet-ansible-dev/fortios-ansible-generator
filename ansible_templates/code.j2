@@ -123,9 +123,9 @@ def is_same_comparison(reorder_current, reorder_filtered):
 {% endif -%}
 
 {% if supports_check_mode -%}
-def {{path}}_{{name}}(data, fos, check_mode=False, module):
+def {{path}}_{{name}}(data, fos, check_mode=False):
 {% else -%}
-def {{path}}_{{name}}(data, fos, module):
+def {{path}}_{{name}}(data, fos):
 {%- endif %}
     vdom = data['vdom']
     {%- if "mkey" in schema['schema'] %}
@@ -134,8 +134,9 @@ def {{path}}_{{name}}(data, fos, module):
     elif 'state' in data['{{path}}_{{name}}'] and data['{{path}}_{{name}}']['state']:
         state = data['{{path}}_{{name}}']['state']
     else:
-        state = True{% else %}state = data['state']{% endif %}
-        module.warn("state was not provided. Assuming 'present'.")
+        state = True{% else %}state = data['state']
+        fos._module.warn("state was not provided. Assuming 'present'."){% endif %}
+        
     {%- endif %}
     {{path}}_{{name}}_data = data['{{path}}_{{name}}']
     {% if special_attributes != [] -%}{{path}}_{{name}}_data = flatten_multilists_attributes({{path}}_{{name}}_data)
@@ -371,9 +372,9 @@ def main():
         fos = FortiOSHandler(connection, module, mkeyname)
 
         {% if supports_check_mode -%}
-        is_error, has_changed, result = fortios_{{path}}(module.params, fos, module.check_mode, module)
+        is_error, has_changed, result = fortios_{{path}}(module.params, fos, module.check_mode)
         {% else -%}
-        is_error, has_changed, result = fortios_{{path}}(module.params, fos, module)
+        is_error, has_changed, result = fortios_{{path}}(module.params, fos)
         {% endif -%}
         versions_check_result = connection.get_system_version()
     else:
