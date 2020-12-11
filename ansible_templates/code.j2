@@ -134,7 +134,9 @@ def {{path}}_{{name}}(data, fos):
     elif 'state' in data['{{path}}_{{name}}'] and data['{{path}}_{{name}}']['state']:
         state = data['{{path}}_{{name}}']['state']
     else:
-        state = True{% else %}state = data['state']{% endif %}
+        state = True{% else %}state = data['state']
+        fos._module.warn("state was not provided. Assuming 'present'."){% endif %}
+        
     {%- endif %}
     {{path}}_{{name}}_data = data['{{path}}_{{name}}']
     {% if special_attributes != [] -%}{{path}}_{{name}}_data = flatten_multilists_attributes({{path}}_{{name}}_data)
@@ -154,7 +156,7 @@ def {{path}}_{{name}}(data, fos):
             and len(current_data['results']) > 0
 
         # 2. if it exists and the state is 'present' then compare current settings with desired
-        if state == 'present':
+        if state == 'present' or state == True:
             if mkey is None:
                 return False, True, filtered_data
 
@@ -179,7 +181,7 @@ def {{path}}_{{name}}(data, fos):
         return True, False, {'reason: ': 'Must provide state parameter'}
     {% endif -%}
     {% if "mkey" in schema['schema'] %}
-    if state == "present":
+    if state == "present" or state == True:
         return fos.set('{{original_path}}',
                        '{{original_name}}',
                        {% if vi|length > 0 -%}
