@@ -44,10 +44,14 @@ Parameters
         </h2>
         <div class="content">
         <ul class="ul-self">
+        {% set ns = namespace(selectors=[]) -%}
         {% for selector in selectors -%}
-          {% if 'diagnose__' not in selector and 'execute__' not in selector %}
-            <li><span class="li-normal">{{selector}}</span> {% if selectors[selector]['mkey'] %} <span class="li-required">param: {{ selectors[selector]['mkey'] }}</span>  <span class="li-required">type: {{ selectors[selector]['mkey_type'] }}</span>{% endif%}</li>
-          {% endif -%}
+        {% set ns.selectors = ns.selectors + [selector] -%}
+        {% endfor -%}
+        {% for selector in ns.selectors | sort -%}
+        {% if 'diagnose__' not in selector and 'execute__' not in selector -%}
+        <li><span class="li-normal">{{selector}}</span> {% if selectors[selector]['mkey'] %} <span class="li-required">param: {{ selectors[selector]['mkey'] }}</span>  <span class="li-required">type: {{ selectors[selector]['mkey_type'] }}</span>{% endif%}</li>
+        {% endif -%}
         {% endfor -%}
         </ul>
         </div>
