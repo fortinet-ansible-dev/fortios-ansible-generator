@@ -247,7 +247,7 @@ def main():
             warnings = []
             connection = Connection(module._socket_path)
             module._connection = connection
-            fos = FortiOSHandler(connection)
+            fos = FortiOSHandler(connection, module)
 
             result = Facts(module, fos).get_facts()
 
