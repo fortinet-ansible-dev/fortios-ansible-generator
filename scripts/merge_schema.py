@@ -41,6 +41,16 @@ def _merge_api_item(api_item0, api_item1, version):
         rdata[key] = value
     assert('revisions' in rdata and type(rdata) is dict)
     rdata['revisions'][version] = True
+    # for those removed items
+    for key in rdata:
+        value = rdata[key]
+        if key == 'children' and type(value) is dict:
+            for child in rdata[key]:
+                child_value = rdata[key][child]
+                if 'children' not in api_item1 or child not in api_item1['children']:
+                    assert('revisions' in child_value)
+                    child_value['revisions'][version] = False
+
     # for those present and new items.
     for key in api_item1:
         value = api_item1[key]
@@ -81,12 +91,28 @@ def _merge_api_item(api_item0, api_item1, version):
                     new_option['revisions'] = dict()
                     new_option['revisions'][version] = True
                     rdata[key].append(new_option)
+            for option in rdata[key]:
+                assert(type(option) is dict)
+                assert('name' in option)
+                option_name = option['name']
+                option_present = False
+                for i in range(len(value)):
+                    assert('name' in value[i])
+                    if value[i]['name'] == option_name:
+                        option_present = True
+                        break
+                if not option_present:
+                    assert('revisions' in option)
+                    option['revisions'][version] = False
         else:
             pass
+            # FIXED: fix attributes which are different in later versions and new attributes. even though they are not fatal.
             #assert(type(value) in [int, str, bool])
-            #assert(key in rdata)
+            if key not in rdata:
+                rdata[key] = value
             #print(rdata[key], value)
             #assert(rdata[key] == value)
+
 
     return rdata
 
@@ -113,7 +139,7 @@ def merge_schema(schemas):
                 super_schema[api_path] = _tag_api_item(api_item, version)
             else:
                 super_schema[api_path] = _merge_api_item(super_schema[api_path], api_item, version)
-
+    print(json.dumps(super_schema, indent=3))
 def process_schema(schema1, schema2):
     assert(schema1 and schema2)
     version1 = schema1['version']
