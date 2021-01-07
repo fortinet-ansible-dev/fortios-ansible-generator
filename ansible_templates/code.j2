@@ -339,6 +339,7 @@ str
                 {% endfor -%}
 {%- endmacro %}
 def main():
+    versioned_schema = {{ versioned_schema }}
     mkeyname = {% if mkeyname -%} '{{mkeyname|replace("_", "-")}}' {%- else -%} None {%- endif %}
     fields = {
         "access_token": {"required": False, "type": "str", "no_log": True},

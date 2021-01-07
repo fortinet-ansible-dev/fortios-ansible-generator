@@ -104,6 +104,7 @@ def removeDefaultCommentsInFGTDoc(str):
 def renderModule(schema, version, special_attributes, valid_identifiers, version_added, supports_check_mode, movable=False):
 
     # Generate module
+    versioned_schema = json.dumps(generate_versioned_fields(schema['schema']), indent=4).replace('": false', '": False').replace('": true', '": True')
     file_loader = FileSystemLoader('ansible_templates')
     env = Environment(loader=file_loader,
                       lstrip_blocks=False, trim_blocks=False)
@@ -218,6 +219,66 @@ def renderFactModule(schema_results, version):
     print('generated config fact in ' + output_path)
     return output_path
 
+
+def generate_versioned_fields(schema):
+    rdata = dict()
+    assert('category' in schema)
+    assert('revisions' in schema)
+    category = schema['category']
+    if category == 'table':
+        # payload as a list
+        assert('children' in schema)
+        rdata['type'] = 'list'
+        rdata['children'] = dict()
+        rdata['revisions'] = schema['revisions']
+        for child in schema['children']:
+            child_value = schema['children'][child]
+            rdata['children'][child] = generate_versioned_fields(child_value)
+    elif category == 'unitary':
+        assert('type' in schema)
+        rdata['revisions'] = schema['revisions']
+        if schema['type'] in ['string', 'var-string', 'mac-address', 'user',
+                              'ipv4-classnet-any', 'password', 'ipv4-address-any',
+                              'ipv6-prefix', 'ipv4-address', 'ipv4-classnet-host',
+                              'datetime', 'ipv4-classnet', 'password-2', 'ipv6-address',
+                              'ipv4-netmask', 'ipv4-address-multicast', 'ipv4-netmask-any',
+                              'uuid', 'ipv6-network', 'password-3', 'time', 'varlen_password']:
+            rdata['type'] = 'string'
+        elif schema['type'] == 'integer':
+            rdata['type'] = 'integer'
+        elif schema['type'] == 'option':
+            assert('options' in schema)
+            if not len(schema['options']):
+                rdata['type'] = 'string' # default as string
+            elif type(schema['options'][0]['name']) is int:
+                rdata['type'] = 'integer'
+            elif type(schema['options'][0]['name']) in [str, unicode]:
+                rdata['type'] = 'string'
+            else:
+                assert(False)
+            options = list()
+            for option in schema['options']:
+                options.append({'value': option['name'], 'revisions': option['revisions']})
+            if len(options):
+                rdata['options'] = options
+        else:
+            assert(False)
+    elif category == 'complex':
+        # payload as one unique item
+        if 'children' in schema:
+            assert('children' in schema)
+            assert('revisions' in schema)
+            rdata['revisions'] = schema['revisions']
+            rdata['type'] = 'dict'
+            rdata['children'] = dict()
+            for child in schema['children']:
+                child_value = schema['children'][child]
+                rdata['children'][child] = generate_versioned_fields(child_value)
+    else:
+        assert(False)
+    return rdata
+
+
 def jinjaExecutor(number=None):
 
     fgt_schema_file = open('fgt_schema.json').read()
@@ -242,7 +303,7 @@ def jinjaExecutor(number=None):
     if not number:
         real_counter = 0
         for i, pn in enumerate(fgt_sch_results):
-            if 'diagnose' not in pn['path'] and 'execute' not in pn['path']:
+            if 'diagnose_' not in pn['path'] and 'execute_' not in pn['path'] and 'test' != pn['path']:
                 module_name = getModuleName(pn['path'], pn['name'])
                 print('\n\033[0mParsing schema:')
                 print('\033[0mModule name: \033[92m' + module_name)
