@@ -139,7 +139,14 @@ def merge_schema(schemas):
                 super_schema[api_path] = _tag_api_item(api_item, version)
             else:
                 super_schema[api_path] = _merge_api_item(super_schema[api_path], api_item, version)
-    print(json.dumps(super_schema, indent=3))
+    super_top_schema = dict()
+    super_top_schema['version'] = 'v6.0.0'
+    super_top_schema['action'] = 'schema'
+    super_top_schema['results'] = [super_schema[api_path] for api_path in super_schema]
+    with open('./super_schema.json', 'w') as f:
+        f.write(json.dumps(super_top_schema, indent=2))
+        f.flush()
+
 def process_schema(schema1, schema2):
     assert(schema1 and schema2)
     version1 = schema1['version']
