@@ -86,6 +86,27 @@ def check_legacy_fortiosapi():
         error_message = 'Legacy fortiosapi parameters %s detected, please use HTTPAPI instead!' % (str(legacy_params))
         sys.stderr.write(error_message)
         sys.exit(1)
+
+
+def schema_to_module_spec(schema):
+    rdata = dict()
+    assert('type' in schema)
+    if schema['type'] in ['list', 'dict']:
+        assert('children' in schema)
+        rdata['type'] = schema['type']
+        rdata['required'] = False
+        rdata['options'] = dict()
+        for child in schema['children']:
+            child_value = schema['children'][child]
+            rdata['options'][child] = schema_to_module_spec(child_value)
+    elif schema['type'] in ['integer', 'string']:
+        rdata['type'] = 'int' if schema['type'] == 'integer' else 'str'
+        rdata['required'] = False
+        if 'options' in schema:
+            rdata['choices'] = [option['value'] for option in schema['options']]
+    else:
+        assert(False)
+    return rdata
 # END DEPRECATED
 
 

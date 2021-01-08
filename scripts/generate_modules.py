@@ -101,10 +101,21 @@ def removeDefaultCommentsInFGTDoc(str):
     str = re.sub(regex, r"\g<1>", str)
     return str
 
+def hyphen_to_underscore_raw(schema):
+    if 'children' in schema:
+        for child in schema['children']:
+            child_value = schema['children'][child]
+            del schema['children'][child]
+            schema['children'][child.replace('-', '_')] = hyphen_to_underscore_raw(child_value)
+    return schema
+
 def renderModule(schema, version, special_attributes, valid_identifiers, version_added, supports_check_mode, movable=False):
 
     # Generate module
-    versioned_schema = json.dumps(generate_versioned_fields(schema['schema']), indent=4).replace('": false', '": False').replace('": true', '": True')
+    versioned_schema = generate_versioned_fields(schema['schema'])
+    versioned_schema = hyphen_to_underscore_raw(versioned_schema)
+    versioned_schema = json.dumps(versioned_schema, indent=4).replace('": false', '": False').replace('": true', '": True')
+
     file_loader = FileSystemLoader('ansible_templates')
     env = Environment(loader=file_loader,
                       lstrip_blocks=False, trim_blocks=False)
