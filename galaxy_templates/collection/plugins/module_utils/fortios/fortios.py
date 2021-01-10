@@ -91,7 +91,7 @@ def check_legacy_fortiosapi():
 def schema_to_module_spec(schema):
     rdata = dict()
     assert('type' in schema)
-    if schema['type'] in ['list', 'dict']:
+    if schema['type'] == 'dict' or (schema['type'] == 'list' and 'children' in schema):
         assert('children' in schema)
         rdata['type'] = schema['type']
         rdata['required'] = False
@@ -99,8 +99,15 @@ def schema_to_module_spec(schema):
         for child in schema['children']:
             child_value = schema['children'][child]
             rdata['options'][child] = schema_to_module_spec(child_value)
-    elif schema['type'] in ['integer', 'string']:
-        rdata['type'] = 'int' if schema['type'] == 'integer' else 'str'
+    elif schema['type'] in ['integer', 'string'] or (schema['type'] == 'list' and 'children' not in schema):
+        if schema['type'] == 'integer':
+            rdata['type'] = 'int'
+        elif schema['type'] == 'string':
+            rdata['type'] = 'str'
+        elif schema['type'] == 'list':
+            rdata['type'] = 'list'
+        else:
+            assert(False)
         rdata['required'] = False
         if 'options' in schema:
             rdata['choices'] = [option['value'] for option in schema['options']]

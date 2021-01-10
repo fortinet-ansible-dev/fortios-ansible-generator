@@ -109,13 +109,86 @@ def hyphen_to_underscore_raw(schema):
             schema['children'][child.replace('-', '_')] = hyphen_to_underscore_raw(child_value)
     return schema
 
-def renderModule(schema, version, special_attributes, valid_identifiers, version_added, supports_check_mode, movable=False):
+def extract_multiple_values_attribute_internal(schema, attr_list, stack):
+    if 'type' not in schema:
+        return
+    assert('type' in schema)
+    if schema['type'] in ['list', 'dict']:
+        assert('children' in schema)
+        for child in schema['children']:
+            child_value = schema['children'][child]
+            stack.append(child)
+            extract_multiple_values_attribute_internal(child_value, attr_list, stack)
+            del stack[-1]
+    elif schema['type'] in ['string', 'integer']:
+        if 'multiple_values' in schema:
+            assert(schema['multiple_values'] is True)
+            attr_list.append([attr for attr in stack])
+    else:
+        assert(False)
+
+def extract_multiple_values_attribute(schema):
+    attr_list = list()
+    stack = list()
+    extract_multiple_values_attribute_internal(schema, attr_list, stack)
+    return attr_list
+
+def merge_multiple_values_attributes(dst, src):
+    for item in src:
+        item_found = False
+        for dst_item in dst:
+            if len(item) != len(dst_item):
+                continue
+            present = True
+            for i in range(len(item)):
+                if item[i] != dst_item[i]:
+                    present = False
+                    break
+            if present:
+                item_found = True
+                break
+        if not item_found:
+            dst.append(item)
+
+def fix_multiple_values_attribute_internal(schema, special_attributes, trace):
+    if 'type' not in schema:
+        return
+    if schema['type'] in ['list', 'dict']:
+        assert('children' in schema)
+        for child in schema['children']:
+            child_value = schema['children'][child]
+            trace.append(child)
+            fix_multiple_values_attribute_internal(child_value, special_attributes, trace)
+            del trace[-1]
+    elif schema['type'] in ['string', 'integer']:
+        # if the trace hits an attribute sequence, then the type must be adjusted to be a list
+        for attributes in special_attributes:
+            if len(attributes) != len(trace):
+                continue
+            present = True
+            for i in range(len(attributes)):
+                if attributes[i] != trace[i]:
+                    present = False
+                    break
+            if present:
+                schema['type'] = 'list'
+                break
+    else:
+        assert(False)
+
+def fix_multiple_values_attribute(schema, special_attributes):
+    trace = list()
+    fix_multiple_values_attribute_internal(schema, special_attributes, trace)
+
+def renderModule(schema, version, defined_special_attributes, valid_identifiers, version_added, supports_check_mode, movable=False):
 
     # Generate module
     versioned_schema = generate_versioned_fields(schema['schema'])
     versioned_schema = hyphen_to_underscore_raw(versioned_schema)
+    special_attributes = extract_multiple_values_attribute(versioned_schema)
+    merge_multiple_values_attributes(special_attributes, defined_special_attributes)
+    fix_multiple_values_attribute(versioned_schema, special_attributes)
     versioned_schema = json.dumps(versioned_schema, indent=4).replace('": false', '": False').replace('": true', '": True')
-
     file_loader = FileSystemLoader('ansible_templates')
     env = Environment(loader=file_loader,
                       lstrip_blocks=False, trim_blocks=False)
@@ -274,6 +347,8 @@ def generate_versioned_fields(schema):
                 rdata['options'] = options
         else:
             assert(False)
+        if 'multiple_values' in schema and schema['multiple_values'] is True:
+            rdata['multiple_values'] = True
     elif category == 'complex':
         # payload as one unique item
         if 'children' in schema:
