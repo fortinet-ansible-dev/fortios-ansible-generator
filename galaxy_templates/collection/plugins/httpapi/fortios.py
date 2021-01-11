@@ -195,6 +195,8 @@ class HttpApi(HttpApiBase):
         """
         retrieve the system status of fortigate device
         """
+        if self._system_version:
+            return
         url = '/api/v2/cmdb/system/interface?vdom=root&action=schema'
         status, result = self.send_request(url=url)
         self.log('update sys ver: ' + str(status) + ' len=' + str(len(to_text(result))))
@@ -204,16 +206,5 @@ class HttpApi(HttpApiBase):
         self.log('ansible version: %s' % (self._ansible_fos_version))
 
     def get_system_version(self):
-        if not self._system_version:
-            raise Exception('Wrong calling stack, httpapi must login!')
-        system_version_words = self._system_version.split('.')
-        ansible_version_words = self._ansible_fos_version.split('.')
-        result = dict()
-        result['system_version'] = self._system_version
-        result['ansible_collection_version'] = self._ansible_fos_version + ' (galaxy: %s)' % (self._ansible_galaxy_version)
-        result['matched'] = system_version_words[0] == ansible_version_words[0] and system_version_words[1] == ansible_version_words[1]
-        if not result['matched']:
-            result['message'] = 'Please follow steps in FortiOS versioning notes: https://ansible-galaxy-fortios-docs.readthedocs.io/en/latest/version.html'
-        else:
-            result['message'] = 'versions match'
-        return result
+        self.update_system_version()
+        return self._system_version

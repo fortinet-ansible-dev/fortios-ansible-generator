@@ -114,6 +114,132 @@ def schema_to_module_spec(schema):
     else:
         assert(False)
     return rdata
+
+def __check_version(revisions, version):
+    result = dict()
+    resolved_versions = list(revisions.keys())
+    resolved_versions.sort()
+    # try to detect the versioning gaps and mark them as violations:
+    nearest_index = -1
+    for i in range(len(resolved_versions)):
+        if resolved_versions[i] <= version:
+            nearest_index = i
+    if nearest_index == -1:
+        # even it's not supported in earliest version
+        result['supported'] = False
+        result['reason'] = 'not supported untill in %s' % (resolved_versions[0])
+    else:
+        if revisions[resolved_versions[nearest_index]] is False:
+            latest_index = -1
+            for i in range(nearest_index + 1, len(resolved_versions)):
+                if revisions[resolved_versions[i]] is True:
+                    latest_index = i
+                    break
+            earliest_index = nearest_index
+            while earliest_index >= 0:
+                if revisions[resolved_versions[earliest_index]] is True:
+                    break
+                earliest_index -= 1
+            earliest_index = 0 if earliest_index < 0 else earliest_index
+            if latest_index == -1:
+                result['reason'] = 'not supported since %s' % (resolved_versions[earliest_index])
+            else:
+                result['reason'] = 'not supported since %s, before %s' % (resolved_versions[earliest_index], resolved_versions[latest_index])
+            result['supported'] = False
+        else:
+            result['supported'] = True
+    return result
+
+
+def __concat_attribute_sequence(trace_path):
+    rdata = ''
+    assert(type(trace_path) is list)
+    if len(trace_path) >= 1:
+        rdata += str(trace_path[0])
+    for item in trace_path[1:]:
+        rdata += '.' + str(item)
+    return rdata
+
+
+def check_schema_versioning_internal(results, trace, schema, params, version):
+    assert('revisions' in schema)
+    revision = schema['revisions']
+    matched = __check_version(revision, version)
+    if matched['supported'] is False:
+        results['mismatches'].append('option %s %s' % (__concat_attribute_sequence(trace), matched['reason']))
+
+    if 'type' not in schema:
+        return
+
+    if schema['type'] == 'list':
+        assert(type(params) is list)
+        if 'children' in schema:
+            assert('options' not in schema)
+            for list_item in params:
+                assert(type(list_item) is dict)
+                for key in list_item:
+                    value = list_item[key]
+                    key_string = '%s(%s)' %(key, value) if type(value) in [int, bool, str] else key
+                    trace.append(key_string)
+                    check_schema_versioning_internal(results, trace, schema['children'][key], value, version)
+                    del trace[-1]
+        else:
+            assert('options' in schema)
+            for param in params:
+                assert(type(param) in [int, bool, str])
+                target_option = None
+                for option in schema['options']:
+                    if option['value'] == param:
+                        target_option = option
+                        break
+                assert(target_option)
+                trace.append('[%s]' % param)
+                check_schema_versioning_internal(results, trace, target_option, param, version)
+                del trace[-1]
+    elif schema['type'] == 'dict':
+        assert(type(params) is dict)
+        if 'children' in schema:
+            for dict_item_key in params:
+                dict_item_value = params[dict_item_key]
+                assert(dict_item_key in schema['children'])
+                key_string = '%s(%s)' %(dict_item_key, dict_item_value) if type(dict_item_value) in [int, bool, str] else dict_item_key
+                trace.append(key_string)
+                check_schema_versioning_internal(results, trace, schema['children'], dict_item_value, version)
+                del trace[-1]
+    else:
+        assert(type(params) in [int, str, bool])
+
+def check_schema_versioning(fos, versioned_schema, top_level_param):
+    trace = list()
+    results = dict()
+    results['matched'] = True
+    results['mismatches'] = list()
+
+    system_version = fos._conn.get_system_version()
+    params = fos._module.params[top_level_param]
+    results['system_version'] = system_version
+
+    module_revisions = versioned_schema['revisions']
+    module_matched = __check_version(module_revisions, system_version)
+    if module_matched['supported'] is False:
+        results['matched'] = False
+        results['mismatches'].append('module fortios_%s %s' % (top_level_param, module_matched['reason']))
+        return results
+
+    for param_name in params:
+        param_value = params[param_name]
+        if not param_value or param_name not in versioned_schema['children']:
+            continue
+        key_string = '%s(%s)' %(param_name, param_value) if type(param_value) in [int, bool, str] else param_name
+        trace.append(key_string)
+        check_schema_versioning_internal(results, trace, versioned_schema['children'][param_name], param_value, system_version)
+        del trace[-1]
+    if len(results['mismatches']):
+        results['matched'] = False
+
+    return results
+
+
 # END DEPRECATED
 
 
