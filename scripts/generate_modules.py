@@ -101,9 +101,94 @@ def removeDefaultCommentsInFGTDoc(str):
     str = re.sub(regex, r"\g<1>", str)
     return str
 
-def renderModule(schema, version, special_attributes, valid_identifiers, version_added, supports_check_mode, movable=False):
+def hyphen_to_underscore_raw(schema):
+    if 'children' in schema:
+        for child in schema['children']:
+            child_value = schema['children'][child]
+            del schema['children'][child]
+            schema['children'][child.replace('-', '_')] = hyphen_to_underscore_raw(child_value)
+    return schema
+
+def extract_multiple_values_attribute_internal(schema, attr_list, stack):
+    if 'type' not in schema:
+        return
+    assert('type' in schema)
+    if schema['type'] in ['list', 'dict']:
+        assert('children' in schema)
+        for child in schema['children']:
+            child_value = schema['children'][child]
+            stack.append(child)
+            extract_multiple_values_attribute_internal(child_value, attr_list, stack)
+            del stack[-1]
+    elif schema['type'] in ['string', 'integer']:
+        if 'multiple_values' in schema:
+            assert(schema['multiple_values'] is True)
+            attr_list.append([attr for attr in stack])
+    else:
+        assert(False)
+
+def extract_multiple_values_attribute(schema):
+    attr_list = list()
+    stack = list()
+    extract_multiple_values_attribute_internal(schema, attr_list, stack)
+    return attr_list
+
+def merge_multiple_values_attributes(dst, src):
+    for item in src:
+        item_found = False
+        for dst_item in dst:
+            if len(item) != len(dst_item):
+                continue
+            present = True
+            for i in range(len(item)):
+                if item[i] != dst_item[i]:
+                    present = False
+                    break
+            if present:
+                item_found = True
+                break
+        if not item_found:
+            dst.append(item)
+
+def fix_multiple_values_attribute_internal(schema, special_attributes, trace):
+    if 'type' not in schema:
+        return
+    if schema['type'] in ['list', 'dict']:
+        assert('children' in schema)
+        for child in schema['children']:
+            child_value = schema['children'][child]
+            trace.append(child)
+            fix_multiple_values_attribute_internal(child_value, special_attributes, trace)
+            del trace[-1]
+    elif schema['type'] in ['string', 'integer']:
+        # if the trace hits an attribute sequence, then the type must be adjusted to be a list
+        for attributes in special_attributes:
+            if len(attributes) != len(trace):
+                continue
+            present = True
+            for i in range(len(attributes)):
+                if attributes[i] != trace[i]:
+                    present = False
+                    break
+            if present:
+                schema['type'] = 'list'
+                break
+    else:
+        assert(False)
+
+def fix_multiple_values_attribute(schema, special_attributes):
+    trace = list()
+    fix_multiple_values_attribute_internal(schema, special_attributes, trace)
+
+def renderModule(schema, version, defined_special_attributes, valid_identifiers, version_added, supports_check_mode, movable=False):
 
     # Generate module
+    versioned_schema = generate_versioned_fields(schema['schema'])
+    versioned_schema = hyphen_to_underscore_raw(versioned_schema)
+    special_attributes = extract_multiple_values_attribute(versioned_schema)
+    merge_multiple_values_attributes(special_attributes, defined_special_attributes)
+    fix_multiple_values_attribute(versioned_schema, special_attributes)
+    versioned_schema = json.dumps(versioned_schema, indent=4).replace('": false', '": False').replace('": true', '": True')
     file_loader = FileSystemLoader('ansible_templates')
     env = Environment(loader=file_loader,
                       lstrip_blocks=False, trim_blocks=False)
@@ -218,6 +303,68 @@ def renderFactModule(schema_results, version):
     print('generated config fact in ' + output_path)
     return output_path
 
+
+def generate_versioned_fields(schema):
+    rdata = dict()
+    assert('category' in schema)
+    assert('revisions' in schema)
+    category = schema['category']
+    if category == 'table':
+        # payload as a list
+        assert('children' in schema)
+        rdata['type'] = 'list'
+        rdata['children'] = dict()
+        rdata['revisions'] = schema['revisions']
+        for child in schema['children']:
+            child_value = schema['children'][child]
+            rdata['children'][child] = generate_versioned_fields(child_value)
+    elif category == 'unitary':
+        assert('type' in schema)
+        rdata['revisions'] = schema['revisions']
+        if schema['type'] in ['string', 'var-string', 'mac-address', 'user',
+                              'ipv4-classnet-any', 'password', 'ipv4-address-any',
+                              'ipv6-prefix', 'ipv4-address', 'ipv4-classnet-host',
+                              'datetime', 'ipv4-classnet', 'password-2', 'ipv6-address',
+                              'ipv4-netmask', 'ipv4-address-multicast', 'ipv4-netmask-any',
+                              'uuid', 'ipv6-network', 'password-3', 'time', 'varlen_password']:
+            rdata['type'] = 'string'
+        elif schema['type'] == 'integer':
+            rdata['type'] = 'integer'
+        elif schema['type'] == 'option':
+            assert('options' in schema)
+            if not len(schema['options']):
+                rdata['type'] = 'string' # default as string
+            elif type(schema['options'][0]['name']) is int:
+                rdata['type'] = 'integer'
+            elif type(schema['options'][0]['name']) in [str, unicode]:
+                rdata['type'] = 'string'
+            else:
+                assert(False)
+            options = list()
+            for option in schema['options']:
+                options.append({'value': option['name'], 'revisions': option['revisions']})
+            if len(options):
+                rdata['options'] = options
+        else:
+            assert(False)
+        if 'multiple_values' in schema and schema['multiple_values'] is True:
+            rdata['multiple_values'] = True
+    elif category == 'complex':
+        # payload as one unique item
+        if 'children' in schema:
+            assert('children' in schema)
+            assert('revisions' in schema)
+            rdata['revisions'] = schema['revisions']
+            rdata['type'] = 'dict'
+            rdata['children'] = dict()
+            for child in schema['children']:
+                child_value = schema['children'][child]
+                rdata['children'][child] = generate_versioned_fields(child_value)
+    else:
+        assert(False)
+    return rdata
+
+
 def jinjaExecutor(number=None):
 
     fgt_schema_file = open('fgt_schema.json').read()
@@ -242,7 +389,7 @@ def jinjaExecutor(number=None):
     if not number:
         real_counter = 0
         for i, pn in enumerate(fgt_sch_results):
-            if 'diagnose' not in pn['path'] and 'execute' not in pn['path']:
+            if 'diagnose_' not in pn['path'] and 'execute_' not in pn['path'] and 'test' != pn['path']:
                 module_name = getModuleName(pn['path'], pn['name'])
                 print('\n\033[0mParsing schema:')
                 print('\033[0mModule name: \033[92m' + module_name)

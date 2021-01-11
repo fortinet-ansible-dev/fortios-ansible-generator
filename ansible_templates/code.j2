@@ -3,6 +3,7 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.connection import Connection
 from ansible_collections.fortinet.fortios.plugins.module_utils.fortios.fortios import FortiOSHandler
 from ansible_collections.fortinet.fortios.plugins.module_utils.fortios.fortios import check_legacy_fortiosapi
+from ansible_collections.fortinet.fortios.plugins.module_utils.fortios.fortios import schema_to_module_spec
 from ansible_collections.fortinet.fortios.plugins.module_utils.fortimanager.common import FAIL_SOCKET_MSG
 
 
@@ -339,6 +340,8 @@ str
                 {% endfor -%}
 {%- endmacro %}
 def main():
+    versioned_schema = {{ versioned_schema }}
+    module_spec = schema_to_module_spec(versioned_schema)
     mkeyname = {% if mkeyname -%} '{{mkeyname|replace("_", "-")}}' {%- else -%} None {%- endif %}
     fields = {
         "access_token": {"required": False, "type": "str", "no_log": True},
@@ -356,11 +359,14 @@ def main():
             "required": False, "type": "dict", "default": None,
             "options": { {% if module_version_added == 2.8 and "mkey" in schema['schema'] %}
                 "state": {"required": False, "type": "str",
-                          "choices": ["present", "absent"]},{% endif %}
-                {{ code_fields(schema['schema']['children'], schema['schema']['mkey'], '') }}
+                          "choices": ["present", "absent"]}{% endif %}
             }
         }
     }
+    for attribute_name in module_spec['options']:
+        fields["{{path}}_{{name}}"]['options'][attribute_name] = module_spec['options'][attribute_name]
+        if mkeyname and mkeyname == attribute_name:
+            fields["{{path}}_{{name}}"]['options'][attribute_name]['required'] = True
 
     check_legacy_fortiosapi()
     module = AnsibleModule(argument_spec=fields,
