@@ -4,6 +4,7 @@ from ansible.module_utils.connection import Connection
 from ansible_collections.fortinet.fortios.plugins.module_utils.fortios.fortios import FortiOSHandler
 from ansible_collections.fortinet.fortios.plugins.module_utils.fortios.fortios import check_legacy_fortiosapi
 from ansible_collections.fortinet.fortios.plugins.module_utils.fortios.fortios import schema_to_module_spec
+from ansible_collections.fortinet.fortios.plugins.module_utils.fortios.fortios import check_schema_versioning
 from ansible_collections.fortinet.fortios.plugins.module_utils.fortimanager.common import FAIL_SOCKET_MSG
 
 
@@ -379,13 +380,12 @@ def main():
             connection.set_option('access_token', module.params['access_token'])
 
         fos = FortiOSHandler(connection, module, mkeyname)
-
-        {% if supports_check_mode -%}
+        versions_check_result = check_schema_versioning(fos, versioned_schema, "{{path}}_{{name}}")
+        {% if supports_check_mode %}
         is_error, has_changed, result = fortios_{{path}}(module.params, fos, module.check_mode)
-        {% else -%}
+        {% else %}
         is_error, has_changed, result = fortios_{{path}}(module.params, fos)
-        {% endif -%}
-        versions_check_result = connection.get_system_version()
+        {% endif %}
     else:
         module.fail_json(**FAIL_SOCKET_MSG)
 
