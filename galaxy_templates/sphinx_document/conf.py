@@ -33,6 +33,10 @@ html_context = {
         ],
      }
 
+html_js_files = [
+    'util.js',
+]
+
 master_doc = 'index'
 
 # -- General configuration ---------------------------------------------------

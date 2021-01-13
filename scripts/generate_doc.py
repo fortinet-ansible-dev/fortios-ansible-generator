@@ -22,13 +22,23 @@ def array_to_string(arr):
         first = False
     return data
 
-def generate_parameters(params, layer):
+def generate_parameters(params, layer, versioned=False, version_schema=None, top_level_name=None, counter=None):
     ddata = ''
     for key in params:
         param = params[key]
         assert('type' in param)
         key_desc = param['description'][0] if 'description' in param else 'no description'
         key_type = param['type']
+        the_schema = None
+        if versioned:
+            if key == top_level_name and layer == 1:
+                the_schema = version_schema
+            elif layer > 1:
+                assert(type(version_schema) is dict)
+                for _schema_key in version_schema:
+                    if _schema_key == key:
+                        the_schema = version_schema[_schema_key]
+                        break
         if key_type in ['str', 'bool', 'int'] or (key_type == 'list' and 'choices' in param):
             ddata += ' ' * layer * 4 + '<li>'
             ddata += ' <span class="li-head">' + key + '</span>'
@@ -40,23 +50,89 @@ def generate_parameters(params, layer):
                 ddata += ' <span class="li-normal">default: %s</span>' % (param['default'])
             if 'choices' in param:
                 ddata += ' <span class="li-normal">choices: %s</span>' % (array_to_string(param['choices']))
-            ddata += '</li>\n'
+            if versioned and the_schema:
+                btnlabel = 'label%s' % (counter['counter'])
+                counter['counter'] += 1
+                label = 'label%s' % (counter['counter'])
+                counter['counter'] += 1
+                ddata += '\n <a id=\'%s\' href="javascript:ContentClick(\'%s\', \'%s\');" onmouseover="ContentPreview(\'%s\');" onmouseout="ContentUnpreview(\'%s\');" title="click to collapse or expand..."> more... </a>\n' % (btnlabel, label,btnlabel, label, label)
+                ddata += ' <div id="%s" style="display:none">\n' % (label)
+                all_versions = set()
+                for ver in the_schema['revisions']:
+                    all_versions.add(ver)
+                if 'choices' in param:
+                    assert('options' in the_schema)
+                    for option in the_schema['options']:
+                        for ver in option['revisions']:
+                            all_versions.add(ver)
+                all_versions = list(all_versions)
+                all_versions.sort()
+                ddata += ' <table border="1">\n'
+                ddata += ' <tr>\n'
+                ddata += ' <td></td>\n'
+                for _ver in all_versions:
+                    ddata += ' <td><code class="docutils literal notranslate">%s </code></td>\n' % (_ver)
+                ddata += ' </tr>\n'
+                ddata += ' <tr>\n'
+                ddata += ' <td>%s</td>\n' % (key)
+                for _ver in all_versions:
+                    if _ver not in the_schema['revisions']:
+                        ddata += ' <td>n/a</td>\n'
+                    else:
+                        ddata += ' <td>%s</td>\n' % ('yes' if the_schema['revisions'][_ver] else 'no')
+                ddata += ' </tr>\n'
+                if 'choices' in param:
+                    for option in the_schema['options']:
+                        ddata += ' <tr>\n'
+                        ddata += ' <td>[%s]</td>\n' % (option['value'])
+                        for _ver in all_versions:
+                            if _ver not in option['revisions']:
+                                ddata += ' <td>n/a</td>\n'
+                            else:
+                                ddata += ' <td>%s</td>\n' % ('yes' if option['revisions'][_ver] else 'no')
+                        ddata += ' </tr>\n'
+                ddata += ' </table>\n'
+                ddata += ' </div>\n'
+            ddata += ' </li>\n'
         elif key_type == 'dict' or (key_type == 'list' and 'suboptions' in param):
             ddata += ' ' * layer * 4 + '<li>'
             ddata += ' <span class="li-head">' + key + '</span>'
             ddata += ' - %s' % (key_desc)
             ddata += ' <span class="li-normal">type: %s</span>' % (key_type)
-            ddata += '</li>\n'
+            if versioned and the_schema:
+                btnlabel = 'label%s' % (counter['counter'])
+                counter['counter'] += 1
+                label = 'label%s' % (counter['counter'])
+                counter['counter'] += 1
+                ddata += '\n <a id=\'%s\' href="javascript:ContentClick(\'%s\', \'%s\');" onmouseover="ContentPreview(\'%s\');" onmouseout="ContentUnpreview(\'%s\');" title="click to collapse or expand..."> more... </a>\n' % (btnlabel, label,btnlabel, label, label)
+                ddata += ' <div id="%s" style="display:none">\n' % (label)
+                revisions = the_schema['revisions']
+                ddata += ' <table border="1">\n'
+                ddata += ' <tr>\n'
+                ddata += ' <td></td>\n'
+                versions = list(revisions.keys())
+                versions.sort()
+                for _ver in versions:
+                    ddata += ' <td><code class="docutils literal notranslate">%s </code></td>\n' % (_ver)
+                ddata += ' </tr>\n'
+                ddata += ' <tr>\n'
+                ddata += ' <td>%s</td>\n' % (key)
+                for _ver in versions:
+                    ddata += ' <td>%s</td>\n' % ('yes' if revisions[_ver] else 'no')
+                ddata += ' </tr>\n'
+                ddata += ' </table>\n'
+                ddata += ' </div>\n'
+            ddata += ' </li>\n'
             ddata += ' ' * (layer + 1) * 4 + '<ul class="ul-self">\n'
             assert('suboptions' in param)
-            ddata += generate_parameters(param['suboptions'], layer + 1)
+            ddata += generate_parameters(param['suboptions'], layer + 1, versioned and the_schema and 'children' in the_schema, the_schema['children'] if versioned and the_schema and 'children' in the_schema else None, top_level_name, counter)
             ddata += ' ' * (layer + 1) * 4 + '</ul>\n'
         else:
             ddata += ' ' * layer * 4 + '<li>'
             ddata += ' <span class="li-head">' + key + '</span>'
             ddata += ' - %s' % (key_desc)
             ddata += ' <span class="li-normal">type: %s</span>' % (key_type)
-            ddata += '</li>\n' 
+            ddata += ' </li>\n' 
             #print('incomplete schema: key:%s key_type:%s' % (key, key_type))
             #assert(False)
     return ddata
@@ -84,9 +160,12 @@ def generate_return(doc_ret):
     return ddata
 
 def generate_document(mod, dst):
+    versioned = hasattr(mod, 'versioned_schema')
     ddata = ''
     mod_doc = yaml.load(mod.DOCUMENTATION, Loader=yaml.FullLoader)
     mod_name = mod_doc['module']
+    assert(mod_name.startswith('fortios_'))
+    top_level_name = mod_name[8:]
     mod_sht_desc = mod_doc['short_description']
 
     ddata += ':source: %s.py\n\n'  % (mod_name)
@@ -122,7 +201,7 @@ def generate_document(mod, dst):
     ddata += '----------\n\n\n'
     ddata += '.. raw:: html\n\n'
     ddata += '    <ul>\n'
-    ddata += generate_parameters(mod_doc['options'], 1)
+    ddata += generate_parameters(mod_doc['options'], 1, versioned, mod.versioned_schema if versioned else None, top_level_name, {'counter': 0})
     ddata += '    </ul>\n\n\n'
 
     ddata += 'Notes\n'
