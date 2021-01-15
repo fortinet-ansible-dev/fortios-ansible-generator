@@ -39,24 +39,25 @@ table.documentation-table, th, td {
 	border-left:solid #fcc29b 3px;
 }
 .li-normal{
-	background-color: #F2F2F2;
+	background-color: #FFFFFF;
 	border-radius: 5%;
 	padding-left: 8px;
 	padding-right: 8px;
 	font-family: Consolas;
-	font-size: 9pt;
-	color: #999999;
-	/* border-left:solid #CCCCCC 1px; */
+    font-size: 11pt;
+	/*font-size: 9pt;*/
+	color: #666666;
+    border-bottom:solid #EEEEEE 1px;
 }
 .li-required{
-	background-color: #F2F2F2;
+	background-color: #FFFFFF;
 	border-radius: 5%;
 	padding-left: 8px;
 	padding-right: 8px;
 	font-family: Consolas;
-	font-size: 9pt;
-	color: rgb(255, 142, 142);
-	/* border-left:solid #CCCCCC 1px; */
+	font-size: 11pt;
+	color: #ee0000;
+    border-bottom:solid #EEEEEE 1px;
 }
 
 .li-return{

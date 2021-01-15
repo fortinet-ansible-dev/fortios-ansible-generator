@@ -103,10 +103,11 @@ def removeDefaultCommentsInFGTDoc(str):
 
 def hyphen_to_underscore_raw(schema):
     if 'children' in schema:
+        new_children = dict()
         for child in schema['children']:
             child_value = schema['children'][child]
-            del schema['children'][child]
-            schema['children'][child.replace('-', '_')] = hyphen_to_underscore_raw(child_value)
+            new_children[child.replace('-', '_')] = hyphen_to_underscore_raw(child_value)
+        schema['children'] = new_children
     return schema
 
 def extract_multiple_values_attribute_internal(schema, attr_list, stack):
@@ -326,7 +327,7 @@ def generate_versioned_fields(schema):
                               'ipv6-prefix', 'ipv4-address', 'ipv4-classnet-host',
                               'datetime', 'ipv4-classnet', 'password-2', 'ipv6-address',
                               'ipv4-netmask', 'ipv4-address-multicast', 'ipv4-netmask-any',
-                              'uuid', 'ipv6-network', 'password-3', 'time', 'varlen_password']:
+                              'uuid', 'ipv6-network', 'password-3', 'time', 'varlen_password', 'password_aes256']:
             rdata['type'] = 'string'
         elif schema['type'] == 'integer':
             rdata['type'] = 'integer'
@@ -346,6 +347,7 @@ def generate_versioned_fields(schema):
             if len(options):
                 rdata['options'] = options
         else:
+            print('unexpected type:', schema['type'])
             assert(False)
         if 'multiple_values' in schema and schema['multiple_values'] is True:
             rdata['multiple_values'] = True

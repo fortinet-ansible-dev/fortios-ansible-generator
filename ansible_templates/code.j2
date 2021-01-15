@@ -340,8 +340,10 @@ str
                     {%- endif -%}}{%- if not loop.last %}, {%endif%}
                 {% endfor -%}
 {%- endmacro %}
+
+versioned_schema = {{ versioned_schema }}
+
 def main():
-    versioned_schema = {{ versioned_schema }}
     module_spec = schema_to_module_spec(versioned_schema)
     mkeyname = {% if mkeyname -%} '{{mkeyname|replace("_", "-")}}' {%- else -%} None {%- endif %}
     fields = {
