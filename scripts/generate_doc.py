@@ -197,6 +197,28 @@ def generate_document(mod, dst):
         ddata += '- %s\n' % (item)
     ddata += '\n\n'
 
+    if versioned:
+        ddata += 'FortiOS Version Compatibility\n'
+        ddata += '-----------------------------\n\n\n'
+        ddata += '.. raw:: html\n\n'
+        ddata += ' <br>\n'
+        ddata += ' <table>\n'
+        assert('revisions' in mod.versioned_schema)
+        revisions = list(mod.versioned_schema['revisions'].keys())
+        revisions.sort()
+        ddata += ' <tr>\n'
+        ddata += ' <td></td>\n'
+        for ver in revisions:
+            ddata += ' <td><code class="docutils literal notranslate">%s </code></td>\n' % (ver)
+        ddata += ' </tr>\n'
+        ddata += ' <tr>\n'
+        ddata += ' <td>%s</td>\n' % (mod_name)
+        for ver in revisions:
+            ddata += ' <td>%s</td>\n' % ('yes' if mod.versioned_schema['revisions'][ver] else 'no')
+        ddata += ' </tr>\n'
+        ddata += ' </table>\n'
+        ddata += ' <p>\n'
+        ddata += '\n\n\n'
     ddata += 'Parameters\n'
     ddata += '----------\n\n\n'
     ddata += '.. raw:: html\n\n'
