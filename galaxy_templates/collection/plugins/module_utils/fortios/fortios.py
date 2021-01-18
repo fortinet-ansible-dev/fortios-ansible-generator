@@ -127,7 +127,7 @@ def __check_version(revisions, version):
     if nearest_index == -1:
         # even it's not supported in earliest version
         result['supported'] = False
-        result['reason'] = 'not supported untill in %s' % (resolved_versions[0])
+        result['reason'] = 'not supported until in %s' % (resolved_versions[0])
     else:
         if revisions[resolved_versions[nearest_index]] is False:
             latest_index = -1

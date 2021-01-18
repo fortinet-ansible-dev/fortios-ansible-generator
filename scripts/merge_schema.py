@@ -70,7 +70,9 @@ def _merge_api_item(api_item0, api_item1, version):
                 else:
                     rdata[key][child] = _tag_api_item(child_value, version, True)
         elif key == 'options' and type(value) is list:
-            assert(key in rdata)
+            #assert(key in rdata)
+            if key not in rdata:
+                rdata[key] = list()
             assert(type(rdata[key]) is list)
             for option in value:
                 assert(type(option) is dict)
