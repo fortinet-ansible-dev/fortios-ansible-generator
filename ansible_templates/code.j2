@@ -392,7 +392,7 @@ def main():
         module.fail_json(**FAIL_SOCKET_MSG)
 
     if versions_check_result and versions_check_result['matched'] is False:
-        module.warn("Ansible has detected version mismatch between FortOS system and galaxy, see more details by specifying option -vvv")
+        module.warn("Ansible has detected version mismatch between FortOS system and your playbook, see more details by specifying option -vvv")
 
     if not is_error:
         if versions_check_result and versions_check_result['matched'] is False:
