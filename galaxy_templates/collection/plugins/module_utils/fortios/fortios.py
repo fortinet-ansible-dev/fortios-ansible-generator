@@ -218,7 +218,10 @@ def check_schema_versioning(fos, versioned_schema, top_level_param):
     system_version = fos._conn.get_system_version()
     params = fos._module.params[top_level_param]
     results['system_version'] = system_version
-
+    if not params:
+        # in case no top level parameters are given.
+        # see module: fortios_firewall_policy
+        return results
     module_revisions = versioned_schema['revisions']
     module_matched = __check_version(module_revisions, system_version)
     if module_matched['supported'] is False:
