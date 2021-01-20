@@ -162,6 +162,8 @@ def __concat_attribute_sequence(trace_path):
 
 
 def check_schema_versioning_internal(results, trace, schema, params, version):
+    if not schema or not params:
+        return
     assert('revisions' in schema)
     revision = schema['revisions']
     matched = __check_version(revision, version)
