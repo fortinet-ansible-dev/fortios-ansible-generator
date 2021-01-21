@@ -110,7 +110,20 @@ def schema_to_module_spec(schema):
             assert(False)
         rdata['required'] = False
         if 'options' in schema:
-            rdata['choices'] = [option['value'] for option in schema['options']]
+            # see mantis #0690570, if the semantic meaning changes, remove choices as well
+            # also see accept_auth_by_cert of module fortios_system_csf.
+            param_semantic_changed = False
+            for ver in schema['revisions']:
+                if not schema['revisions']:
+                    continue
+                for option in schema['options']:
+                    if ver not in option['revisions']:
+                        param_semantic_changed = True
+                        break
+                if param_semantic_changed:
+                    break
+            if not param_semantic_changed:
+                rdata['choices'] = [option['value'] for option in schema['options']]
     else:
         assert(False)
     return rdata
