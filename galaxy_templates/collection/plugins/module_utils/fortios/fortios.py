@@ -131,7 +131,7 @@ def schema_to_module_spec(schema):
 def __check_version(revisions, version):
     result = dict()
     resolved_versions = list(revisions.keys())
-    resolved_versions.sort()
+    resolved_versions.sort(key=lambda x: int(x.split('.')[0][1]) * 10000 + int(x.split('.')[1]) * 100 + int(x.split('.')[2]))
     # try to detect the versioning gaps and mark them as violations:
     nearest_index = -1
     for i in range(len(resolved_versions)):

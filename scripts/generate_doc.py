@@ -66,7 +66,7 @@ def generate_parameters(params, layer, versioned=False, version_schema=None, top
                         for ver in option['revisions']:
                             all_versions.add(ver)
                 all_versions = list(all_versions)
-                all_versions.sort()
+                all_versions.sort(key=lambda x: int(x.split('.')[0][1]) * 10000 + int(x.split('.')[1]) * 100 + int(x.split('.')[2]))
                 ddata += ' <table border="1">\n'
                 ddata += ' <tr>\n'
                 ddata += ' <td></td>\n'
@@ -111,7 +111,7 @@ def generate_parameters(params, layer, versioned=False, version_schema=None, top
                 ddata += ' <tr>\n'
                 ddata += ' <td></td>\n'
                 versions = list(revisions.keys())
-                versions.sort()
+                versions.sort(key=lambda x: int(x.split('.')[0][1]) * 10000 + int(x.split('.')[1]) * 100 + int(x.split('.')[2]))
                 for _ver in versions:
                     ddata += ' <td><code class="docutils literal notranslate">%s </code></td>\n' % (_ver)
                 ddata += ' </tr>\n'
@@ -205,7 +205,7 @@ def generate_document(mod, dst):
         ddata += ' <table>\n'
         assert('revisions' in mod.versioned_schema)
         revisions = list(mod.versioned_schema['revisions'].keys())
-        revisions.sort()
+        revisions.sort(key=lambda x: int(x.split('.')[0][1]) * 10000 + int(x.split('.')[1]) * 100 + int(x.split('.')[2]))
         ddata += ' <tr>\n'
         ddata += ' <td></td>\n'
         for ver in revisions:
