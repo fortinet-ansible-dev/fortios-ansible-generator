@@ -50,7 +50,7 @@ def hyphenToUnderscore(data):
         return data
     elif isinstance(data, dict):
         for k, v in data.items():
-            if not (len(data) == 2 and 'name' in data and 'help' in data) and \
+            if not (len(data) == 3 and 'name' in data and 'help' in data and 'revisions' in data) and \
                 k != 'help':
                 # Only change hyphens for names and complex types.
                 # Simple types (enums) only contain name and help
