@@ -42,187 +42,64 @@ author:
     - Nicolas Thomas (@thomnico)
 notes:
     - Legacy fortiosapi has been deprecated, httpapi is the preferred way to run playbooks
-    - But this module relies on fortiosapi, please make sure fortiosapi is installed before using it
-options:
-    host:
-        type: str
-        required: false
-        description:
-            - host of fortigate
-    password:
-        type: str
-        required: false
-        description:
-            - password of fortigate
-    username:
-        type: str
-        required: false
-        description:
-            - username of fortigate
-    description:
-        type: str
-        required: false
-        description:
-            -  descriptive text
-    vdom:
-        type: str
-        required: false
-        default: root
-        description:
-            - vdom to operate on
-    config:
-        type: str
-        required: false
-        description:
-            - configuration to restore
-    mkey:
-        type: str
-        required: false
-        description:
-            - primary key
-    https:
-        type: bool
-        required: false
-        default: true
-        description:
-            - use https or not
-    ssl_verify:
-        type: bool
-        required: false
-        default: true
-        description:
-            - enable ssl verification or not
-    backup:
-        type: str
-        required: false
-        description:
-            - content to backup
-    scope:
-        type: str
-        required: true
-        description:
-            - scope to operation on
-    filename:
-        type: str
-        required: true
-        description:
-            - the file name
-    commands:
-        type: str
-        required: false
-        description:
-            - the command
 requirements:
     - ansible>=2.9.0
 '''
 
 EXAMPLES = '''
-- hosts: localhost
+- hosts: fortigates
   connection: httpapi
   collections:
     - fortinet.fortios
   vars:
     vdom: "root"
-    host: "192.168.122.60"
-    username: "admin"
-    password: ""
+    ansible_httpapi_use_ssl: yes
+    ansible_httpapi_validate_certs: no
+    ansible_httpapi_port: 443
   tasks:
-  - name: backup global or a_specific_vdom settings
+  - name: backup a_specific_vdom settings
     fortios_system_config_backup_restore:
      config: "system config backup"
-     host:  "{{ host }}"
-     username: "{{ username }}"
-     password: "{{ password }}"
      vdom: "{{ vdom }}"
      backup: "yes"
-     https: True
-     ssl_verify: False
-     scope: "global or vdom"
-     filename: "/tmp/backup_test"
-  - name: Restore global or a_specific_vdom settings
+     scope: "vdom"
+     filename: "/tmp/backup_vdom"
+
+  - name: backup global settings
+    fortios_system_config_backup_restore:
+     config: "system config backup"
+     vdom: "{{ vdom }}"
+     backup: "yes"
+     scope: "global"
+     filename: "/tmp/backup_global"
+
+  - name: Restore a_specific_vdom settings
     fortios_system_config_backup_restore:
      config: "system config restore"
-     host:  "{{ host }}"
-     username: "{{ username }}"
-     password: "{{ password }}"
      vdom:  "{{ vdom }}"
-     https: True
-     ssl_verify: False
-     scope: "global or vdom"
-     filename: "/tmp/backup_test"
+     scope: "vdom"
+     filename: "/tmp/backup_vdom"
+
+  - name: Restore global settings
+    fortios_system_config_backup_restore:
+     config: "system config restore"
+     vdom:  "{{ vdom }}"
+     scope: "global"
+     filename: "/tmp/backup_global"
 
 '''
 
-RETURN = '''
-build:
-  description: Build number of the fortigate image
-  returned: always
-  type: str
-  sample: '1547'
-http_method:
-  description: Last method used to provision the content into FortiGate
-  returned: always
-  type: str
-  sample: 'PUT'
-http_status:
-  description: Last result given by FortiGate on last operation applied
-  returned: always
-  type: str
-  sample: "200"
-mkey:
-  description: Master key (id) used in the last call to FortiGate
-  returned: success
-  type: str
-  sample: "id"
-name:
-  description: Name of the table used to fulfill the request
-  returned: always
-  type: str
-  sample: "urlfilter"
-path:
-  description: Path of the table used to fulfill the request
-  returned: always
-  type: str
-  sample: "webfilter"
-revision:
-  description: Internal revision number
-  returned: always
-  type: str
-  sample: "17.0.2.10658"
-serial:
-  description: Serial number of the unit
-  returned: always
-  type: str
-  sample: "FGVMEVYYQT3AB5352"
-status:
-  description: Indication of the operation's result
-  returned: always
-  type: str
-  sample: "success"
-vdom:
-  description: Virtual domain used
-  returned: always
-  type: str
-  sample: "root"
-version:
-  description: Version of the FortiGate
-  returned: always
-  type: str
-  sample: "v5.6.3"
-
-'''
-from ansible.module_utils.basic import *
-# from fortiosapi import FortiOSAPI
 import json
 from argparse import Namespace
 import logging
 import difflib
 import re
+import base64
+from ansible.module_utils.basic import *
 from ansible.module_utils.connection import Connection
 from ansible_collections.fortinet.fortios.plugins.module_utils.fortios.fortios import FortiOSHandler
 from ansible_collections.fortinet.fortios.plugins.module_utils.fortimanager.common import FAIL_SOCKET_MSG
 
-# fos = FortiOSAPI()
 formatter = logging.Formatter(
     '%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
 logger = logging.getLogger('fortiosapi')
@@ -242,24 +119,6 @@ MONITOR_CALLS = [
     'system config restore',
 ]
 
-
-def login(fos, data):
-    host = data['host']
-    username = data['username']
-    password = data['password']
-    ssl_verify = data['ssl_verify']
-    if 'https' in data and not data['https']:
-        fos.https('off')
-    else:
-        fos.https('on')
-    fos.debug('on')
-    fos.login(host, username, password, verify=ssl_verify)
-
-
-def logout(fos):
-    fos.logout()
-
-
 def check_diff(data):
 
     # get the scope ['global' | 'vdom']
@@ -269,15 +128,14 @@ def check_diff(data):
     parameters = {'destination': 'file',
                   'scope': scope}
 
-    resp = fos.monitor('system/config',
-                       'backup',
+    resp = fos.monitor('system',
+                       'config/backup',
                        vdom=data['vdom'],
                        parameters=parameters)
 
     if resp['status'] != 'success':
         return True, False, {
             'status': resp['status'],
-            #'version': resp['version'],
             'results': resp['results']
         }
 
@@ -289,7 +147,6 @@ def check_diff(data):
                         'backup' + remote_filename,
                         vdom=data['vdom'],
                         parameters=parameters)
-    # version = fos.get_version()
 
     if resp.status_code == 200:
         filtered_remote_config_file = remove_sensitive_data(resp.content)
@@ -305,56 +162,40 @@ def check_diff(data):
 
         return False, True, {
             'status': resp.status_code,
-            #'version': version,
             'diff': differences
         }
     else:
         return True, False, {
             'status': resp.status_code,
-            #'version': version
         }
+
+def is_successful_status(status):
+    return status['status'] == "success" or \
+        status['http_method'] == "DELETE" and status['http_status'] == 404
 
 
 def fortigate_backup(fos, data):
     functions = data['config'].split()
 
     # backup config for specific scope
-    parameters = {'destination': 'file',
-                  'scope': data['scope']}
+    parameters = {
+        'destination': 'file',
+        'scope': data['scope'],
+    }
 
     resp = fos.monitor(functions[0] + '/' + functions[1],
                        functions[2],
                        vdom=data['vdom'],
                        parameters=parameters)
 
-    # version = fos.get_version()
     backup_content = ""
 
-    if 'status' in resp:  # Old versions use this mechanism
-        if resp['status'] != 'success':
-            return True, False, {
-                'status': resp['status'],
-                #'version': resp['version'],
-                'results': resp['results']
-            }
-
-        remote_filename = '/download?mkey=' + resp['results']['DOWNLOAD_SOURCE_FILE']
-        parameters = {'scope': data['scope']}
-        resp = fos.download(functions[0] + '/' + functions[1],
-                            functions[2] + remote_filename,
-                            vdom=data['vdom'],
-                            parameters=parameters)
-        if resp.status_code == 200:
-            backup_content = resp.content
-
-    elif 'status_code' in dir(resp):
-        if resp.status_code == 200:
-            backup_content = resp.text
-
+    if resp['http_status'] == 200:
+        backup_content = resp['text']
     else:
         return True, False, {
             'status': 500,
-            #'version': version
+            'resp': resp
         }
 
     file = open(data['filename'], 'w')
@@ -363,49 +204,52 @@ def fortigate_backup(fos, data):
 
     return False, False, {
         'status': 200,
-        #'version': version,
         'backup': backup_content
     }
 
 
 # Make sure the specific VDOM exists in the fortigate before restoring it. Using fortios_system_vdom module to create a VDOM.
 def fortigate_upload(fos, data):
-    if data['diff']:
+    if data['diff'] == True:
         return check_diff(data)
 
     # get the scope ['global' | 'VDOM']
     scope = data['scope']
     functions = data['config'].split()
 
-    # paramters for global_restore | VDOM_restore
-    parameters = {'global': '1'} if scope == 'global' else {'vdom': data['vdom']}
-    upload_data = {'source': 'upload', 'scope': scope}
-    files = {'file': ('backup_data', open(data['filename'], 'r'), 'text/plain')}
+    upload_data = {
+        'source': 'upload',
+        'scope': scope,
+        'vdom': data['vdom'],
+        'file_content': base64.b64encode(str.encode(open(data['filename'], 'r').read())).decode(),
+    }
 
+    # files = {'file': ('backup_data', open(data['filename'], 'r'), 'text/plain')}
     # If 'vdom' scope specified, the name of VDOM to restore configuration
-    resp = fos.upload(functions[0] + '/' + functions[1], functions[2],
-                      data=upload_data,
-                      parameters=parameters,
-                      vdom=data['vdom'],
-                      files=files)
-    # version = fos.get_version()
+    resp = fos.monitor(
+        functions[0] + '/' + functions[1], functions[2],
+        data=upload_data,
+        vdom=data['vdom'],
+        # files=files,
+        method='POST',
+    )
 
-    if resp.status_code == 200:
+    if is_successful_status(resp):
         return False, True, {
-            'status': resp.status_code,
-            #'version': version,
-            'result': resp.content
+            'status': resp['status'],
+            'result': resp
         }
     else:
         return True, False, {
-            'status': resp.status_code,
-            #'version': version,
-            'result': resp.content
+            'status': resp['status'],
+            'result': resp
         }
 
 
 def main():
+    mkeyname = 'name'
     fields = {
+        "access_token": {"required": False, "type": "str", "no_log": True},
         "host": {"required": False, "type": "str"},
         "password": {"required": False, "type": "str", "no_log": True},
         "username": {"required": False, "type": "str"},
@@ -424,26 +268,14 @@ def main():
     module = AnsibleModule(argument_spec=fields,
                            supports_check_mode=False)
 
-    # legacy_mode refers to using fortiosapi instead of HTTPAPI
-    legacy_mode = 'host' in module.params and module.params['host'] is not None and \
-                  'username' in module.params and module.params['username'] is not None and \
-                  'password' in module.params and module.params['password'] is not None
+    if module._socket_path:
+        connection = Connection(module._socket_path)
+        if 'access_token' in module.params:
+            connection.set_option('access_token', module.params['access_token'])
 
-    versions_check_result = None
-    if not legacy_mode:
-        if module._socket_path:
-            connection = Connection(module._socket_path)
-            fos = FortiOSHandler(connection)
-        else:
-            module.fail_json(**FAIL_SOCKET_MSG)
+        fos = FortiOSHandler(connection, module, mkeyname)
     else:
-        try:
-            from fortiosapi import FortiOSAPI
-        except ImportError:
-            module.fail_json(msg="fortiosapi module is required")
-
-        fos = FortiOSAPI()
-        login(fos, module.params)
+            module.fail_json(**FAIL_SOCKET_MSG)
 
     module.params['diff'] = False
     try:
@@ -464,8 +296,6 @@ def main():
             module.exit_json(changed=has_changed, meta=result)
     else:
         module.fail_json(msg="Error", meta=result)
-
-    logout(fos)
 
 if __name__ == '__main__':
     main()

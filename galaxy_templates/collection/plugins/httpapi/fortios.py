@@ -88,9 +88,11 @@ class HttpApi(HttpApiBase):
         if self.get_access_token() is None:
             self.log('login with username and password')
             data = "username=" + urllib.parse.quote(username) + "&secretkey=" + urllib.parse.quote(password) + "&ajax=1"
+            # /logincheck returns a text regardless of the accept header
             dummy, result_data = self.send_request(url='/logincheck', data=data, method='POST')
-            self.log('login with user: %s %s' % (username, 'succeeds' if result_data[0] == '1' else 'fails'))
-            if result_data[0] != '1':
+            result_json = json.loads(result_data)
+            self.log('login with user: %s %s' % (username, 'succeeds' if result_json['text'][0] == '1' else 'fails'))
+            if result_json['text'][0] != '1':
                 raise Exception('Wrong credentials. Please check')
         # If we succeed to login, we retrieve the system status first
         else:
@@ -100,7 +102,6 @@ class HttpApi(HttpApiBase):
 
             if status == 401:
                 raise Exception('Invalid access token. Please check')
-
         self.update_system_version()
 
     def logout(self):
@@ -181,13 +182,24 @@ class HttpApi(HttpApiBase):
         params = message_kwargs.get('params', {})
 
         url = self._concat_params(url, params)
-        self.log('send request: METHOD:%s URL:%s DATA:%s' % (method, url, data))
+        self.log('send request: METHOD:%s URL:%s DATA:%s' % (method, url, to_text(data)[:100] + "..."))
         try:
             response, response_data = self.connection.send(url, data, method=method)
 
-            json_formatted = to_text(response_data.getvalue())
+            response_text = to_text(response_data.getvalue())
 
-            return response.status, json_formatted
+            self.log('whole response for METHOD:%s URL:%s ' % (method, url))
+            self.log(to_text(response.headers['Content-Type']))
+            self.log(response.status)
+            self.log(response_text[:100])
+            if response.headers['Content-Type'] == "application/json":
+                return response.status, response_text
+            else:
+                ## convert raw text responses into a json string for some APIs like config/backup
+                return response.status, json.dumps({
+                    'text': response_text,
+                    'http_status': response.status
+                })
         except Exception as err:
             raise Exception(err)
 
