@@ -58,9 +58,14 @@ class HttpApi(HttpApiBase):
         self._system_version = None
         self._ansible_fos_version = '{{__fortios_version__}}'
         self._ansible_galaxy_version = '{{__galaxy_version__}}'
-        self._log = open("/tmp/fortios.ansible.log", "a")
+        self._log = None
 
     def log(self, msg):
+        log_enabled = self._conn.get_option('enable_log')
+        if not log_enabled:
+            return
+        if not self._log:
+            self._log = open("/tmp/fortios.ansible.log", "a")
         log_message = str(datetime.now())
         log_message += ": " + str(msg) + '\n'
         self._log.write(log_message)

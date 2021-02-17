@@ -348,6 +348,7 @@ def main():
     mkeyname = {% if mkeyname -%} '{{mkeyname|replace("_", "-")}}' {%- else -%} None {%- endif %}
     fields = {
         "access_token": {"required": False, "type": "str", "no_log": True},
+        "enable_log": {"required": False, "type": bool},
         "vdom": {"required": False, "type": "str", "default": "root"},
         {%if movable -%}
         "action": {"type": "str", "required": False, "choices": ["move"]},
@@ -381,6 +382,10 @@ def main():
         if 'access_token' in module.params:
             connection.set_option('access_token', module.params['access_token'])
 
+        if 'enable_log' in module.params:
+            connection.set_option('enable_log', module.params['enable_log'])
+        else:
+            connection.set_option('enable_log', False)
         fos = FortiOSHandler(connection, module, mkeyname)
         versions_check_result = check_schema_versioning(fos, versioned_schema, "{{path}}_{{name}}")
         {% if supports_check_mode %}
