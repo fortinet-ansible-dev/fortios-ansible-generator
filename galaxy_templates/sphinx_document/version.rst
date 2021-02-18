@@ -34,6 +34,7 @@ compatibility issues.
 +---------------+---------------------+----------------+-----------------------------------------------------------------+
 | 6.4.0         | 1.1.7 ``latest``    | 2020/12/21     | ``ansible-galaxy collection install fortinet.fortios:1.1.7``    |
 +---------------+---------------------+----------------+-----------------------------------------------------------------+
+
 **Note**: Use ``-f`` option (i.e.
 ``ansible-galaxy collection install -f fortinet.fortios:x.x.x``) to
 renew your existing local installation.
