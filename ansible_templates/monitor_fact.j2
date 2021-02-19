@@ -1,0 +1,135 @@
+from __future__ import (absolute_import, division, print_function)
+
+__metaclass__ = type
+
+ANSIBLE_METADATA = {'status': ['preview'],
+                    'supported_by': 'community',
+                    'metadata_version': '1.1'}
+
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.connection import Connection
+from ansible_collections.fortinet.fortios.plugins.module_utils.fortios.fortios import FortiOSHandler
+from ansible_collections.fortinet.fortios.plugins.module_utils.fortios.fortios import check_legacy_fortiosapi
+from ansible_collections.fortinet.fortios.plugins.module_utils.fortimanager.common import FAIL_SOCKET_MSG
+
+module_selectors_defs = {
+    {%- for selector, def in selectors.items() %}
+    "{{ selector }}": {
+        "url": "{{def['url']}}",
+        "params": {
+            {%- for param_name, param in def['params'].items() %}
+            "{{ param_name }}": {
+                "type": "{{ param['type'] }}"
+            }{%- if not loop.last%},{%endif -%}
+            {%- endfor %}
+        }
+    }{%- if not loop.last%},{%endif -%}
+    {%- endfor%}
+}
+
+
+def is_successful_status(status):
+    return status['status'] == "success" or \
+        'http_method' in status and status['http_method'] == "DELETE" and status['http_status'] == 404
+
+
+def validate_parameters(fos):
+    #parameter validation will not block task, warning will be provided in case of parameters validation.
+    mod_params = fos._module.params
+    selector = mod_params['selector']
+    params = mod_params['params']
+
+    if params:
+        for param_key, param_value in params.items():
+            if type(param_value) not in [bool, int, str]:
+                return False, {'message': 'value of param:%s must be atomic' % (param_key)}
+
+    required_param_names = list(module_selectors_defs[selector]['params'].keys())
+    provided_param_names = list(params.keys() if params else [])
+
+    params_valid = True
+    for param_name in required_param_names:
+        if param_name not in provided_param_names:
+            params_valid = False
+            break
+    if params_valid:
+        for param_name in provided_param_names:
+            if param_name not in required_param_names:
+                params_valid = False
+                break
+    if not params_valid:
+        param_summary = ['%s(%s)' % (param_name, param['type']) for param_name, param in module_selectors_defs[selector]['params'].items()]
+        fos._module.warn("selector:%s expects params:%s" % (selector, str(param_summary)))
+    return True, {}
+
+def fortios_monitor_fact(fos):
+    validate_parameters(fos)
+    valid, result = validate_parameters(fos)
+    if not valid:
+        return True, False, result
+
+    params = fos._module.params
+
+    selector = params['selector']
+    selector_params = params['params']
+
+    fact = fos.monitor_get(module_selectors_defs[selector]['url'], params['vdom'], selector_params)
+
+    return not is_successful_status(fact), False, fact
+
+def main():
+    fields = {
+        "access_token": {"required": False, "type": "str", "no_log": True},
+        "vdom": {"required": False, "type": "str", "default": "root"},
+        "enable_log": {"required": False, "type": bool},
+        "params": {"required": False, "type": "dict" },
+        "selector": {
+            "required": True,
+            "type": "str",
+            "options": [
+                {% for selector in selectors.keys() -%}
+                "{{selector}}",
+                {% endfor -%}
+            ],
+        }
+    }
+
+    check_legacy_fortiosapi()
+    module = AnsibleModule(argument_spec=fields,
+                           supports_check_mode=False)
+
+    versions_check_result = None
+    if module._socket_path:
+        connection = Connection(module._socket_path)
+        if 'access_token' in module.params:
+            connection.set_option('access_token', module.params['access_token'])
+
+        # Logging for fact module could be disabled/enabled.
+        if 'enable_log' in module.params:
+            connection.set_option('enable_log', module.params['enable_log'])
+        else:
+            connection.set_option('enable_log', False)
+
+        fos = FortiOSHandler(connection, module)
+
+        is_error, has_changed, result = fortios_monitor_fact(fos)
+    else:
+        module.fail_json(**FAIL_SOCKET_MSG)
+
+    if versions_check_result and versions_check_result['matched'] is False:
+        module.warn("Ansible has detected version mismatch between FortOS system and galaxy, see more details by specifying option -vvv")
+
+    if not is_error:
+        if versions_check_result and versions_check_result['matched'] is False:
+            module.exit_json(changed=has_changed, version_check_warning=versions_check_result, meta=result)
+        else:
+            module.exit_json(changed=has_changed, meta=result)
+    else:
+        if versions_check_result and versions_check_result['matched'] is False:
+            module.fail_json(msg="Error in repo", version_check_warning=versions_check_result, meta=result)
+        else:
+            module.fail_json(msg="Error in repo", meta=result)
+
+if __name__ == '__main__':
+    main()
