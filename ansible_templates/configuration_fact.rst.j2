@@ -35,6 +35,7 @@ Parameters
 
     <ul>
     <li> <span class="li-head">vdom</span> - Virtual domain, among those defined previously. A vdom is a virtual instance of the FortiGate that can be configured and used as a different unit. <span class="li-normal">type: str</span> <span class="li-required">required: False</span> <span class="li-normal">default: root</span></li>
+    <li> <span class="li-head">enable_log</span> - Enable/Disable logging for task. <span class="li-normal">type: bool</span> <span class="li-required">required: False</span> <span class="li-normal">default: False</span> </li>
     <li> <span class="li-head">access_token</span> - Token-based authentication. Generated from GUI of Fortigate. <span class="li-normal">type: str</span> <span class="li-required">required: False</span> </li>
     <li><span class="li-head">selector</span> - selector of the retrieved fortimanager facts <span class="li-normal">type: str</span> <span class="li-required">choices:</span></li>
         <li style="list-style: none;"><section class="accordion">
@@ -49,7 +50,7 @@ Parameters
         {% set ns.selectors = ns.selectors + [selector] -%}
         {% endfor -%}
         {% for selector in ns.selectors | sort -%}
-        {% if 'diagnose__' not in selector and 'execute__' not in selector -%}
+        {% if 'diagnose__' not in selector and 'execute__' not in selector and 'test_' not in selector and '_notification' != selector -%}
         <li><span class="li-normal">{{selector}}</span> {% if selectors[selector]['mkey'] %} <span class="li-required">param: {{ selectors[selector]['mkey'] }}</span>  <span class="li-required">type: {{ selectors[selector]['mkey_type'] }}</span>{% endif%}</li>
         {% endif -%}
         {% endfor -%}

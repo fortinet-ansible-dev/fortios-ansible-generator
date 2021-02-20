@@ -290,7 +290,7 @@ def renderFactModule(schema_results, version):
                 'mkey_type': convert_mkey_type(schema_result['schema'].get('mkey_type', None)),
             }
             for schema_result in schema_results
-            if 'diagnose' not in schema_result['path'] and 'execute' not in schema_result['path']
+            if 'diagnose' not in schema_result['path'] and 'execute' not in schema_result['path'] and 'test' != schema_result['path'] and '' != schema_result['path']
         }
 
     output = template.render(**locals())
@@ -391,7 +391,7 @@ def jinjaExecutor(number=None):
     if not number:
         real_counter = 0
         for i, pn in enumerate(fgt_sch_results):
-            if 'diagnose_' not in pn['path'] and 'execute_' not in pn['path'] and 'test' != pn['path']:
+            if 'diagnose_' not in pn['path'] and 'execute_' not in pn['path'] and 'test' != pn['path'] and '' != pn['path']:
                 module_name = getModuleName(pn['path'], pn['name'])
                 print('\n\033[0mParsing schema:')
                 print('\033[0mModule name: \033[92m' + module_name)

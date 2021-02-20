@@ -71,13 +71,9 @@ def fortios_configuration_fact(params, fos):
 
 def main():
     fields = {
-        "host": {"required": False, "type": "str"},
-        "username": {"required": False, "type": "str"},
-        "password": {"required": False, "type": "str", "default": "", "no_log": True},
         "access_token": {"required": False, "type": "str", "no_log": True},
         "vdom": {"required": False, "type": "str", "default": "root"},
-        "https": {"required": False, "type": "bool", "default": True},
-        "ssl_verify": {"required": False, "type": "bool", "default": True},
+        "enable_log": {"required": False, "type": bool},
         "params": {"required": False, "type": "dict" },
         "selector": {
             "required": True,
@@ -99,6 +95,10 @@ def main():
         connection = Connection(module._socket_path)
         if 'access_token' in module.params:
             connection.set_option('access_token', module.params['access_token'])
+        if 'enable_log' in module.params:
+            connection.set_option('enable_log', module.params['enable_log'])
+        else:
+            connection.set_option('enable_log', False)
 
         fos = FortiOSHandler(connection, module)
 
