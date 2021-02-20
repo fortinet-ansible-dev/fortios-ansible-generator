@@ -12,3 +12,4 @@ The Modules to gather FortiOS fatcs are invoking ``GET`` requests for FortiOS ma
 
    fortios_facts.rst
    fortios_configuration_fact.rst
+   fortios_monitor_fact.rst
