@@ -40,6 +40,18 @@ notes:
 requirements:
     - fortiosapi>=0.9.8
 options:
+    access_token:
+        description:
+            - Token-based authentication.
+              Generated from GUI of Fortigate.
+        type: str
+        required: false
+    enable_log:
+        description:
+            - Enable/Disable logging for task.
+        type: bool
+        required: false
+        default: false
     vdom:
         description:
             - Virtual domain, among those defined previously. A vdom is a
@@ -334,6 +346,7 @@ def fortios_json(data, fos):
 def main():
     fields = {
         "access_token": {"required": False, "type": "str", "no_log": True},
+        "enable_log": {"required": False, "type": bool},
         "vdom": {"required": False, "type": "str", "default": "root"},
         "json_generic": {
             "required": False, "type": "dict", "default": None,
@@ -359,6 +372,10 @@ def main():
         connection = Connection(module._socket_path)
         if 'access_token' in module.params:
             connection.set_option('access_token', module.params['access_token'])
+        if 'enable_log' in module.params:
+            connection.set_option('enable_log', module.params['enable_log'])
+        else:
+            connection.set_option('enable_log', False)
         fos = FortiOSHandler(connection, module)
         is_error, has_changed, result = fortios_json(module.params, fos)
     else:
