@@ -65,13 +65,22 @@ def generate_monitor_fact(version):
                 schemas[selector]['params'][param_name] = dict()
                 schemas[selector]['params'][param_name]['type'] = param_type
                 schemas[selector]['params'][param_name]['description'] = param_desc
-
+                schemas[selector]['description'] = api_item['summary'] if 'summary' in api_item else ''
     file_loader = FileSystemLoader('ansible_templates')
     env = Environment(loader=file_loader,
                       lstrip_blocks=False, trim_blocks=False)
+
+    # Render module code
     template = env.get_template('monitor_fact.j2')
     data = template.render(selectors=schemas)
     output_path = 'output/' + version + '/fortios_monitor_fact.py'
+    with open(output_path, 'w') as f:
+        f.write(data)
+        f.flush()
+    # Render Sphinx doc
+    template = env.get_template('monitor_fact.rst.j2')
+    data = template.render(selectors=schemas)
+    output_path = 'output/' + version + '/fortios_monitor_fact.rst'
     with open(output_path, 'w') as f:
         f.write(data)
         f.flush()
