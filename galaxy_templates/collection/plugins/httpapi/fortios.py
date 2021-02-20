@@ -192,6 +192,7 @@ class HttpApi(HttpApiBase):
 
             json_formatted = to_text(response_data.getvalue())
 
+            self.log("response data: %s" % (json_formatted))
             return response.status, json_formatted
         except Exception as err:
             raise Exception(err)
@@ -204,7 +205,6 @@ class HttpApi(HttpApiBase):
             return
         url = '/api/v2/cmdb/system/interface?vdom=root&action=schema'
         status, result = self.send_request(url=url)
-        self.log('update sys ver: ' + str(status) + ' len=' + str(len(to_text(result))))
         result_json = json.loads(result)
         self._system_version = result_json.get('version', 'undefined')
         self.log('system version: %s' % (self._system_version))

@@ -322,6 +322,12 @@ class FortiOSHandler(object):
                 return None
         return mkey
 
+    def monitor_get(self, url, vdom=None, parameters=None):
+        slash_index = url.find('/')
+        full_url = self.mon_url(url[: slash_index], url[slash_index + 1: ], vdom)
+        status, result_data = self._conn.send_request(url=full_url, params=parameters, method='GET')
+        return self.formatresponse(result_data, vdom=vdom)
+
     def get(self, path, name, vdom=None, mkey=None, parameters=None):
         url = self.cmdb_url(path, name, vdom, mkey=mkey)
 
