@@ -386,12 +386,25 @@ class FortiOSHandler(object):
         status, result_data = self._conn.send_request(url=url, params=parameters, data=json.dumps(data), method='DELETE')
         return self.formatresponse(result_data, vdom=vdom)
 
+    def __to_local(self, data, is_array=False):
+        try:
+            resp = json.loads(data)
+        except:
+            resp = {'raw': data}
+        if is_array and type(resp) is not list:
+            resp = [resp]
+        if is_array and 'status' not in resp[0]:
+            resp[0]['status'] = 'success'
+        elif not is_array and 'status' not in resp:
+            resp['status'] = 'success'
+        return resp
+
     def formatresponse(self, res, vdom=None):
         if vdom == "global":
-            resp = json.loads(to_text(res))[0]
+            resp = self.__to_local(to_text(res), True)[0]
             resp['vdom'] = "global"
         else:
-            resp = json.loads(to_text(res))
+            resp = self.__to_local(to_text(res), False)
         return resp
 
     def jsonraw(self, method, path, data, specific_params, vdom=None, parameters=None):
