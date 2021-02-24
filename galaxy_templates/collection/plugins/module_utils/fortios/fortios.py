@@ -157,10 +157,10 @@ class FortiOSHandler(object):
 
         return self.formatresponse(result_data, vdom=vdom)
 
-    def monitor(self, path, name, vdom=None, mkey=None, parameters=None):
+    def monitor(self, path, name, vdom=None, mkey=None, parameters=None, data=None, method='GET'):
         url = self.mon_url(path, name, vdom, mkey)
 
-        status, result_data = self._conn.send_request(url=url, params=parameters, method='GET')
+        status, result_data = self._conn.send_request(url=url, params=parameters, data=json.dumps(data), method=method)
 
         return self.formatresponse(result_data, vdom=vdom)
 
