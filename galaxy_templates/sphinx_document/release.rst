@@ -33,6 +33,20 @@ playbook:
 **Simply installing a matched FortiOS collection can prevent potential
 compatibility issues.**
 
+Release Galaxy 1.1.9
+--------------------
+
+Release Targets
+^^^^^^^^^^^^^^^
+
+- fos\_v6.0.0/galaxy\_1.1.9
+
+Bug Fixes
+^^^^^^^^^
+
+- Fix legacy module ``fortios_system_config_backup_restore``
+
+
 Release Galaxy 1.1.6 … 1.1.8
 -----------------------------
 
