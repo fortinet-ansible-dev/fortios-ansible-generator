@@ -149,6 +149,6 @@ def generate_monitor_modules(version):
     print('api_item:', get_api_items)
 
 if __name__ == '__main__':
-    #generate_cofiguration_fact_rst()
-    #generate_monitor_fact('v6.0.0')
+    generate_cofiguration_fact_rst()
+    generate_monitor_fact('v6.0.0')
     generate_monitor_modules('v6.4.0')
