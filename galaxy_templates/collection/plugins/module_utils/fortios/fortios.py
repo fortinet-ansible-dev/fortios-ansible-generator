@@ -329,8 +329,9 @@ class FortiOSHandler(object):
         status, result_data = self._conn.send_request(url=full_url, params=parameters, method='GET')
         return self.formatresponse(result_data, vdom=vdom)
 
-    def monitor_post(self, path, name, action, data=None, vdom=None, mkey=None, parameters=None):
-        url = self.mon_url(path, name + '/' + action, vdom, mkey)
+    def monitor_post(self, url, data=None, vdom=None, mkey=None, parameters=None):
+        slash_index = url.find('/')
+        url = self.mon_url(url[: slash_index], url[slash_index + 1: ], vdom)
 
         status, result_data = self._conn.send_request(url=url, params=parameters, data=json.dumps(data), method='POST')
 
