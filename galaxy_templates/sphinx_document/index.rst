@@ -33,6 +33,7 @@ The FortiOS Ansible Collection provides Ansible modules for configuring FortiOS 
    modules.rst
    fact.rst
    generic.rst
+   monitor.rst
 
 .. toctree::
    :glob:
