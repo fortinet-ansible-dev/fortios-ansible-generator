@@ -135,6 +135,47 @@ def generate_monitor_modules(version):
         f.write(data)
         f.flush()
 
+def generate_monitor_rst(version):
+    file_loader = FileSystemLoader('ansible_templates')
+    env = Environment(loader=file_loader,
+                      lstrip_blocks=False, trim_blocks=False)
+    monitor_schema_file = open('monitor_schema.json').read()
+    monitor_schema = json.loads(monitor_schema_file)
+    post_api_items = dict()
+    assert('directory' in monitor_schema)
+    for api_item in monitor_schema['directory']:
+        assert('request' in api_item)
+        assert('http_method' in api_item['request'])
+        if api_item['request']['http_method'] != 'POST':
+            continue
+        path = api_item['path']
+        name = api_item['name']
+        action = api_item['action']
+        key = '%s.%s.%s' % (action, path, name)
+        if action == 'select':
+            key = '%s.%s' % (path, name)
+        assert(key not in post_api_items)
+        post_api_items[key] = api_item
+    schemas = dict()
+    for api_item_key in post_api_items:
+        api_item = post_api_items[api_item_key]
+        schemas[api_item_key] = dict()
+        schemas[api_item_key]['description'] = api_item['summary'] if 'summary' in api_item else ''
+        schemas[api_item_key]['params'] = dict()
+        if 'parameters' in api_item['request']:
+            for param in api_item['request']['parameters']:
+                param_name = param['name']
+                param_type = param['type']
+                param_desc = param['summary']
+                schemas[api_item_key]['params'][param_name] = dict()
+                schemas[api_item_key]['params'][param_name]['type'] = param_type
+                schemas[api_item_key]['params'][param_name]['description'] = param_desc
+    template = env.get_template('monitor.rst.j2')
+    data = template.render(actions=schemas)
+    output_path = 'output/' + version + '/fortios_monitor_config.rst'
+    with open(output_path, 'w') as f:
+        f.write(data)
+        f.flush()
 
 if __name__ == '__main__':
     generate_cofiguration_fact_rst()

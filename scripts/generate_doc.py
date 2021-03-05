@@ -266,7 +266,7 @@ def generate_document(mod, dst):
     with open(dst, 'w') as f:
         f.write(ddata)
 
-except_list = ['fortios_configuration_fact.rst', 'fortios_monitor_fact.rst']
+except_list = ['fortios_configuration_fact.rst', 'fortios_monitor_fact.rst', 'fortios_monitor_config.rst']
 def main():
     if len(sys.argv) != 3:
         print('incomplete arguments list')

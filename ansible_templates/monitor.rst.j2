@@ -1,0 +1,155 @@
+:source: fortios_monitor_config.py
+
+:orphan:
+
+.. :
+
+fortios_monitor_config -- Ansible Module for FortiOS Monitor API.
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+.. versionadded:: 2.10
+
+.. contents::
+   :local:
+   :depth: 1
+
+
+Synopsis
+--------
+- Request FortiOS appliances to perform specific actions or procedures. This module contain all the FortiOS monitor API.
+
+
+
+Requirements
+------------
+The below requirements are needed on the host that executes this module.
+
+- install galaxy collection fortinet.fortios 
+
+
+Parameters
+----------
+
+
+.. raw:: html
+
+    <ul>
+    <li> <span class="li-head">vdom</span> - Virtual domain, among those defined previously. A vdom is a virtual instance of the FortiGate that can be configured and used as a different unit. <span class="li-normal">type: str</span> <span class="li-required">required: False</span> <span class="li-normal">default: root</span></li>
+    <li> <span class="li-head">enable_log</span> - Enable/Disable logging for task. <span class="li-normal">type: bool</span> <span class="li-required">required: False</span> <span class="li-normal">default: False</span> </li>
+    <li> <span class="li-head">access_token</span> - Token-based authentication. Generated from GUI of Fortigate. <span class="li-normal">type: str</span> <span class="li-required">required: False</span> </li>
+    <li><span class="li-head">selector</span> - Action taken in FortiOS appliance. <span class="li-normal">type: str</span> <span class="li-required">choices:</span></li>
+        <li style="list-style: none;"><section class="accordion">
+        <input type="checkbox" name="collapse" id="handle2">
+        <h2 class="handle">
+            <label for="handle2"><u>Show full selector list...</u></label>
+        </h2>
+        <div class="content">
+        <ul class="ul-self">
+        {% set ns = namespace(actions=[]) -%}
+        {% for action in actions -%}
+        {% set ns.actions = ns.actions + [action] -%}
+        {% endfor -%}
+        {% for action in ns.actions | sort -%}
+        <li><span class="li-head">{{action}}</span> {% if actions[action]['description'] %}- {{ actions[action]['description'] }} {% endif %}
+        {% if actions[action]['params'] != {} -%}
+            <ul class="ul-self">
+                {% for param_name in actions[action]['params'] -%}
+                    <li><span class="li-required">{{ param_name }}</span> - {{ actions[action]['params'][param_name]['description'] }} <span class="li-normal">type: {{ actions[action]['params'][param_name]['type'] }} </span> </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        </li>
+        {% endfor -%}
+        </ul>
+        </div>
+        </section>
+    <li><span class="li-head">params</span> - the parameter for each action, see definition in above list.<span class="li-normal">type: dict</span></li>
+
+
+Notes
+-----
+
+.. note::
+
+   - Different ``selector`` may have different parameters, users are expected to look up them in the dropdown list above..
+
+   - For some selectors, no ``params`` are allowed to appear.
+
+   - Not all parameters are required for a selector.
+
+   - This module is exclusivly for FortiOS monitor API.
+
+   - The result of API request is stored in ``results``.
+
+
+Examples
+--------
+
+.. code-block:: yaml+jinja
+    
+ - hosts: fortigate03
+   connection: httpapi
+   collections:
+   - fortinet.fortios
+   vars:
+    vdom: "root"
+    ansible_httpapi_use_ssl: yes
+    ansible_httpapi_validate_certs: no
+    ansible_httpapi_port: 443
+   tasks:
+
+   - name: Activate FortiToken
+     fortios_monitor_config:
+        vdom: "root"
+        access_token: "<fortios_access_token>"
+        selector: 'activate.user.fortitoken'
+        params:
+            tokens: '<token string>'
+
+   - name: Reboot This Device
+     fortios_monitor_config:
+        vdom: "root"
+        access_token: "<fortios_access_token>"
+        selector: 'reboot.system.os'
+        params:
+            event_log_message: 'Reboot Request From Ansible'
+
+
+Return Values
+-------------
+Common return values are documented: https://docs.ansible.com/ansible/latest/reference_appendices/common_return_values.html#common-return-values, the following are the fields unique to this module:
+
+.. raw:: html
+
+    <ul>
+
+    <li> <span class="li-return">build</span> - Build number of the fortigate image <span class="li-normal">returned: always</span> <span class="li-normal">type: str</span> <span class="li-normal">sample: 1547</span></li>
+    <li> <span class="li-return">http_method</span> - Last method used to provision the content into FortiGate <span class="li-normal">returned: always</span> <span class="li-normal">type: str</span> <span class="li-normal">sample: GET</span></li>
+    <li> <span class="li-return">name</span> - Name of the table used to fulfill the request <span class="li-normal">returned: always</span> <span class="li-normal">type: str</span> <span class="li-normal">sample: firmware</span></li>
+    <li> <span class="li-return">path</span> - Path of the table used to fulfill the request <span class="li-normal">returned: always</span> <span class="li-normal">type: str</span> <span class="li-normal">sample: system</span></li>
+    <li> <span class="li-return">results</span> - Object list retrieved from device. <span class="li-normal">returned: always</span> <span class="li-normal">type: list</span></li>
+    <li> <span class="li-return">revision</span> - Internal revision number <span class="li-normal">returned: always</span> <span class="li-normal">type: str</span> <span class="li-normal">sample: 17.0.2.10658</span></li>
+    <li> <span class="li-return">serial</span> - Serial number of the unit <span class="li-normal">returned: always</span> <span class="li-normal">type: str</span> <span class="li-normal">sample: FGVMEVYYQT3AB5352</span></li>
+    <li> <span class="li-return">status</span> - Indication of the operation's result <span class="li-normal">returned: always</span> <span class="li-normal">type: str</span> <span class="li-normal">sample: success</span></li>
+    <li> <span class="li-return">vdom</span> - Virtual domain used <span class="li-normal">returned: always</span> <span class="li-normal">type: str</span> <span class="li-normal">sample: root</span></li>
+    <li> <span class="li-return">version</span> - Version of the FortiGate <span class="li-normal">returned: always</span> <span class="li-normal">type: str</span> <span class="li-normal">sample: v5.6.3</span></li>
+    <li> <span class="li-return">ansible_facts</span> - The list of fact subsets collected from the device <span class="li-normal">returned: always</span> <span class="li-normal">type: dict</span></li>
+    </ul>
+
+Status
+------
+
+- This module is not guaranteed to have a backwards compatible interface.
+
+
+Authors
+-------
+
+- Link Zheng (@chillancezen)
+- Jie Xue (@JieX19)
+- Hongbin Lu (@fgtdev-hblu)
+- Frank Shen (@fshen01)
+
+
+.. hint::
+    If you notice any issues in this documentation, you can create a pull request to improve it.
