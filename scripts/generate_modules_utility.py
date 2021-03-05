@@ -7,8 +7,8 @@ def generate_cofiguration_fact_rst(schema_results, version):
     env = Environment(loader=file_loader,
                       lstrip_blocks=False, trim_blocks=False)
     template = env.get_template('configuration_fact.rst.j2')
-   
-    selectors = dict() 
+
+    selectors = dict()
     for schema_result in schema_results:
         selector = schema_result['path'] + "_" + schema_result['name']
         mkey = schema_result['schema'].get('mkey', None)
@@ -85,6 +85,58 @@ def generate_monitor_fact(version):
         f.write(data)
         f.flush()
 
+
+def generate_monitor_modules(version):
+    # Init template to generate a single module
+    file_loader = FileSystemLoader('ansible_templates')
+    env = Environment(loader=file_loader,
+                      lstrip_blocks=False, trim_blocks=False)
+    template = env.get_template('monitor_config.j2')
+
+    monitor_schema_file = open('monitor_schema.json').read()
+    monitor_schema = json.loads(monitor_schema_file)
+    post_api_items = dict()
+    assert('directory' in monitor_schema)
+    for api_item in monitor_schema['directory']:
+        assert('request' in api_item)
+        assert('http_method' in api_item['request'])
+        if api_item['request']['http_method'] != 'POST':
+            continue
+        path = api_item['path']
+        name = api_item['name']
+        action = api_item['action']
+        key = '%s/%s/%s' % (path, name, action)
+        assert(key not in post_api_items)
+        post_api_items[key] = api_item
+    schemas = dict()
+    for api_item_key in post_api_items:
+        api_item = post_api_items[api_item_key]
+        selector = '%s.%s.%s' % (api_item['action'], api_item['path'], api_item['name'])
+        if api_item['action'] == 'select':
+            selector = '%s.%s' % (api_item['path'], api_item['name'])
+        assert(selector not in schemas)
+        schemas[selector] = dict()
+        schemas[selector]['url'] = api_item_key
+        schemas[selector]['params'] = dict()
+        assert(api_item['request']['http_method'] == 'POST')
+        if 'parameters' in api_item['request']:
+            for param in api_item['request']['parameters']:
+                param_name = param['name']
+                param_type = param['type']
+                param_desc = param['summary'] if 'summary' in param else ''
+                schemas[selector]['params'][param_name] = dict()
+                schemas[selector]['params'][param_name]['type'] = param_type
+                schemas[selector]['params'][param_name]['description'] = param_desc
+                schemas[selector]['description'] = api_item['summary'] if 'summary' in api_item else ''
+
+    data = template.render(selectors=schemas)
+    output_path = 'output/' + version + '/fortios_monitor_config.py'
+    with open(output_path, 'w') as f:
+        f.write(data)
+        f.flush()
+
+
 if __name__ == '__main__':
-    #generate_cofiguration_fact_rst()
+    generate_cofiguration_fact_rst()
     generate_monitor_fact('v6.0.0')
+    generate_monitor_modules('v6.0.0')

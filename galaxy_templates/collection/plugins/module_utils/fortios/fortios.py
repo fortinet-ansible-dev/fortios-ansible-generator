@@ -128,6 +128,7 @@ def schema_to_module_spec(schema):
         assert(False)
     return rdata
 
+
 def __check_version(revisions, version):
     result = dict()
     resolved_versions = list(revisions.keys())
@@ -326,6 +327,14 @@ class FortiOSHandler(object):
         slash_index = url.find('/')
         full_url = self.mon_url(url[: slash_index], url[slash_index + 1: ], vdom)
         status, result_data = self._conn.send_request(url=full_url, params=parameters, method='GET')
+        return self.formatresponse(result_data, vdom=vdom)
+
+    def monitor_post(self, url, data=None, vdom=None, mkey=None, parameters=None):
+        slash_index = url.find('/')
+        url = self.mon_url(url[: slash_index], url[slash_index + 1: ], vdom)
+
+        status, result_data = self._conn.send_request(url=url, params=parameters, data=json.dumps(data), method='POST')
+
         return self.formatresponse(result_data, vdom=vdom)
 
     def get(self, path, name, vdom=None, mkey=None, parameters=None):
