@@ -440,6 +440,9 @@ def jinjaExecutor(number=None):
     from generate_modules_utility import generate_monitor_fact
     generate_monitor_fact(fgt_schema['version'])
 
+    from generate_modules_utility import generate_monitor_modules
+    generate_monitor_modules(fgt_schema['version'])
+
     print("\n\n\033[0mExecuting autopep8 ....")
     # Note this is done with popen and not with autopep8.fix_code in order to get the multiprocessig optimization, only available from CLI
     os.popen('autopep8 --aggressive --max-line-length 160 --jobs 8 --ignore E402 --in-place --recursive ' + autopep_files)
