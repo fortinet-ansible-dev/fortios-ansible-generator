@@ -4,8 +4,46 @@ Release Notes
 
 |
 
-Multiversions Note
-------------------
+Release Galaxy 2.0.0
+--------------------
+
+Release Targets
+^^^^^^^^^^^^^^^
+
+FortiOS Galaxy 2.0.0 is a major ansible release for all v6.x.x FOS software and carrier platforms.
+
+Features
+^^^^^^^^^^^^^^^^^^
+- Full support for gathering facts of both configuration(``fortios_configuration_fact``) and monitor(``fortios_monitor_fact``) objects or runtime data.
+- Support for requesting Monitor API via module ``fortios_monitor_config``.
+- Ported FortiOS generic module: ``fortios_json_generic``.
+- Unified collections for all 6.x FOS releases, Ansible detects versioning mismatch at runtime.
+- Explicit logging option: ``enable_log``.
+
+Compatibility Notes
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+As a major release, it semantically breaks backward compability, some modules are removed as new full-fledged replacements come into being.
+
+- For deprecated modules, please find the alternatives in **Deprecated Modules** section.
+- Other existing modules are kepted compatible.
+
+
+Deprecated Modules
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``fortios_facts``: find full selectors in modules ``fortios_configuration_fact`` and ``fortios_monitor_fact``.
+- ``fortios_registration_forticare``: replaced by module ``fortios_monitor_config``, see selector ``add-license.registration.forticare``.
+- ``fortios_registration_vdom``: replaced by module ``fortios_monitor_config``, see selector ``add-license.registration.vdom``.
+- ``fortios_system_vmlicense``: replaced by module ``fortios_monitor_config``, see selector ``upload.system.vmlicense``.
+- ``fortios_system_config_backup_restore``: it was a complexed module.
+   - To backup the FOS system, use module ``fortios_monitor_fact`` and its selector ``system_config_backup``.
+   - To restore the configuration, use module ``fortios_monitor_config`` and its selector ``restore.system.config``.
+
+
+--------------
+
+Legacy Multiversions Note(Prior to 2.0.0)
+------------------------------------------
 The FortiOS Galaxy namespace: ``fortinet.fortios`` hosts Ansible modules
 for multiple FortiOS major releases.
 
