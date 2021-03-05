@@ -31,9 +31,9 @@ The FortiOS Ansible Collection provides Ansible modules for configuring FortiOS 
    :maxdepth: 1
 
    modules.rst
+   monitor.rst
    fact.rst
    generic.rst
-   monitor.rst
 
 .. toctree::
    :glob:
