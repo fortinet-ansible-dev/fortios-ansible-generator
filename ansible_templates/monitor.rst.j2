@@ -1,10 +1,10 @@
-:source: fortios_monitor.py
+:source: fortios_monitor_config.py
 
 :orphan:
 
 .. :
 
-fortios_monitor -- Ansible Module for FortiOS Monitor API.
+fortios_monitor_config -- Ansible Module for FortiOS Monitor API.
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. versionadded:: 2.10
@@ -37,11 +37,11 @@ Parameters
     <li> <span class="li-head">vdom</span> - Virtual domain, among those defined previously. A vdom is a virtual instance of the FortiGate that can be configured and used as a different unit. <span class="li-normal">type: str</span> <span class="li-required">required: False</span> <span class="li-normal">default: root</span></li>
     <li> <span class="li-head">enable_log</span> - Enable/Disable logging for task. <span class="li-normal">type: bool</span> <span class="li-required">required: False</span> <span class="li-normal">default: False</span> </li>
     <li> <span class="li-head">access_token</span> - Token-based authentication. Generated from GUI of Fortigate. <span class="li-normal">type: str</span> <span class="li-required">required: False</span> </li>
-    <li><span class="li-head">action</span> - Action taken in FortiOS appliance. <span class="li-normal">type: str</span> <span class="li-required">choices:</span></li>
+    <li><span class="li-head">selector</span> - Action taken in FortiOS appliance. <span class="li-normal">type: str</span> <span class="li-required">choices:</span></li>
         <li style="list-style: none;"><section class="accordion">
         <input type="checkbox" name="collapse" id="handle2">
         <h2 class="handle">
-            <label for="handle2"><u>Show full action list...</u></label>
+            <label for="handle2"><u>Show full selector list...</u></label>
         </h2>
         <div class="content">
         <ul class="ul-self">
@@ -71,11 +71,11 @@ Notes
 
 .. note::
 
-   - Different ``action`` may have different parameters, users are expected to look up them for a specific action.
+   - Different ``selector`` may have different parameters, users are expected to look up them in the dropdown list above..
 
-   - For some actions, no ``params`` are allowed to appear.
+   - For some selectors, no ``params`` are allowed to appear.
 
-   - Not all parameters are required for an action.
+   - Not all parameters are required for a selector.
 
    - This module is exclusivly for FortiOS monitor API.
 
@@ -99,18 +99,18 @@ Examples
    tasks:
 
    - name: Activate FortiToken
-     fortios_monitor:
-        vdom: "{{ vdom }}"
-        access_token: "{{ fortios_access_token }}"
-        action: 'activate.user.fortitoken'
+     fortios_monitor_config:
+        vdom: "root"
+        access_token: "<fortios_access_token>"
+        selector: 'activate.user.fortitoken'
         params:
             tokens: '<token string>'
 
    - name: Reboot This Device
-     fortios_monitor_fact:
-        vdom: "{{ vdom }}"
-        access_token: "{{ fortios_access_token }}"
-        action: 'reboot.system.os'
+     fortios_monitor_config:
+        vdom: "root"
+        access_token: "<fortios_access_token>"
+        selector: 'reboot.system.os'
         params:
             event_log_message: 'Reboot Request From Ansible'
 
