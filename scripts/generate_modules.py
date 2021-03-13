@@ -209,15 +209,8 @@ def renderModule(schema, version, defined_special_attributes, valid_identifiers,
     path = replaceSpecialChars(original_path).lower()
     name = replaceSpecialChars(original_name).lower()
     module_name = "fortios_" + path + "_" + name
-    if module_name in version_added:
-        module_version_added = version_added[module_name]
-    else:
-        module_version_added = '2.10'
-    #try:
-    #    module_version_added = version_added[module_name]
-    #except KeyError:
-    #    print("cannot find", module_name)
-    #    return
+    # Deprecate legacy inner `state` option: move it to the top level.
+    module_version_added = '2.10'
 
     mkeyname = None
     if 'mkey' in schema['schema']:

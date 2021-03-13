@@ -19,6 +19,7 @@ Features
 - Ported FortiOS generic module: ``fortios_json_generic``.
 - Unified collections for all 6.x FOS releases, Ansible detects versioning mismatch at runtime.
 - Explicit logging option: ``enable_log``.
+- Deprecated second-layer ``state`` module parameter. 
 
 Compatibility Notes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
