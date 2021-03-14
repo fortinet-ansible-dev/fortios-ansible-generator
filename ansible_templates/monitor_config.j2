@@ -64,7 +64,7 @@ def validate_parameters(fos):
     return True, {}
 
 
-def fortios_monitor_config(fos):
+def fortios_monitor(fos):
     valid, result = validate_parameters(fos)
     if not valid:
         return True, False, result
@@ -114,7 +114,7 @@ def main():
 
         fos = FortiOSHandler(connection, module)
 
-        is_error, has_changed, result = fortios_monitor_config(fos)
+        is_error, has_changed, result = fortios_monitor(fos)
     else:
         module.fail_json(**FAIL_SOCKET_MSG)
 

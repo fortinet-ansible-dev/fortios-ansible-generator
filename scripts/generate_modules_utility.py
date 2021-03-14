@@ -130,7 +130,7 @@ def generate_monitor_modules(version):
                 schemas[selector]['description'] = api_item['summary'] if 'summary' in api_item else ''
 
     data = template.render(selectors=schemas)
-    output_path = 'output/' + version + '/fortios_monitor_config.py'
+    output_path = 'output/' + version + '/fortios_monitor.py'
     with open(output_path, 'w') as f:
         f.write(data)
         f.flush()
@@ -172,7 +172,7 @@ def generate_monitor_rst(version):
                 schemas[api_item_key]['params'][param_name]['description'] = param_desc
     template = env.get_template('monitor.rst.j2')
     data = template.render(actions=schemas)
-    output_path = 'output/' + version + '/fortios_monitor_config.rst'
+    output_path = 'output/' + version + '/fortios_monitor.rst'
     with open(output_path, 'w') as f:
         f.write(data)
         f.flush()

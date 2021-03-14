@@ -1,10 +1,10 @@
-:source: fortios_monitor_config.py
+:source: fortios_monitor.py
 
 :orphan:
 
 .. :
 
-fortios_monitor_config -- Ansible Module for FortiOS Monitor API.
+fortios_monitor -- Ansible Module for FortiOS Monitor API.
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. versionadded:: 2.10
@@ -99,7 +99,7 @@ Examples
    tasks:
 
    - name: Activate FortiToken
-     fortios_monitor_config:
+     fortios_monitor:
         vdom: "root"
         access_token: "<fortios_access_token>"
         selector: 'activate.user.fortitoken'
@@ -107,7 +107,7 @@ Examples
             tokens: '<token string>'
 
    - name: Reboot This Device
-     fortios_monitor_config:
+     fortios_monitor:
         vdom: "root"
         access_token: "<fortios_access_token>"
         selector: 'reboot.system.os'
