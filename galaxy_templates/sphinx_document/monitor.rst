@@ -10,4 +10,4 @@ The Modules to build FortiOS monitor API requests to FortiOS appliances.
    :maxdepth: 1
 
 
-   fortios_monitor_config.rst
+   fortios_monitor.rst
