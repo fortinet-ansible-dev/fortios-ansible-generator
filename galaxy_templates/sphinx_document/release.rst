@@ -10,7 +10,7 @@ Release Galaxy 2.0.0
 Release Targets
 ^^^^^^^^^^^^^^^
 
-FortiOS Galaxy 2.0.0 is a major ansible release for all v6.x.x FOS software and carrier platforms.
+FortiOS Galaxy 2.0.0 is a major ansible release for all v6.x.x FOS virtual and hardware platforms.
 
 Features
 ^^^^^^^^^^^^^^^^^^

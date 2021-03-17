@@ -125,5 +125,68 @@ no matter wthat source is, just make sure content is encoded.
 For more options to restore, see module ``fortios_monitor`` and its selector ``restore.system.config``, 
 for more options to backup, see module ``fortios_monitor_fact`` and its selector ``system_config_backup``.
 
+How To Import A License?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Import a license for a newly installed FOS instance.
+......................................................
+
+Make sure the active management port allows access to http service by setting ``allowaccess``.
+
+::
+
+    FortiGate-VM64 # show system interface port1
+    config system interface
+    edit "port1"
+        set vdom "root"
+        set mode dhcp
+        set allowaccess ping https ssh http fgfm
+        set type physical
+        set snmp-index 1
+    next
+    end
+
+Then run the following playbook to upload licence for the first time:
+
+::
+
+   - hosts: fortigate_new
+     connection: httpapi
+     collections:
+      - fortinet.fortios
+     vars:
+      vdom: "root"
+      ansible_httpapi_use_ssl: no
+      ansible_httpapi_validate_certs: no
+      ansible_httpapi_port: 80
+      ansible_command_timeout: 5
+     tasks:
+
+      - name: Upload the license to the newly installed FGT device
+        fortios_monitor:
+            vdom: "{{ vdom }}"
+            enable_log: true
+            selector: 'upload.system.vmlicense'
+            params:
+                file_content: "{{ lookup( 'file', './FGVM02TM20012347.lic') | string | b64encode }}"
+        ignore_errors: True
+
+In the example, we put license file ``FGVM02TM20012347.lic`` under current working directory.
+
+Once FOS accepts a valid licence, it reboots immediately and the connection terminates suddenly, as a result, we must not regard connection timeout as errors, we'd better ignore connection timeout exception.
+and the default connection timeout is 30 seconds, better make it smaller.
+
+**Access token based authentication is not allowed in initial license import**
+
+Renew a license for a licence-ready FOS instance.
+......................................................
+
+To renew the license for a running FOS instance, we don't have to use http service (by default, after license is activated, http service is redirected to https service, which causes problems for Ansible).
+by setting ``ansible_httpapi_use_ssl`` to ``True`` and ``ansible_httpapi_port`` to ``443``, the task can normally upload the license.
+
+
+**Renewing a license can use access token based authentication as long as associated API user has admin privilege to upload license.**
+
+
 .. _Run Your Playbook: playbook.html
 
