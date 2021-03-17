@@ -18,7 +18,7 @@
 # -- Project information -----------------------------------------------------
 
 project = 'Ansible Galaxy FortiOS Collection'
-copyright = '2020, Fortinet'
+copyright = '2020-2021, Fortinet'
 author = 'Fortinet'
 
 # The full version, including alpha/beta/rc tags
