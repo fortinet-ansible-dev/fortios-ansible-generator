@@ -103,6 +103,9 @@ def main():
     versions_check_result = None
     if module._socket_path:
         connection = Connection(module._socket_path)
+        # Checking system status prevents upload.system.vmlicense from uploading a licence to a newly installed machine.
+        connection.set_option('check_system_status', False)
+
         if 'access_token' in module.params:
             connection.set_option('access_token', module.params['access_token'])
 

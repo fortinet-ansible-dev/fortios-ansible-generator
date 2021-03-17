@@ -201,7 +201,8 @@ class HttpApi(HttpApiBase):
         """
         retrieve the system status of fortigate device
         """
-        if self._system_version:
+        check_system_status = self._conn.get_option('check_system_status') if 'check_system_status' in self._conn._options else True
+        if not check_system_status or self._system_version:
             return
         url = '/api/v2/cmdb/system/interface?vdom=root&action=schema'
         status, result = self.send_request(url=url)
