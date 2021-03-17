@@ -1,7 +1,7 @@
 namespace: "fortinet"
 name: "fortios"
 version: "{{__galaxy_version__}}"
-description: "A collection of Ansible Modules for FortiOS {{__fortios_version__}}"
+description: "A collection of Ansible Modules for FortiOS v6"
 readme: "README.md"
 authors:
     - Frank Shen (@frankshen01)
