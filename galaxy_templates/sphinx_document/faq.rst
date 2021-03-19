@@ -86,7 +86,6 @@ FortiOS only accepts base64 encoded text, the configuration text must be encoded
    - name: Restore from file.
      fortios_monitor:
         selector: 'restore.system.config'
-        enable_log: true
         vdom: 'root'
         params:
             scope: 'global'
@@ -112,7 +111,6 @@ no matter wthat source is, just make sure content is encoded.
    - name: Restore from intermediate result.
      fortios_monitor:
         selector: 'restore.system.config'
-        enable_log: true
         vdom: 'root'
         params:
             scope: 'global'
@@ -165,7 +163,6 @@ Then run the following playbook to upload licence for the first time:
       - name: Upload the license to the newly installed FGT device
         fortios_monitor:
             vdom: "{{ vdom }}"
-            enable_log: true
             selector: 'upload.system.vmlicense'
             params:
                 file_content: "{{ lookup( 'file', './FGVM02TM20012347.lic') | string | b64encode }}"
@@ -187,6 +184,86 @@ by setting ``ansible_httpapi_use_ssl`` to ``True`` and ``ansible_httpapi_port`` 
 
 **Renewing a license can use access token based authentication as long as associated API user has admin privilege to upload license.**
 
+How does Ansible work with login banner?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+what's login banner?
+............................
+
+FOS puts a barrier in login process if pre- and(or) post- login bannner are enabled, and ansible authentication is restricted: **only access token based authentication is allowed**. 
+
+How to safely generate access token?
+........................................................
+
+For Ansible FOS login banner usage, there could be a ``deadlock`` if one the of following cases apprears:
+
+ - I don't have an API user or access token.
+ - I have an access token but it has expired.
+
+upon such deadlocks, there is no other way but to disable banners and (re)generate one.
+
+To generate an access token in advance, please see `How To Generate Access Token Dynamically`_, and please do token generation with Ansible with all the login banners disabled(it's not necessay to disable banners if we generate access token from WEB UI).
+
+::
+
+    FGVM02TM20012347 # config system global
+    FGVM02TM20012347 (global) # set post-login-banner disable
+    FGVM02TM20012347 (global) # set pre-login-banner disable
+    FGVM02TM20012347 (global) # end
+    FGVM02TM20012347 #
+
+
+
+where to keep generated access token?
+..................................................
+
+Normally if we generate an access token from WEB UI, we may put it in inventory file as a variable ``fortios_access_token``:
+
+::
+
+    [fortigates]
+    fortigate01 ansible_host=<the address of the host> fortios_access_token=<the access token>
+
+
+we can encrypt the inventory file through ansible tool ``ansible-vault``, thus avoiding token leaks.
+
+To automate token (re)generation, we might also want to keep it somewhere else in local storage. An example is given below to show how to save and re-use a token later:
+
+::
+
+   - name: Generate The API token
+     fortios_monitor:
+        vdom: 'root'
+        selector: 'generate-key.system.api-user'
+        params:
+            api-user: 'AnsibleAPIUser'
+     register: tokeninfo
+
+   - name: Save the API token
+     copy:
+        content: "{{ tokeninfo.meta.results.access_token }}"
+        dest: './access_token.save'
+
+then in subsequent tasks, we read the token directly from saved file:
+
+::
+
+   vars:
+    vdom: "root"
+    ansible_httpapi_use_ssl: yes
+    ansible_httpapi_validate_certs: no
+    ansible_httpapi_port: 443
+    saved_access_token: "{{ lookup( 'file', './access_token.save') | string }}"
+   
+   tasks:
+    - name: do another api request with saved access_token
+      fortios_configuration_fact:
+        access_token: "{{ saved_access_token }}"
+        vdom: 'root'
+        selector: 'system_status'
+
+**Caveats: saved access token is not guarded by Ansible, once leaked, others may access the FOS illegally. one way to restrict illegal access is to limit source localtion in ipv4_trusthost during creating the API users.**
 
 .. _Run Your Playbook: playbook.html
+.. _How To Generate Access Token Dynamically: faq.html#what-s-access-token
 
