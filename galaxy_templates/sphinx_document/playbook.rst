@@ -64,9 +64,8 @@ there are several options which might need you special care:
 -  **collections** : The namespace must be ``fortinet.fortios``
 -  **ansible_httpapi_use_ssl** and **ansible_httpapi_port**: by
    default when your fortiOS device is licensed, the https is enabled.
-   there is one exception: module ``fortios_system_vmlicense`` allows
-   you to upload the licence with http, in this case, you should set
-   ``ansible_httpapi_use_ssl: no`` and ``ansible_httpapi_port: 80``
+   there is one exception: uploading vmlicence to a newly installed FOS instance, where you should set
+   ``ansible_httpapi_use_ssl: no`` and ``ansible_httpapi_port: 80``. Please see `Import licence to FOS`_ for more details.
 
 Run the playbook
 ~~~~~~~~~~~~~~~~
@@ -78,4 +77,5 @@ Run the playbook
 you can also observe the verbose output by adding option at the tail:
 ``-vvv``.
 
+.. _Import licence to FOS: faq.html#how-to-import-a-license
 .. _FortiOS API Spec: https://fndn.fortinet.net/index.php?/fortiapi/1-fortios/92/
