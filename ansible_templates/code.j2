@@ -161,7 +161,7 @@ def {{path}}_{{name}}(data, fos):
             and len(current_data['results']) > 0
 
         # 2. if it exists and the state is 'present' then compare current settings with desired
-        if state == 'present' or state == True:
+        if state == 'present' or state is True:
             if mkey is None:
                 return False, True, filtered_data
 
@@ -186,7 +186,7 @@ def {{path}}_{{name}}(data, fos):
         return True, False, {'reason: ': 'Must provide state parameter'}
     {% endif -%}
     {% if "mkey" in schema['schema'] %}
-    if state == "present" or state == True:
+    if state == "present" or state is True:
         return fos.set('{{original_path}}',
                        '{{original_name}}',
                        {% if vi|length > 0 -%}

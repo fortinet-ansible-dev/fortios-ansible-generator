@@ -90,9 +90,11 @@ def check_legacy_fortiosapi():
 
 def schema_to_module_spec(schema):
     rdata = dict()
-    assert('type' in schema)
+    if 'type' not in schema:
+        raise AssertionError('Invalid Schema')
     if schema['type'] == 'dict' or (schema['type'] == 'list' and 'children' in schema):
-        assert('children' in schema)
+        if 'children' not in schema:
+            raise AssertionError()
         rdata['type'] = schema['type']
         rdata['required'] = False
         rdata['options'] = dict()
@@ -107,7 +109,7 @@ def schema_to_module_spec(schema):
         elif schema['type'] == 'list':
             rdata['type'] = 'list'
         else:
-            assert(False)
+            raise AssertionError()
         rdata['required'] = False
         if 'options' in schema:
             # see mantis #0690570, if the semantic meaning changes, remove choices as well
@@ -125,7 +127,7 @@ def schema_to_module_spec(schema):
             if not param_semantic_changed:
                 rdata['choices'] = [option['value'] for option in schema['options']]
     else:
-        assert(False)
+        raise AssertionError()
     return rdata
 
 
@@ -167,7 +169,8 @@ def __check_version(revisions, version):
 
 def __concat_attribute_sequence(trace_path):
     rdata = ''
-    assert(type(trace_path) is list)
+    if type(trace_path) is not list:
+        raise AssertionError()
     if len(trace_path) >= 1:
         rdata += str(trace_path[0])
     for item in trace_path[1:]:
@@ -178,7 +181,8 @@ def __concat_attribute_sequence(trace_path):
 def check_schema_versioning_internal(results, trace, schema, params, version):
     if not schema or not params:
         return
-    assert('revisions' in schema)
+    if 'revisions' not in schema:
+        raise AssertionError()
     revision = schema['revisions']
     matched = __check_version(revision, version)
     if matched['supported'] is False:
@@ -188,42 +192,52 @@ def check_schema_versioning_internal(results, trace, schema, params, version):
         return
 
     if schema['type'] == 'list':
-        assert(type(params) is list)
+        if type(params) is not list:
+            raise AssertionError()
         if 'children' in schema:
-            assert('options' not in schema)
+            if 'options' in schema:
+                raise AssertionError()
             for list_item in params:
-                assert(type(list_item) is dict)
+                if type(list_item) is not dict:
+                    raise AssertionError()
                 for key in list_item:
                     value = list_item[key]
-                    key_string = '%s(%s)' %(key, value) if type(value) in [int, bool, str] else key
+                    key_string = '%s(%s)' % (key, value) if type(value) in [int, bool, str] else key
                     trace.append(key_string)
                     check_schema_versioning_internal(results, trace, schema['children'][key], value, version)
                     del trace[-1]
         else:
-            assert('options' in schema)
+            if 'options' not in schema:
+                raise AssertionError()
             for param in params:
-                assert(type(param) in [int, bool, str])
+                if type(param) not in [int, bool, str]:
+                    raise AssertionError()
                 target_option = None
                 for option in schema['options']:
                     if option['value'] == param:
                         target_option = option
                         break
-                assert(target_option)
+                if not target_option:
+                    raise AssertionError()
                 trace.append('[%s]' % param)
                 check_schema_versioning_internal(results, trace, target_option, param, version)
                 del trace[-1]
     elif schema['type'] == 'dict':
-        assert(type(params) is dict)
+        if type(params) is not dict:
+            raise AssertionError()
         if 'children' in schema:
             for dict_item_key in params:
                 dict_item_value = params[dict_item_key]
-                assert(dict_item_key in schema['children'])
-                key_string = '%s(%s)' %(dict_item_key, dict_item_value) if type(dict_item_value) in [int, bool, str] else dict_item_key
+                if dict_item_key not in schema['children']:
+                    raise AssertionError()
+                key_string = '%s(%s)' % (dict_item_key, dict_item_value) if type(dict_item_value) in [int, bool, str] else dict_item_key
                 trace.append(key_string)
                 check_schema_versioning_internal(results, trace, schema['children'][dict_item_key], dict_item_value, version)
                 del trace[-1]
     else:
-        assert(type(params) in [int, str, bool])
+        if type(params) not in [int, str, bool]:
+            raise AssertionError()
+
 
 def check_schema_versioning(fos, versioned_schema, top_level_param):
     trace = list()
@@ -249,7 +263,7 @@ def check_schema_versioning(fos, versioned_schema, top_level_param):
         param_value = params[param_name]
         if not param_value or param_name not in versioned_schema['children']:
             continue
-        key_string = '%s(%s)' %(param_name, param_value) if type(param_value) in [int, bool, str] else param_name
+        key_string = '%s(%s)' % (param_name, param_value) if type(param_value) in [int, bool, str] else param_name
         trace.append(key_string)
         check_schema_versioning_internal(results, trace, versioned_schema['children'][param_name], param_value, system_version)
         del trace[-1]
@@ -325,13 +339,13 @@ class FortiOSHandler(object):
 
     def monitor_get(self, url, vdom=None, parameters=None):
         slash_index = url.find('/')
-        full_url = self.mon_url(url[: slash_index], url[slash_index + 1: ], vdom)
+        full_url = self.mon_url(url[: slash_index], url[slash_index + 1:], vdom)
         status, result_data = self._conn.send_request(url=full_url, params=parameters, method='GET')
         return self.formatresponse(result_data, vdom=vdom)
 
     def monitor_post(self, url, data=None, vdom=None, mkey=None, parameters=None):
         slash_index = url.find('/')
-        url = self.mon_url(url[: slash_index], url[slash_index + 1: ], vdom)
+        url = self.mon_url(url[: slash_index], url[slash_index + 1:], vdom)
 
         status, result_data = self._conn.send_request(url=url, params=parameters, data=json.dumps(data), method='POST')
 
@@ -398,7 +412,7 @@ class FortiOSHandler(object):
     def __to_local(self, data, is_array=False):
         try:
             resp = json.loads(data)
-        except:
+        except Exception:
             resp = {'raw': data}
         if is_array and type(resp) is not list:
             resp = [resp]
@@ -564,4 +578,3 @@ class AnsibleFortios(object):
         return FortiConfig(block_name, block_type)
 
 # END DEPRECATED
-
