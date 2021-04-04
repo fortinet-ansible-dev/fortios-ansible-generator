@@ -1,12 +1,172 @@
+#!/usr/bin/python
 from __future__ import (absolute_import, division, print_function)
-
+# Copyright 2020 Fortinet, Inc.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
 __metaclass__ = type
 
 ANSIBLE_METADATA = {'status': ['preview'],
                     'supported_by': 'community',
                     'metadata_version': '1.1'}
 
+DOCUMENTATION = '''
+---
+module: fortios_configuration_fact
+version_added: "2.10"
+short_description: Retrieve Facts of FortiOS Configurable Objects.
+description:
+    - Collects facts from network devices running the fortios operating system.
+      This module places the facts gathered in the fact tree keyed by the respective resource name.
+      This facts module will only collect those facts which user specified in playbook.
+author:
+    - Jie Xue (@JieX19)
+    - Link Zheng (@chillancezen)
+    - Hongbin Lu (@fgtdev-hblu)
+    - Frank Shen (@fshen01)
+notes:
+    - Different selector may have different parameters, users are expected to look up them for a specific selector.
+    - For some selectors, the objects are global, no params are allowed to appear.
+    - If params is empty a non-unique object, the whole object list is returned.
+    - This module has support for all configuration API, excluding any monitor API.
+    - The result of API request is stored in results as a list.
+requirements:
+    - install galaxy collection fortinet.fortios >= 2.0.0.
+options:
+    access_token:
+        description:
+            - Token-based authentication.
+              Generated from GUI of Fortigate.
+        type: str
+        required: false
+    enable_log:
+        description:
+            - Enable/Disable logging for task.
+        type: bool
+        required: false
+        default: false
+    vdom:
+        description:
+            - Virtual domain, among those defined previously. A vdom is a
+              virtual instance of the FortiGate that can be configured and
+              used as a different unit.
+        type: str
+        default: root
+        required: false
+    selector:
+        description:
+            - selector of the retrieved fortimanager facts
+        type: str
+        required: true
+        choices:
+         {% for selector in selector_definitions.keys() -%}
+          - {{ selector }}
+         {% endfor %}
+    params:
+        description:
+            - the parameter for each selector, see definition in above list.
+        type: dict
+        required: false
+'''
 
+EXAMPLES = '''
+- hosts: fortigateslab
+  connection: httpapi
+  collections:
+    - fortinet.fortios
+  vars:
+    ansible_httpapi_use_ssl: yes
+    ansible_httpapi_validate_certs: no
+    ansible_httpapi_port: 443
+    vdom: "root"
+  tasks:
+  - name: get all
+    fortios_configuration_fact:
+      vdom: ""
+      access_token: ""
+      selector: log_custom-field
+
+  - name: get single
+    fortios_configuration_fact:
+      vdom: ""
+      access_token: ""
+      selector: log_custom-field
+      #optionally list or single get
+      params:
+        id: "3"
+
+  - name: fetch one firewall address
+    fortios_configuration_fact:
+      selector: firewall_address
+      params:
+        name: "login.microsoft.com"
+
+  - name: fetch all firewall addresses
+    fortios_configuration_fact:
+      selector: firewall_address
+'''
+RETURN = '''
+build:
+  description: Build number of the fortigate image
+  returned: always
+  type: str
+  sample: '1547'
+http_method:
+  description: Last method used to provision the content into FortiGate
+  returned: always
+  type: str
+  sample: 'GET'
+name:
+  description: Name of the table used to fulfill the request
+  returned: always
+  type: str
+  sample: "firmware"
+path:
+  description: Path of the table used to fulfill the request
+  returned: always
+  type: str
+  sample: "system"
+revision:
+  description: Internal revision number
+  returned: always
+  type: str
+  sample: "17.0.2.10658"
+serial:
+  description: Serial number of the unit
+  returned: always
+  type: str
+  sample: "FGVMEVYYQT3AB5352"
+status:
+  description: Indication of the operation's result
+  returned: always
+  type: str
+  sample: "success"
+vdom:
+  description: Virtual domain used
+  returned: always
+  type: str
+  sample: "root"
+version:
+  description: Version of the FortiGate
+  returned: always
+  type: str
+  sample: "v5.6.3"
+ansible_facts:
+  description: The list of fact subsets collected from the device
+  returned: always
+  type: dict
+
+'''
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.connection import Connection
 from ansible_collections.fortinet.fortios.plugins.module_utils.fortios.fortios import FortiOSHandler

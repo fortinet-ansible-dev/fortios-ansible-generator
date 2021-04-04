@@ -95,11 +95,11 @@ options:
 EXAMPLES = '''
 ---
 # host
-[fortigates]
-fortigate01 ansible_host=192.168.52.177 ansible_user="admin" ansible_password="admin"
+# [fortigates]
+# fortigate01 ansible_host=192.168.52.177 ansible_user="admin" ansible_password="admin"
 
-[fortigates:vars]
-ansible_network_os=fortinet.fortios.fortios
+# [fortigates:vars]
+# ansible_network_os=fortinet.fortios.fortios
 
 # sample1.yml
 - hosts: fortigates
@@ -366,7 +366,6 @@ def main():
     check_legacy_fortiosapi()
     module = AnsibleModule(argument_spec=fields,
                            supports_check_mode=False)
-
 
     if module._socket_path:
         connection = Connection(module._socket_path)
