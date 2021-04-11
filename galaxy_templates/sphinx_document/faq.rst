@@ -264,6 +264,96 @@ then in subsequent tasks, we read the token directly from saved file:
 
 **Caveats: saved access token is not guarded by Ansible, once leaked, others may access the FOS illegally. one way to restrict illegal access is to limit source localtion in ipv4_trusthost during creating the API users.**
 
+How To Work With Raw FotiOS CLI?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In FortiOS, some CLI commands are not exported as RestAPI, as a reasult, Ansible FortiOS collection has no identical module for those CLI commands.
+And FortiOS default CLI shell is not a standard Unix shell, so Ansible builtin modules like ``shell`` and ``command`` are of no use.
+To work this around in Ansible, we use a verbose but very efficient and flexible way to execute some FortiOS CLI commands from Ansible. 
+
+
+Below are two examples of the template:
+
+**Append a firewall address member to a group using append command:**
+
+::
+
+ - hosts: localhost
+   vars:
+     # ======================== Below are crenditials to connect to Fortigate Device========
+     fgt_host: '192.168.190.171'
+     fgt_user: 'admin'
+     fgt_pass: 'password'
+
+     firewall_group_name: 'firwalladdressgroup0'
+     firewall_address_name: 'firewalladdress0'
+     # =====================================================================================
+     script_path: '/tmp/fgt.shell.task'
+   tasks:
+    - name: Prepare The Shell Scrit Template.
+      raw: |
+             cat > {{script_path }} << EOF_OUTER
+             # /bin/bash
+             # Please make sure tool sshpass is installed. e.g. on Debian/Ubuntu, apt-get install sshpass.
+             # Optionally you can pass some parameters.
+             # The character `a` at second line below is to avoid post-login-banner barrier.
+             sshpass -p '{{ fgt_pass }}' ssh -o StrictHostKeyChecking=no {{ fgt_user }}@{{ fgt_host }} <<EOF
+             a
+             # ====================== Edit Your Commands Below =============================================
+             config firewall addrgrp
+             edit '\$1'
+             append member '\$2'
+             end
+             # ==============================================================================================
+             EOF
+             EOF_OUTER
+
+
+    - name: Execute The Cli Commands.
+      raw: |
+             chmod +x {{ script_path }} && {{ script_path }} '{{ firewall_group_name }}' '{{ firewall_address_name }}'
+      args:
+        executable: /bin/bash
+
+**Enable/Disable pre-/post- login banners**
+
+::
+
+ - hosts: localhost
+   vars:
+     # ======================== Below are crenditials to connect to Fortigate Device========
+     fgt_host: '192.168.190.171'
+     fgt_user: 'admin'
+     fgt_pass: 'password'
+     # =====================================================================================
+     script_path: '/tmp/fgt.shell.task'
+   tasks:
+    - name: Prepare The Shell Scrit Template.
+      raw: |
+             cat > {{script_path }} << EOF_OUTER
+             # /bin/bash
+             # Please make sure tool sshpass is installed. e.g. on Debian/Ubuntu, apt-get install sshpass.
+             # Optionally you can pass some parameters.
+             # The character `a` at second line below is to avoid post-login-banner barrier.
+             sshpass -p '{{ fgt_pass }}' ssh -o StrictHostKeyChecking=no {{ fgt_user }}@{{ fgt_host }} <<EOF
+             a
+             # ====================== Edit Your Commands Below =============================================
+             config system global
+             set pre-login-banner '\${1:-disbale}'
+             set post-login-banner '\${2:-disable}'
+             end
+             # ==============================================================================================
+             EOF
+             EOF_OUTER
+
+
+    - name: Execute The Cli Commands, e.g. enable pre- and post- login banner.
+      raw: |
+             chmod +x {{ script_path }} && {{ script_path }} enable enable
+      args:
+        executable: /bin/bash
+
+
 .. _Run Your Playbook: playbook.html
 .. _How To Generate Access Token Dynamically: faq.html#what-s-access-token
 
