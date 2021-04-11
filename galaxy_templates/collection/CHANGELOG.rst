@@ -5,6 +5,14 @@ Fortinet.Fortios Release Notes
 .. contents:: Topics
 
 
+v2.0.1
+======
+
+Minor Changes
+-------------
+
+- fixed pylint testing errors.
+
 v2.0.0
 ======
 
