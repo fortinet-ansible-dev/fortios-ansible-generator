@@ -27,3 +27,10 @@ releases:
     fragments:
     - overall.yml
     release_date: '2021-04-05'
+  2.0.1:
+    changes:
+      minor_changes:
+      - fixed pylint testing errors.
+    fragments:
+    - 2.0.1.yml
+    release_date: '2021-04-07'

@@ -4,6 +4,17 @@ Release Notes
 
 |
 
+Release Galaxy 2.0.1
+--------------------
+
+Release Targets
+^^^^^^^^^^^^^^^
+FortiOS Galaxy is based on ``2.0.0``.
+
+Features
+^^^^^^^^^^^^^^^^^^
+ - fixed ``pylint`` minor errors.
+
 Release Galaxy 2.0.0
 --------------------
 
