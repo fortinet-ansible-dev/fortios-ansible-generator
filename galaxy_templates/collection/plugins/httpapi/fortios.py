@@ -125,10 +125,10 @@ class HttpApi(HttpApiBase):
             headers = {}
 
             for attr, val in response.getheaders():
-                if attr == 'Set-Cookie' and 'APSCOOKIE_' in val:
+                if attr.lower() == 'set-cookie' and 'APSCOOKIE_' in val:
                     headers['Cookie'] = val
 
-                elif attr == 'Set-Cookie' and 'ccsrftoken=' in val:
+                elif attr.lower() == 'set-cookie' and 'ccsrftoken=' in val:
                     csrftoken_search = re.search('\"(.*)\"', val)
                     if csrftoken_search:
                         self._ccsrftoken = csrftoken_search.group(1)
