@@ -191,6 +191,10 @@ def is_successful_status(status):
 def validate_mkey(params):
     selector = params['selector']
     selector_params = params.get('params', {})
+
+    if selector not in MODULE_MKEY_DEFINITONS:
+      return False, { "message": "unknown selector: " + selector }
+
     definition = MODULE_MKEY_DEFINITONS.get(selector, {})
 
     if not selector_params or len(selector_params) == 0 or len(definition) == 0:
@@ -236,19 +240,29 @@ def main():
         "enable_log": {"required": False, "type": bool},
         "params": {"required": False, "type": "dict" },
         "selector": {
-            "required": True,
+            "required": False,
             "type": "str",
             "options": [
                 {% for selector in selector_definitions.keys() -%}
                 "{{selector}}",
                 {% endfor -%}
             ],
+        },
+        "selectors": {
+            "required": False,
+            "type": "list",
+            "elements": "dict",
         }
     }
 
     check_legacy_fortiosapi()
     module = AnsibleModule(argument_spec=fields,
                            supports_check_mode=False)
+
+    # Only selector or selectors is provided.
+    if module.params['selector'] and module.params['selectors'] or \
+        not module.params['selector'] and not module.params['selectors']:
+        module.fail_json(msg="Only one of selector or selectors should be provided.")
 
     versions_check_result = None
     if module._socket_path:
@@ -262,7 +276,25 @@ def main():
 
         fos = FortiOSHandler(connection, module)
 
-        is_error, has_changed, result = fortios_configuration_fact(module.params, fos)
+        if module.params['selector']:
+            is_error, has_changed, result = fortios_configuration_fact(module.params, fos)
+        else:
+            params = module.params
+            selectors = params['selectors']
+            is_error = False
+            has_changed = False
+            result = []
+            for selector_obj in selectors:
+                per_selector = {
+                    'vdom': params.get('vdom'),
+                    'selector': selector_obj.get('selector'),
+                    'params': selector_obj.get('params'),
+                }
+                is_error_local, has_changed_local, result_local = fortios_configuration_fact(per_selector, fos)
+
+                is_error = is_error or is_error_local
+                has_changed = has_changed or has_changed_local
+                result.append(result_local)
     else:
         module.fail_json(**FAIL_SOCKET_MSG)
 
