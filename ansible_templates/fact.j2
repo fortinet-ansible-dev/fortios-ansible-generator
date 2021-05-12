@@ -90,6 +90,16 @@ EXAMPLES = '''
     ansible_httpapi_port: 443
     vdom: "root"
   tasks:
+  - name: Get multiple selectors info at one time
+    fortios_configuration_fact:
+      selectors:
+        - selector: firewall_address
+          params:
+            name: "gmail.com"
+        - selector: system_interface
+        - selector: log_eventfilter
+          params: {}
+
   - name: get all
     fortios_configuration_fact:
       vdom: ""
