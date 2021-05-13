@@ -1,0 +1,6337 @@
+{
+  "directory":[
+    {
+      "path":"endpoint-control",
+      "name":"profile",
+      "action":"xml",
+      "supported":true,
+      "access_group":"utmgrp.endpoint-control",
+      "summary":"List XML representation for each endpoint-control profile.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"mkey",
+            "type":"string",
+            "summary":"Name of endpoint-control profile."
+          }
+        ]
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"endpoint-control",
+      "name":"registration-password",
+      "action":"check",
+      "supported":true,
+      "access_group":"utmgrp.endpoint-control",
+      "summary":"Check if provided registration password is valid for current VDOM.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"password",
+            "type":"string",
+            "summary":"Registration password to test.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+        "type":"boolean"
+      }
+    },
+    {
+      "path":"endpoint-control",
+      "name":"record-list",
+      "action":"select",
+      "supported":true,
+      "access_group":"utmgrp.endpoint-control",
+      "summary":"List endpoint records.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"intf_name",
+            "type":"string",
+            "summary":"Filter: Name of interface where the endpoint was detected."
+          }
+        ]
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"endpoint-control",
+      "name":"registration",
+      "action":"summary",
+      "supported":true,
+      "access_group":"utmgrp.endpoint-control",
+      "summary":"Summary of FortiClient registrations.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"endpoint-control",
+      "name":"registration",
+      "action":"quarantine",
+      "supported":true,
+      "access_group":"utmgrp.endpoint-control",
+      "summary":"Quarantine endpoint by FortiClient UID or MAC.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"uid",
+            "type":"array",
+            "summary":"Array of FortiClient UIDs to quarantine."
+          },
+          {
+            "name":"uid",
+            "type":"string",
+            "summary":"Single FortiClient UID to quarantine."
+          },
+          {
+            "name":"mac",
+            "type":"array",
+            "summary":"Array of MACs to quarantine."
+          },
+          {
+            "name":"mac",
+            "type":"string",
+            "summary":"Single MAC to quarantine."
+          }
+        ]
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"endpoint-control",
+      "name":"registration",
+      "action":"unquarantine",
+      "supported":true,
+      "access_group":"utmgrp.endpoint-control",
+      "summary":"Unquarantine endpoint by FortiClient UID or MAC.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"uid",
+            "type":"array",
+            "summary":"Array of FortiClient UIDs to unquarantine."
+          },
+          {
+            "name":"uid",
+            "type":"string",
+            "summary":"Single FortiClient UID to unquarantine."
+          },
+          {
+            "name":"mac",
+            "type":"array",
+            "summary":"Array of MACs to unquarantine."
+          },
+          {
+            "name":"mac",
+            "type":"string",
+            "summary":"Single MAC to unquarantine."
+          }
+        ]
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"endpoint-control",
+      "name":"registration",
+      "action":"block",
+      "supported":true,
+      "access_group":"utmgrp.endpoint-control",
+      "summary":"Block endpoint by FortiClient UID or MAC.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"uid",
+            "type":"array",
+            "summary":"Array of FortiClient UIDs to block."
+          },
+          {
+            "name":"uid",
+            "type":"string",
+            "summary":"Single FortiClient UID to block."
+          },
+          {
+            "name":"mac",
+            "type":"array",
+            "summary":"Array of MACs to block."
+          },
+          {
+            "name":"mac",
+            "type":"string",
+            "summary":"Single MAC to block."
+          }
+        ]
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"endpoint-control",
+      "name":"registration",
+      "action":"unblock",
+      "supported":true,
+      "access_group":"utmgrp.endpoint-control",
+      "summary":"Unblock endpoint by FortiClient UID or MAC.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"uid",
+            "type":"array",
+            "summary":"Array of FortiClient UIDs to unblock."
+          },
+          {
+            "name":"uid",
+            "type":"string",
+            "summary":"Single FortiClient UID to unblock."
+          },
+          {
+            "name":"mac",
+            "type":"array",
+            "summary":"Array of MACs to unblock."
+          },
+          {
+            "name":"mac",
+            "type":"string",
+            "summary":"Single MAC to unblock."
+          }
+        ]
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"endpoint-control",
+      "name":"registration",
+      "action":"deregister",
+      "supported":true,
+      "access_group":"utmgrp.endpoint-control",
+      "summary":"Deregister endpoint by FortiClient UID or MAC.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"uid",
+            "type":"array",
+            "summary":"Array of FortiClient UIDs to deregister."
+          },
+          {
+            "name":"uid",
+            "type":"string",
+            "summary":"Single FortiClient UID to deregister."
+          },
+          {
+            "name":"mac",
+            "type":"array",
+            "summary":"Array of MACs to deregister."
+          },
+          {
+            "name":"mac",
+            "type":"string",
+            "summary":"Single MAC to deregister."
+          }
+        ]
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"endpoint-control",
+      "name":"installer",
+      "action":"select",
+      "supported":true,
+      "access_group":"utmgrp.endpoint-control",
+      "summary":"List available FortiClient installers.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"min_version",
+            "type":"string",
+            "summary":"Filter: Minimum installer version. (String of the format n[.n[.n]])."
+          }
+        ]
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"endpoint-control",
+      "name":"installer",
+      "action":"download",
+      "supported":true,
+      "access_group":"utmgrp.endpoint-control",
+      "summary":"Download a FortiClient installer via FortiGuard.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"mkey",
+            "type":"string",
+            "summary":"Name of installer (image_id).",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+        "file_download":true,
+        "type":"object"
+      }
+    },
+    {
+      "path":"endpoint-control",
+      "name":"avatar",
+      "action":"download",
+      "supported":true,
+      "etag":true,
+      "access_group":"utmgrp.endpoint-control",
+      "summary":"Download an endpoint avatar image.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"uid",
+            "type":"string",
+            "summary":"Single FortiClient UID."
+          },
+          {
+            "name":"user",
+            "type":"string",
+            "summary":"User name of the endpoint."
+          },
+          {
+            "name":"alias",
+            "type":"string",
+            "summary":"Alias of the device. Used to lookup device avatar when endpoint avatar is not available."
+          },
+          {
+            "name":"default",
+            "type":"string",
+            "summary":"Default avatar name ['authuser'|'unauthuser'|'authuser_72'|'unauthuser_72']. Default avatar when endpoint \/ device avatar is not available. If default is not set, Not found 404 is returned."
+          }
+        ]
+      },
+      "response":{
+        "file_download":true,
+        "type":"object"
+      }
+    },
+    {
+      "path":"firewall",
+      "name":"health",
+      "action":"select",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"List configured load balance server health monitors.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"firewall",
+      "name":"local-in",
+      "action":"select",
+      "supported":true,
+      "access_group":"fwgrp.policy",
+      "summary":"List implicit and explicit local-in firewall policies.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"firewall",
+      "name":"acl",
+      "action":"select",
+      "supported":true,
+      "access_group":"fwgrp.policy",
+      "summary":"List counters for all IPv4 ACL.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"firewall",
+      "name":"acl",
+      "action":"clear_counters",
+      "supported":true,
+      "access_group":"fwgrp.policy",
+      "summary":"Reset counters for one or more IPv4 ACLs by policy ID.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"policy",
+            "type":"array",
+            "summary":"Array of policy IDs to reset."
+          },
+          {
+            "name":"policy",
+            "type":"int",
+            "summary":"Single policy ID to reset."
+          }
+        ]
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"firewall",
+      "name":"acl6",
+      "action":"select",
+      "supported":true,
+      "access_group":"fwgrp.policy",
+      "summary":"List counters for all IPv6 ACL.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"firewall",
+      "name":"acl6",
+      "action":"clear_counters",
+      "supported":true,
+      "access_group":"fwgrp.policy",
+      "summary":"Reset counters for one or more IPv6 ACLs by policy ID.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"policy",
+            "type":"array",
+            "summary":"Array of policy IDs to reset."
+          },
+          {
+            "name":"policy",
+            "type":"int",
+            "summary":"Single policy ID to reset."
+          }
+        ]
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"firewall",
+      "name":"internet-service-match",
+      "action":"select",
+      "supported":true,
+      "access_group":"fwgrp.address",
+      "summary":"List internet services that exist at a given IP or Subnet.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"ip",
+            "type":"string",
+            "summary":"IP (in dot-decimal notation).",
+            "required":true
+          },
+          {
+            "name":"mask",
+            "type":"string",
+            "summary":"IP Mask (in dot-decimal notation).",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"firewall",
+      "name":"internet-service-details",
+      "action":"select",
+      "supported":true,
+      "access_group":"fwgrp.address",
+      "summary":"List all details for a given Internet Service ID.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"id",
+            "type":"int",
+            "summary":"ID of the Internet Service to get details for.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"firewall",
+      "name":"policy",
+      "action":"select",
+      "supported":true,
+      "access_group":"fwgrp.policy",
+      "summary":"List traffic statistics for IPv4 policies.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"policyid",
+            "type":"int",
+            "summary":"Filter: Policy ID."
+          }
+        ]
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"firewall",
+      "name":"policy",
+      "action":"reset",
+      "supported":true,
+      "access_group":"fwgrp.policy",
+      "summary":"Reset traffic statistics for all IPv4 policies.",
+      "request":{
+        "http_method":"POST"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"firewall",
+      "name":"policy",
+      "action":"clear_counters",
+      "supported":true,
+      "access_group":"fwgrp.policy",
+      "summary":"Reset traffic statistics for one or more IPv4 policies by policy ID.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"policy",
+            "type":"array",
+            "summary":"Array of policy IDs to reset."
+          },
+          {
+            "name":"policy",
+            "type":"int",
+            "summary":"Single policy ID to reset."
+          }
+        ]
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"firewall",
+      "name":"policy6",
+      "action":"select",
+      "supported":true,
+      "access_group":"fwgrp.policy",
+      "summary":"List traffic statistics for IPv6 policies.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"policyid",
+            "type":"int",
+            "summary":"Filter: Policy ID."
+          }
+        ]
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"firewall",
+      "name":"policy6",
+      "action":"reset",
+      "supported":true,
+      "access_group":"fwgrp.policy",
+      "summary":"Reset traffic statistics for all IPv6 policies.",
+      "request":{
+        "http_method":"POST"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"firewall",
+      "name":"policy6",
+      "action":"clear_counters",
+      "supported":true,
+      "access_group":"fwgrp.policy",
+      "summary":"Reset traffic statistics for one or more IPv6 policies by policy ID.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"policy",
+            "type":"array",
+            "summary":"Array of policy IDs to reset."
+          },
+          {
+            "name":"policy",
+            "type":"int",
+            "summary":"Single policy ID to reset."
+          }
+        ]
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"firewall",
+      "name":"proxy-policy",
+      "action":"select",
+      "supported":true,
+      "access_group":"fwgrp.policy",
+      "summary":"List traffic statistics for all explicit proxy policies.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"firewall",
+      "name":"proxy-policy",
+      "action":"clear_counters",
+      "supported":true,
+      "access_group":"fwgrp.policy",
+      "summary":"Reset traffic statistics for one or more explicit proxy policies by policy ID.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"policy",
+            "type":"array",
+            "summary":"Array of policy IDs to reset."
+          },
+          {
+            "name":"policy",
+            "type":"int",
+            "summary":"Single policy ID to reset."
+          }
+        ]
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"firewall",
+      "name":"policy-lookup",
+      "action":"select",
+      "supported":true,
+      "access_group":"fwgrp.policy",
+      "summary":"Performs a policy lookup by creating a dummy packet and asking the kernel which policy would be hit.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"ipv6",
+            "type":"boolean",
+            "summary":"Perform an IPv6 lookup?"
+          },
+          {
+            "name":"srcintf",
+            "type":"string",
+            "summary":"Source interface.",
+            "required":true
+          },
+          {
+            "name":"sourceport",
+            "type":"int",
+            "summary":"Source port."
+          },
+          {
+            "name":"sourceip",
+            "type":"string",
+            "summary":"Source IP."
+          },
+          {
+            "name":"protocol",
+            "type":"string",
+            "summary":"Protocol.",
+            "required":true
+          },
+          {
+            "name":"dest",
+            "type":"string",
+            "summary":"Destination IP\/FQDN.",
+            "required":true
+          },
+          {
+            "name":"destport",
+            "type":"int",
+            "summary":"Destination port."
+          },
+          {
+            "name":"icmptype",
+            "type":"int",
+            "summary":"ICMP type."
+          },
+          {
+            "name":"icmpcode",
+            "type":"int",
+            "summary":"ICMP code."
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"firewall",
+      "name":"session",
+      "action":"select",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"List all active firewall sessions (optionally filtered).",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"ip_version",
+            "type":"string",
+            "summary":"IP version [*ipv4 | ipv6 | ipboth]."
+          },
+          {
+            "name":"start",
+            "type":"int",
+            "summary":"Starting entry index."
+          },
+          {
+            "name":"count",
+            "type":"int",
+            "summary":"Maximum number of entries to return. Valid range is [20, 1000]; if a value is specified out of that range, it will be rounded up or down.",
+            "required":true
+          },
+          {
+            "name":"summary",
+            "type":"boolean",
+            "summary":"Enable\/disable inclusion of session summary (setup rate, total sessions, etc)."
+          },
+          {
+            "name":"sourceport",
+            "type":"int",
+            "summary":"Filter: Source port."
+          },
+          {
+            "name":"policyid",
+            "type":"int",
+            "summary":"Filter: Policy ID."
+          },
+          {
+            "name":"policytype",
+            "type":"string",
+            "summary":"Filter: Policy type [policy|policy6]."
+          },
+          {
+            "name":"application",
+            "type":"int",
+            "summary":"Filter: Application ID."
+          },
+          {
+            "name":"application",
+            "type":"string",
+            "summary":"Filter: Application PROTO\/PORT. (e.g. \"TCP\/443\")"
+          },
+          {
+            "name":"protocol",
+            "type":"string",
+            "summary":"Filter: Protocol name [all|igmp|tcp|udp|icmp|etc]."
+          },
+          {
+            "name":"destport",
+            "type":"int",
+            "summary":"Filter: Destination port."
+          },
+          {
+            "name":"srcintf",
+            "type":"string",
+            "summary":"Filter: Source interface name."
+          },
+          {
+            "name":"dstintf",
+            "type":"string",
+            "summary":"Filter: Destination interface name."
+          },
+          {
+            "name":"srcintfrole",
+            "type":"array",
+            "summary":"Filter: Source interface roles."
+          },
+          {
+            "name":"dstintfrole",
+            "type":"array",
+            "summary":"Filter: Destination interface roles."
+          },
+          {
+            "name":"source",
+            "type":"string",
+            "summary":"Filter: Source IP address."
+          },
+          {
+            "name":"destination",
+            "type":"string",
+            "summary":"Filter: Destination IP address."
+          },
+          {
+            "name":"username",
+            "type":"string",
+            "summary":"Filter: Authenticated username."
+          },
+          {
+            "name":"shaper",
+            "type":"string",
+            "summary":"Filter: Forward traffic shaper name."
+          },
+          {
+            "name":"country",
+            "type":"string",
+            "summary":"Filter: Destination country name."
+          },
+          {
+            "name":"natsourceaddress",
+            "type":"string",
+            "summary":"Filter: NAT source address."
+          },
+          {
+            "name":"natsourceport",
+            "type":"string",
+            "summary":"Filter: NAT source port."
+          },
+          {
+            "name":"fortiasic",
+            "type":"int",
+            "summary":"Filter: 1 to include NPU accelerated sessions, 0 to exclude."
+          },
+          {
+            "name":"nturbo",
+            "type":"int",
+            "summary":"Filter: 1 to include nTurbo sessions, 0 to exclude."
+          }
+        ]
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"firewall",
+      "name":"session",
+      "action":"clear_all",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Immediately clear all active IPv4 and IPv6 sessions and IPS sessions of current VDOM.",
+      "request":{
+        "http_method":"POST"
+      },
+      "response":{
+        "type":"int"
+      }
+    },
+    {
+      "path":"firewall",
+      "name":"session",
+      "action":"close",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Close a specific firewall session that matches all provided criteria.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"pro",
+            "type":"string",
+            "summary":"Protocol name [tcp|udp|icmp|...].",
+            "required":true
+          },
+          {
+            "name":"saddr",
+            "type":"string",
+            "summary":"Source address.",
+            "required":true
+          },
+          {
+            "name":"daddr",
+            "type":"string",
+            "summary":"Destination address.",
+            "required":true
+          },
+          {
+            "name":"sport",
+            "type":"int",
+            "summary":"Source port.",
+            "required":true
+          },
+          {
+            "name":"dport",
+            "type":"int",
+            "summary":"Destination port.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"firewall",
+      "name":"shaper",
+      "action":"select",
+      "supported":true,
+      "access_group":"fwgrp.others",
+      "summary":"List of statistics for configured firewall shared traffic shapers.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"firewall",
+      "name":"shaper",
+      "action":"reset",
+      "supported":true,
+      "access_group":"fwgrp.others",
+      "summary":"Reset statistics for all configured traffic shapers.",
+      "request":{
+        "http_method":"POST"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"firewall",
+      "name":"per-ip-shaper",
+      "action":"select",
+      "supported":true,
+      "access_group":"fwgrp.others",
+      "summary":"List of statistics for configured firewall per-IP traffic shapers.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"firewall",
+      "name":"per-ip-shaper",
+      "action":"reset",
+      "supported":true,
+      "access_group":"fwgrp.others",
+      "summary":"Reset statistics for all configured firewall per-IP traffic shapers.",
+      "request":{
+        "http_method":"POST"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"firewall",
+      "name":"load-balance",
+      "action":"select",
+      "supported":true,
+      "access_group":"fwgrp.others",
+      "summary":"List all firewall load balance servers.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"start",
+            "type":"int",
+            "summary":"Starting entry index."
+          },
+          {
+            "name":"count",
+            "type":"int",
+            "summary":"Maximum number of entries to return.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"firewall",
+      "name":"address-fqdns",
+      "action":"select",
+      "supported":true,
+      "access_group":"fwgrp.address",
+      "summary":"List of FQDN address objects and the IPs they resolved to.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"firewall",
+      "name":"address-fqdns6",
+      "action":"select",
+      "supported":true,
+      "access_group":"fwgrp.address",
+      "summary":"List of IPv6 FQDN address objects and the IPs they resolved to.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"firewall",
+      "name":"ippool",
+      "action":"select",
+      "supported":true,
+      "access_group":"fwgrp.policy",
+      "summary":"List IPv4 pool statistics.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"firewall",
+      "name":"address-dynamic",
+      "action":"select",
+      "supported":true,
+      "access_group":"fwgrp.address",
+      "summary":"List of Fabric Connector address objects and the IPs they resolve to.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"firewall",
+      "name":"address6-dynamic",
+      "action":"select",
+      "supported":true,
+      "access_group":"fwgrp.address",
+      "summary":"List of IPv6 Fabric Connector address objects and the IPs they resolve to.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"fortiview",
+      "name":"statistics",
+      "action":"select",
+      "supported":true,
+      "access_group":"ftviewgrp",
+      "summary":"Retrieve drill-down and summary data for FortiView (both realtime and historical).",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"realtime",
+            "type":"boolean",
+            "summary":"Set to true to retrieve realtime results (from kernel)."
+          },
+          {
+            "name":"filter",
+            "type":"object",
+            "summary":"A map of filter keys to arrays of values."
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"fortiview",
+      "name":"session",
+      "action":"cancel",
+      "supported":true,
+      "access_group":"ftviewgrp",
+      "summary":"Cancel a FortiView request session.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"sessionid",
+            "type":"int",
+            "summary":"Session ID to cancel."
+          },
+          {
+            "name":"device",
+            "type":"string",
+            "summary":"FortiView request session's device. [disk|faz]"
+          },
+          {
+            "name":"report_by",
+            "type":"string",
+            "summary":"Report by field."
+          },
+          {
+            "name":"view_level",
+            "type":"string",
+            "summary":"FortiView View level."
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"fortiview",
+      "name":"sandbox-file-details",
+      "action":"select",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Retrieve FortiSandbox analysis details for a specific file checksum.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"checksum",
+            "type":"string",
+            "summary":"Checksum of a specific file that has been analyzed by the connected FortiSandbox.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"geoip",
+      "name":"geoip-query",
+      "action":"select",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Retrieve location details for IPs queried against FortiGuard's geoip service.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"ip_addresses",
+            "type":"string",
+            "summary":"One or more IP address strings to query for location details.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"ips",
+      "name":"rate-based",
+      "action":"select",
+      "supported":true,
+      "access_group":"utmgrp.ips",
+      "summary":"Returns a list of rate-based signatures in IPS package.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"license",
+      "name":"status",
+      "action":"select",
+      "supported":true,
+      "access_group":"any",
+      "summary":"Get current license & registration status.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"license",
+      "name":"database",
+      "action":"upgrade",
+      "supported":true,
+      "access_group":"sysgrp.upd",
+      "summary":"Upgrade a license database on this device using uploaded file.",
+      "request":{
+        "http_method":"POST",
+        "file_upload":true,
+        "parameters":[
+          {
+            "name":"db_name",
+            "type":"string",
+            "summary":"Security service database name [ips_appctrl|antivirus|...]",
+            "required":true
+          },
+          {
+            "name":"file_content",
+            "type":"string",
+            "summary":"Provided when uploading a file: base64 encoded file data. Must not contain whitespace or other invalid base64 characters. Must be included in HTTP body."
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"license",
+      "name":"forticare-resellers",
+      "action":"select",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Get current FortiCare resellers for the requested country.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"country_code",
+            "type":"int",
+            "summary":"FortiGuard country code"
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"license",
+      "name":"forticare-org-list",
+      "action":"select",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Get FortiCare organization size and industry lists.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"log",
+      "name":"current-disk-usage",
+      "action":"select",
+      "supported":true,
+      "access_group":"loggrp.data-access",
+      "summary":"Return current used, free and total disk bytes.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"log",
+      "name":"device",
+      "action":"state",
+      "supported":true,
+      "access_group":"loggrp.data-access",
+      "summary":"Retrieve information on state of log devices.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"log",
+      "name":"forticloud",
+      "action":"select",
+      "supported":true,
+      "access_group":"loggrp.config",
+      "summary":"Return FortiCloud log status.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"log",
+      "name":"fortianalyzer",
+      "action":"select",
+      "supported":true,
+      "access_group":"loggrp.config",
+      "summary":"Return FortiAnalyzer\/FortiManager log status.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"server",
+            "type":"string",
+            "summary":"FortiAnalyzer\/FortiManager address."
+          }
+        ]
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"log",
+      "name":"fortianalyzer-queue",
+      "action":"select",
+      "supported":true,
+      "access_group":"loggrp.config",
+      "summary":"Retrieve information on FortiAnalyzer's queue state. Note:- FortiAnalyzer logs are queued only if upload-option is realtime.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"scope",
+            "type":"string",
+            "summary":"Scope from which to retrieve FortiAnalyzer's queue state [vdom*|global]."
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"log",
+      "name":"hourly-disk-usage",
+      "action":"select",
+      "supported":true,
+      "access_group":"loggrp.data-access",
+      "summary":"Return historic hourly disk usage in bytes.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"log",
+      "name":"historic-daily-remote-logs",
+      "action":"select",
+      "supported":true,
+      "access_group":"loggrp.data-access",
+      "summary":"Returns the amount of logs in bytes sent daily to a remote logging service (FortiCloud or FortiAnalyzer).",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"server",
+            "type":"string",
+            "summary":"Service name [forticloud | fortianalyzer].",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"log",
+      "name":"stats",
+      "action":"select",
+      "supported":true,
+      "access_group":"loggrp.data-access",
+      "summary":"Return number of logs sent by category per day for a specific log device.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"dev",
+            "type":"string",
+            "summary":"Log device [*memory | disk | fortianalyzer | forticloud]."
+          }
+        ]
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"log",
+      "name":"stats",
+      "action":"reset",
+      "supported":true,
+      "access_group":"loggrp.data-access",
+      "summary":"Reset logging statistics for all log devices.",
+      "request":{
+        "http_method":"POST"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"log",
+      "name":"forticloud-report",
+      "action":"download",
+      "supported":true,
+      "access_group":"loggrp.data-access",
+      "summary":"Download PDF report from FortiCloud.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"mkey",
+            "type":"int",
+            "summary":"FortiCloud Report ID.",
+            "required":true
+          },
+          {
+            "name":"inline",
+            "type":"int",
+            "summary":"Set to 1 to download the report inline."
+          }
+        ]
+      },
+      "response":{
+        "file_download":true,
+        "type":"object"
+      }
+    },
+    {
+      "path":"log",
+      "name":"ips-archive",
+      "action":"download",
+      "supported":true,
+      "access_group":"loggrp.data-access",
+      "summary":"Download IPS\/application control packet capture files. Uses configured log display device.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"mkey",
+            "type":"int",
+            "summary":"IPS archive ID.",
+            "required":true
+          },
+          {
+            "name":"pcap_no",
+            "type":"int",
+            "summary":"Packet capture roll number (required when log device is 'disk')"
+          },
+          {
+            "name":"pcap_category",
+            "type":"int",
+            "summary":"Packet capture category (required when log device is 'disk')"
+          }
+        ]
+      },
+      "response":{
+        "file_download":true,
+        "type":"object",
+        "deprecated":true
+      }
+    },
+    {
+      "path":"log",
+      "name":"policy-archive",
+      "action":"download",
+      "supported":true,
+      "access_group":"loggrp.data-access",
+      "summary":"Download policy-based packet capture archive.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"mkey",
+            "type":"int",
+            "summary":"Session ID (from traffic log).",
+            "required":true
+          },
+          {
+            "name":"srcip",
+            "type":"string",
+            "summary":"Source IP.",
+            "required":true
+          },
+          {
+            "name":"dstip",
+            "type":"string",
+            "summary":"Destination IP.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+        "file_download":true,
+        "type":"object"
+      }
+    },
+    {
+      "path":"log",
+      "name":"av-archive",
+      "action":"download",
+      "supported":true,
+      "access_group":"loggrp.data-access",
+      "summary":"Download file quarantined by AntiVirus.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"mkey",
+            "type":"string",
+            "summary":"Checksum for quarantined file.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+        "file_download":true,
+        "type":"object"
+      }
+    },
+    {
+      "path":"log",
+      "name":"event",
+      "action":"select",
+      "supported":true,
+      "access_group":"any",
+      "summary":"List all event log descriptions.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"registration",
+      "name":"forticloud",
+      "action":"login",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Login to FortiCloud.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"email",
+            "type":"string",
+            "summary":"Account email.",
+            "required":true
+          },
+          {
+            "name":"password",
+            "type":"string",
+            "summary":"Account password.",
+            "required":true
+          },
+          {
+            "name":"send_logs",
+            "type":"boolean",
+            "summary":"Send logs to FortiCloud."
+          },
+          {
+            "name":"domain",
+            "type":"string",
+            "summary":"FortiCloud domain."
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"registration",
+      "name":"forticloud",
+      "action":"create",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Create a FortiCloud account.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"email",
+            "type":"string",
+            "summary":"Account email.",
+            "required":true
+          },
+          {
+            "name":"password",
+            "type":"string",
+            "summary":"Account password.",
+            "required":true
+          },
+          {
+            "name":"send_logs",
+            "type":"boolean",
+            "summary":"Send logs to FortiCloud."
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"registration",
+      "name":"forticloud",
+      "action":"logout",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Logout from FortiCloud.",
+      "request":{
+        "http_method":"POST"
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"registration",
+      "name":"forticloud",
+      "action":"disclaimer",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Retrieve the FortiCloud disclaimer.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"registration",
+      "name":"forticloud",
+      "action":"domains",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Retrieve a list of FortiCloud login domains.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"registration",
+      "name":"forticare",
+      "action":"login",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Login to FortiCare.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"email",
+            "type":"string",
+            "summary":"Account email.",
+            "required":true
+          },
+          {
+            "name":"password",
+            "type":"string",
+            "summary":"Account password.",
+            "required":true
+          },
+          {
+            "name":"reseller_name",
+            "type":"string",
+            "summary":"Reseller name.",
+            "required":true
+          },
+          {
+            "name":"reseller_id",
+            "type":"int",
+            "summary":"Reseller ID.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"registration",
+      "name":"forticare",
+      "action":"create",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Create a new FortiCare account.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"email",
+            "type":"string",
+            "summary":"Account email.",
+            "required":true
+          },
+          {
+            "name":"password",
+            "type":"string",
+            "summary":"Account password.",
+            "required":true
+          },
+          {
+            "name":"first_name",
+            "type":"string",
+            "summary":"First name.",
+            "required":true
+          },
+          {
+            "name":"last_name",
+            "type":"string",
+            "summary":"Last name.",
+            "required":true
+          },
+          {
+            "name":"title",
+            "type":"string",
+            "summary":"Title."
+          },
+          {
+            "name":"company",
+            "type":"string",
+            "summary":"Company.",
+            "required":true
+          },
+          {
+            "name":"address",
+            "type":"string",
+            "summary":"Address.",
+            "required":true
+          },
+          {
+            "name":"city",
+            "type":"string",
+            "summary":"City.",
+            "required":true
+          },
+          {
+            "name":"country_code",
+            "type":"int",
+            "summary":"Country code.",
+            "required":true
+          },
+          {
+            "name":"state",
+            "type":"string",
+            "summary":"State\/Province.",
+            "required":true
+          },
+          {
+            "name":"state_code",
+            "type":"string",
+            "summary":"State\/Province code."
+          },
+          {
+            "name":"postal_code",
+            "type":"string",
+            "summary":"Postal code.",
+            "required":true
+          },
+          {
+            "name":"phone",
+            "type":"string",
+            "summary":"Phone number.",
+            "required":true
+          },
+          {
+            "name":"industry",
+            "type":"string",
+            "summary":"Industry.",
+            "required":true
+          },
+          {
+            "name":"industry_id",
+            "type":"int",
+            "summary":"Industry ID.",
+            "required":true
+          },
+          {
+            "name":"orgsize_id",
+            "type":"int",
+            "summary":"Organization size ID.",
+            "required":true
+          },
+          {
+            "name":"reseller_name",
+            "type":"string",
+            "summary":"Reseller name.",
+            "required":true
+          },
+          {
+            "name":"reseller_id",
+            "type":"int",
+            "summary":"Reseller ID.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"registration",
+      "name":"forticare",
+      "action":"add-license",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Add a FortiCare license.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"registration_code",
+            "type":"string",
+            "summary":"FortiCare contract number.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"registration",
+      "name":"vdom",
+      "action":"add-license",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Add a VDOM license.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"license",
+            "type":"string",
+            "summary":"VDOM license key.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"router",
+      "name":"ipv4",
+      "action":"select",
+      "supported":true,
+      "access_group":"netgrp.route-cfg",
+      "summary":"List all active IPv4 routing table entries.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"start",
+            "type":"int",
+            "summary":"Starting entry index."
+          },
+          {
+            "name":"count",
+            "type":"int",
+            "summary":"Maximum number of entries to return (Default for all routes)."
+          },
+          {
+            "name":"ip_mask",
+            "type":"string",
+            "summary":"Filter: IP\/netmask."
+          },
+          {
+            "name":"gateway",
+            "type":"string",
+            "summary":"Filter: gateway."
+          },
+          {
+            "name":"type",
+            "type":"string",
+            "summary":"Filter: route type."
+          },
+          {
+            "name":"interface",
+            "type":"string",
+            "summary":"Filter: interface name."
+          }
+        ]
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"router",
+      "name":"ipv6",
+      "action":"select",
+      "supported":true,
+      "access_group":"netgrp.route-cfg",
+      "summary":"List all active IPv6 routing table entries.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"start",
+            "type":"int",
+            "summary":"Starting entry index."
+          },
+          {
+            "name":"count",
+            "type":"int",
+            "summary":"Maximum number of entries to return (Default for all routes)."
+          },
+          {
+            "name":"ip_mask",
+            "type":"string",
+            "summary":"Filter: IP\/netmask."
+          },
+          {
+            "name":"gateway",
+            "type":"string",
+            "summary":"Filter: gateway."
+          },
+          {
+            "name":"type",
+            "type":"string",
+            "summary":"Filter: route type."
+          },
+          {
+            "name":"interface",
+            "type":"string",
+            "summary":"Filter: interface name."
+          }
+        ]
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"router",
+      "name":"statistics",
+      "action":"select",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Retrieve routing table statistics, including number of matched routes.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"ip_version",
+            "type":"int",
+            "summary":"IP version (4|6). If not present, IPv4 and IPv6 will be returned."
+          },
+          {
+            "name":"ip_mask",
+            "type":"string",
+            "summary":"Filter: IP\/netmask."
+          },
+          {
+            "name":"gateway",
+            "type":"string",
+            "summary":"Filter: gateway."
+          },
+          {
+            "name":"type",
+            "type":"string",
+            "summary":"Filter: route type."
+          },
+          {
+            "name":"interface",
+            "type":"string",
+            "summary":"Filter: interface name."
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"router",
+      "name":"lookup",
+      "action":"select",
+      "supported":true,
+      "access_group":"netgrp.route-cfg",
+      "summary":"Performs a route lookup by querying the routing table.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"ipv6",
+            "type":"boolean",
+            "summary":"Perform an IPv6 lookup?"
+          },
+          {
+            "name":"destination",
+            "type":"string",
+            "summary":"Destination IP\/FQDN",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"router",
+      "name":"policy",
+      "action":"select",
+      "supported":true,
+      "access_group":"netgrp.route-cfg",
+      "summary":"Retrieve a list of active IPv4 policy routes.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"start",
+            "type":"int",
+            "summary":"Starting entry index."
+          },
+          {
+            "name":"count",
+            "type":"int",
+            "summary":"Maximum number of entries to return."
+          },
+          {
+            "name":"count_only",
+            "type":"boolean",
+            "summary":"Returns the number of IPv4 policy routes only."
+          }
+        ]
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"router",
+      "name":"policy6",
+      "action":"select",
+      "supported":true,
+      "access_group":"netgrp.route-cfg",
+      "summary":"Retrieve a list of active IPv6 policy routes.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"start",
+            "type":"int",
+            "summary":"Starting entry index."
+          },
+          {
+            "name":"count",
+            "type":"int",
+            "summary":"Maximum number of entries to return."
+          },
+          {
+            "name":"count_only",
+            "type":"boolean",
+            "summary":"Returns the number of IPv6 policy routes only."
+          }
+        ]
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"system",
+      "name":"admin",
+      "action":"toggle-vdom-mode",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Toggles VDOM mode on\/off. Enables or disables VDOM mode if it is disabled or enabled respectively.",
+      "request":{
+        "http_method":"POST"
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"api-user",
+      "action":"generate-key",
+      "supported":true,
+      "access_group":"sysgrp.admin",
+      "summary":"Generate a new api-key for the specified api-key-auth admin. The old api-key will be replaced. The response contains the only chance to read the new api-key plaintext in the api_key field.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"api-user",
+            "type":"string",
+            "summary":"Generate a new token for this api-user.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"config-revision",
+      "action":"select",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Returns a list of system configuration revisions.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"config-revision",
+      "action":"update-comments",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Updates comments for a system configuration file.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"config_id",
+            "type":"int",
+            "summary":"Configuration id."
+          },
+          {
+            "name":"comments",
+            "type":"string",
+            "summary":"Configuration comments."
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"config-revision",
+      "action":"delete",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Deletes one or more system configuration revisions.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"config_ids",
+            "type":"array",
+            "summary":"List of configuration ids.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"config-revision",
+      "action":"file",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Download a specific configuration revision.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"config_id",
+            "type":"int",
+            "summary":"Configuration id."
+          }
+        ]
+      },
+      "response":{
+        "file_download":true,
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"config-revision",
+      "action":"info",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Retrieve meta information for a specific configuration revision.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"config_id",
+            "type":"int",
+            "summary":"Configuration id."
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"config-revision",
+      "action":"save",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Create a new config revision checkpoint.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"comments",
+            "type":"string",
+            "summary":"Optional revision comments"
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"current-admins",
+      "action":"select",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Return a list of currently logged in administrators.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"system",
+      "name":"disconnect-admins",
+      "action":"select",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Disconnects logged in administrators.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"id",
+            "type":"int",
+            "summary":"Admin ID"
+          },
+          {
+            "name":"method",
+            "type":"string",
+            "summary":"Login method used to connect admin to FortiGate."
+          },
+          {
+            "name":"admins",
+            "type":"array",
+            "summary":"List of objects with admin id and method."
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"time",
+      "action":"set",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Sets current system time stamp.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"year",
+            "type":"int",
+            "summary":"Specifies the year for setting\/updating time manually.",
+            "required":true
+          },
+          {
+            "name":"month",
+            "type":"int",
+            "summary":"Specifies the month (0 - 11) for setting\/updating time manually.",
+            "required":true
+          },
+          {
+            "name":"day",
+            "type":"int",
+            "summary":"Specifies the day for setting\/updating time manually.",
+            "required":true
+          },
+          {
+            "name":"hour",
+            "type":"int",
+            "summary":"Specifies the hour (0 - 23) for setting\/updating time manually.",
+            "required":true
+          },
+          {
+            "name":"minute",
+            "type":"int",
+            "summary":"Specifies the minute (0 - 59) for setting\/updating time manually.",
+            "required":true
+          },
+          {
+            "name":"second",
+            "type":"int",
+            "summary":"Specifies the second (0 - 59) for setting\/updating time manually.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"time",
+      "action":"select",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Gets current system time stamp.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"os",
+      "action":"reboot",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Immediately reboot this device.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"event_log_message",
+            "type":"string",
+            "summary":"Message to be logged in event log."
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"os",
+      "action":"shutdown",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Immediately shutdown this device.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"event_log_message",
+            "type":"string",
+            "summary":"Message to be logged in event log."
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"global-resources",
+      "action":"select",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Retrieve current usage of global resources as well as both the default and user configured maximum values.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"system",
+      "name":"vdom-resource",
+      "action":"select",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Retrieve VDOM resource information, including CPU and memory usage.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"system",
+      "name":"dhcp",
+      "action":"select",
+      "supported":true,
+      "access_group":"netgrp.cfg",
+      "summary":"Returns a list of all DHCP IPv4 and IPv6 DHCP leases.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"scope",
+            "type":"string",
+            "summary":"Scope from which to retrieve DHCP leases [vdom*|global]. Global scope is only accessible for global administrators."
+          },
+          {
+            "name":"ipv6",
+            "type":"boolean",
+            "summary":"Include IPv6 addresses in the response."
+          }
+        ]
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"system",
+      "name":"dhcp",
+      "action":"revoke",
+      "supported":true,
+      "access_group":"netgrp.cfg",
+      "summary":"Revoke IPv4 DHCP leases.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"ip",
+            "type":"array",
+            "summary":"Optional list of addresses to revoke. Defaults to all addresses if not provided."
+          }
+        ]
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"system",
+      "name":"dhcp6",
+      "action":"revoke",
+      "supported":true,
+      "access_group":"netgrp.cfg",
+      "summary":"Revoke IPv6 DHCP leases.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"ip",
+            "type":"array",
+            "summary":"Optional list of addresses to revoke. Defaults to all addresses if not provided."
+          }
+        ]
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"system",
+      "name":"firmware",
+      "action":"select",
+      "supported":true,
+      "access_group":"sysgrp.mnt",
+      "summary":"Retrieve a list of firmware images available to use for upgrade on this device.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"system",
+      "name":"firmware",
+      "action":"upgrade",
+      "supported":true,
+      "access_group":"sysgrp.mnt",
+      "summary":"Upgrade firmware image on this device using uploaded file.",
+      "request":{
+        "http_method":"POST",
+        "file_upload":true,
+        "parameters":[
+          {
+            "name":"source",
+            "type":"string",
+            "summary":"Firmware file data source [upload|usb|fortiguard].",
+            "required":true
+          },
+          {
+            "name":"filename",
+            "type":"string",
+            "summary":"Name of file on fortiguard or USB disk to upgrade to."
+          },
+          {
+            "name":"format_partition",
+            "type":"boolean",
+            "summary":"Set to true to format boot partition before upgrade."
+          },
+          {
+            "name":"ignore_invalid_signature",
+            "type":"boolean",
+            "summary":"Set to true to upgrade no matter whether firmware file has valid firmware signature. (Only be used in BIOS security level one)"
+          },
+          {
+            "name":"file_content",
+            "type":"string",
+            "summary":"Provided when uploading a file: base64 encoded file data. Must not contain whitespace or other invalid base64 characters. Must be included in HTTP body."
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"firmware",
+      "action":"upgrade-paths",
+      "supported":true,
+      "access_group":"sysgrp.mnt",
+      "summary":"Retrieve a list of supported firmware upgrade paths.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"system",
+      "name":"fsck",
+      "action":"start",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Set file system check flag so that it will be executed on next device reboot.",
+      "request":{
+        "http_method":"POST"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"system",
+      "name":"storage",
+      "action":"select",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Retrieve information for the non-boot disk.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"system",
+      "name":"change-password",
+      "action":"select",
+      "supported":true,
+      "access_group":"any",
+      "summary":"Save admin and guest-admin passwords.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"mkey",
+            "type":"string",
+            "summary":"User ID for password change."
+          },
+          {
+            "name":"old_password",
+            "type":"string",
+            "summary":"Old password."
+          },
+          {
+            "name":"new_password",
+            "type":"string",
+            "summary":"New password."
+          }
+        ]
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"system",
+      "name":"password-policy-conform",
+      "action":"select",
+      "supported":true,
+      "access_group":"any",
+      "summary":"Check whether password conforms to the password policy.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"mkey",
+            "type":"string",
+            "summary":"User ID for password change."
+          },
+          {
+            "name":"apply_to",
+            "type":"string",
+            "summary":"Password Policy ID."
+          },
+          {
+            "name":"password",
+            "type":"string",
+            "summary":"Password."
+          },
+          {
+            "name":"old_password",
+            "type":"string",
+            "summary":"Old password."
+          }
+        ]
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"system",
+      "name":"csf",
+      "action":"select",
+      "supported":true,
+      "etag":true,
+      "access_group":"secfabgrp",
+      "summary":"Retrieve a full tree of downstream FortiGates registered to the Security Fabric.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"csf",
+      "action":"pending-authorizations",
+      "supported":true,
+      "access_group":"secfabgrp",
+      "summary":"Retrieve FortiGates with pending authorizations for joining the Security Fabric. Note:- This list is currently available on Security Fabric root only.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"system",
+      "name":"modem",
+      "action":"select",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Retrieve statistics for internal\/external configured modem.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"system",
+      "name":"modem",
+      "action":"reset",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Reset statistics for internal\/external configured modem.",
+      "request":{
+        "http_method":"POST"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"system",
+      "name":"modem",
+      "action":"connect",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Trigger a connect for the configured modem.",
+      "request":{
+        "http_method":"POST"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"system",
+      "name":"modem",
+      "action":"disconnect",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Trigger a disconnect for the configured modem.",
+      "request":{
+        "http_method":"POST"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"system",
+      "name":"modem",
+      "action":"update",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Update supported modem list from FortiGuard.",
+      "request":{
+        "http_method":"POST"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"system",
+      "name":"3g-modem",
+      "action":"select",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"List all 3G modems available via FortiGuard.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"system",
+      "name":"resource",
+      "action":"usage",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Retreive current and historical usage data for a provided resource.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"resource",
+            "type":"string",
+            "summary":"Resource to get usage data for [cpu|memory|disk|sessions|lograte]. Defaults to all resources if not provided."
+          },
+          {
+            "name":"interval",
+            "type":"string",
+            "summary":"Time interval of resource usage [1-min|10-min|30-min|1-hour|12-hour|24-hour]. Defaults to all intervals if not provided."
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"sniffer",
+      "action":"select",
+      "supported":true,
+      "access_group":"netgrp.packet-capture",
+      "summary":"Return a list of all configured packet captures.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"system",
+      "name":"sniffer",
+      "action":"restart",
+      "supported":true,
+      "access_group":"netgrp.packet-capture",
+      "summary":"Restart specified packet capture.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"mkey",
+            "type":"int",
+            "summary":"ID of packet capture entry.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"system",
+      "name":"sniffer",
+      "action":"start",
+      "supported":true,
+      "access_group":"netgrp.packet-capture",
+      "summary":"Start specified packet capture.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"mkey",
+            "type":"int",
+            "summary":"ID of packet capture entry.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"system",
+      "name":"sniffer",
+      "action":"stop",
+      "supported":true,
+      "access_group":"netgrp.packet-capture",
+      "summary":"Stop specified packet capture.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"mkey",
+            "type":"int",
+            "summary":"ID of packet capture entry.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"system",
+      "name":"sniffer",
+      "action":"download",
+      "supported":true,
+      "access_group":"netgrp.packet-capture",
+      "summary":"Download a stored packet capture.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"mkey",
+            "type":"int",
+            "summary":"ID of packet capture entry.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+        "file_download":true,
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"automation-stitch",
+      "action":"stats",
+      "supported":true,
+      "access_group":"any",
+      "summary":"Stats for automation stitches.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"mkey",
+            "type":"string",
+            "summary":"Filter: Automation stitch name."
+          }
+        ]
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"system",
+      "name":"automation-stitch",
+      "action":"test",
+      "supported":true,
+      "access_group":"any",
+      "summary":"Triggers an automation stitch for testing purposes.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"mkey",
+            "type":"string",
+            "summary":"ID of automation stitch to trigger.",
+            "required":true
+          },
+          {
+            "name":"log",
+            "type":"string",
+            "summary":"Log message to send with the event."
+          }
+        ]
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"switch-controller",
+      "name":"managed-switch",
+      "action":"select",
+      "supported":true,
+      "access_group":"wifi",
+      "summary":"Retrieve statistics for configured FortiSwitches",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"mkey",
+            "type":"string",
+            "summary":"Filter: FortiSwitch ID."
+          },
+          {
+            "name":"poe",
+            "type":"boolean",
+            "summary":"Filter: Retrieve PoE statistics for ports of configured FortiSwitches. Port power usage is in Watt units."
+          },
+          {
+            "name":"port_stats",
+            "type":"boolean",
+            "summary":"Filter: Retrieve tx\/rx statistics for ports of configured FortiSwitches."
+          }
+        ]
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"switch-controller",
+      "name":"managed-switch",
+      "action":"update",
+      "supported":true,
+      "access_group":"wifi",
+      "summary":"Update administrative state for a given FortiSwitch (enable or disable authorization).",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"mkey",
+            "type":"string",
+            "summary":"FortiSwitch name."
+          },
+          {
+            "name":"admin",
+            "type":"string",
+            "summary":"New FortiSwitch administrative state [enable|disable|discovered]."
+          }
+        ]
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"switch-controller",
+      "name":"managed-switch",
+      "action":"restart",
+      "supported":true,
+      "access_group":"wifi",
+      "summary":"Restart a given FortiSwitch.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"mkey",
+            "type":"string",
+            "summary":"Name of managed FortiSwitch.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"switch-controller",
+      "name":"managed-switch",
+      "action":"poe-reset",
+      "supported":true,
+      "access_group":"wifi",
+      "summary":"Reset PoE on a given FortiSwitch's port.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"mkey",
+            "type":"string",
+            "summary":"Name of managed FortiSwitch.",
+            "required":true
+          },
+          {
+            "name":"port",
+            "type":"string",
+            "summary":"Name of port to reset PoE on.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"switch-controller",
+      "name":"managed-switch",
+      "action":"faceplate-xml",
+      "supported":true,
+      "access_group":"wifi",
+      "summary":"Retrieve XML for rendering FortiSwitch faceplate widget.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"mkey",
+            "type":"string",
+            "summary":"Name of managed FortiSwitch."
+          }
+        ]
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"switch-controller",
+      "name":"managed-switch",
+      "action":"factory-reset",
+      "supported":true,
+      "access_group":"wifi",
+      "summary":"Send 'Factory Reset' command to a given FortiSwitch.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"mkey",
+            "type":"string",
+            "summary":"Name of managed FortiSwitch.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"switch-controller",
+      "name":"managed-switch",
+      "action":"dhcp-snooping",
+      "supported":true,
+      "access_group":"wifi",
+      "summary":"Retrieve DHCP servers monitored by FortiSwitches.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"switch-controller",
+      "name":"fsw-firmware",
+      "action":"select",
+      "supported":true,
+      "access_group":"wifi",
+      "summary":"Retrieve a list of recommended firmware for managed FortiSwitches.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"mkey",
+            "type":"string",
+            "summary":"Filter: FortiSwitch ID."
+          },
+          {
+            "name":"timeout",
+            "type":"string",
+            "summary":"FortiGuard connection timeout (defaults to 3 seconds)."
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"switch-controller",
+      "name":"fsw-firmware",
+      "action":"download",
+      "supported":true,
+      "access_group":"wifi",
+      "summary":"Download FortiSwitch firmware from FortiGuard to the FortiGate according to FortiSwitch image ID.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"image_id",
+            "type":"string",
+            "summary":"FortiSwitch image ID.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"switch-controller",
+      "name":"fsw-firmware",
+      "action":"push",
+      "supported":true,
+      "access_group":"wifi",
+      "summary":"Push FortiSwitch firmware to the given device.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"serial",
+            "type":"string",
+            "summary":"The target device's serial.",
+            "required":true
+          },
+          {
+            "name":"image_id",
+            "type":"string",
+            "summary":"FortiSwitch image ID.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"switch-controller",
+      "name":"fsw-firmware",
+      "action":"upload",
+      "supported":true,
+      "access_group":"wifi",
+      "summary":"Upload FortiSwitch firmware to the management FortiGate and then push to target FortiSwitches.",
+      "request":{
+        "http_method":"POST",
+        "file_upload":true,
+        "parameters":[
+          {
+            "name":"serials",
+            "type":"array",
+            "summary":"A list of target devices' serials."
+          },
+          {
+            "name":"serials",
+            "type":"string",
+            "summary":"The target device's serial."
+          },
+          {
+            "name":"file_content",
+            "type":"string",
+            "summary":"Provided when uploading a file: base64 encoded file data. Must not contain whitespace or other invalid base64 characters. Must be included in HTTP body."
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"switch-controller",
+      "name":"detected-device",
+      "action":"select",
+      "supported":true,
+      "access_group":"wifi",
+      "summary":"Retrieve a list of devices detected on all switches.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"switch-controller",
+      "name":"validate-switch-prefix",
+      "action":"select",
+      "supported":true,
+      "access_group":"wifi",
+      "summary":"Validate a FortiSwitch serial number prefix.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"prefix",
+            "type":"string",
+            "summary":"Prefix of FortiSwitch serial number."
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"interface",
+      "action":"select",
+      "supported":true,
+      "etag":true,
+      "access_group":"netgrp.cfg",
+      "summary":"Retrieve statistics for all system interfaces.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"interface_name",
+            "type":"string",
+            "summary":"Filter: interface name."
+          },
+          {
+            "name":"include_vlan",
+            "type":"boolean",
+            "summary":"Enable to include VLANs in result list."
+          }
+        ]
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"system",
+      "name":"interface",
+      "action":"dhcp-status",
+      "supported":true,
+      "access_group":"netgrp.cfg",
+      "summary":"Retrieve the DHCP client status of an interface.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"mkey",
+            "type":"string",
+            "summary":"Name of the interface.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"interface",
+      "action":"dhcp-renew",
+      "supported":true,
+      "access_group":"netgrp.cfg",
+      "summary":"Renew DHCP lease of an interface.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"mkey",
+            "type":"string",
+            "summary":"Name of the interface.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"available-interfaces",
+      "action":"select",
+      "supported":true,
+      "access_group":"any",
+      "summary":"Retrieve a list of all interfaces along with some meta information regarding their availability.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"view_type",
+            "type":"string",
+            "summary":"Optionally include additional information for interfaces. This parameter can be repeated multiple times. 'poe': Includes PoE information for supported ports. 'ha': Includes extra meta information useful when dealing with interfaces related to HA configuration. Interfaces that are used by an HA cluster as management interfaces are also included in this view. 'zone': Includes extra meta information for determining zone membership eligibility.'vwp': Includes extra meta information for determining virtual wire pair eligibility.'sdwan': Includes extra meta information for determining SD-WAN eligibility.'switch': Includes extra meta information for determining switch eligibility.'hard-switch': Includes extra meta information for determining hard-switch eligibility."
+          }
+        ]
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"system",
+      "name":"acquired-dns",
+      "action":"select",
+      "supported":true,
+      "access_group":"any",
+      "summary":"Retrieve a list of interfaces and their acquired DNS servers.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"system",
+      "name":"resolve-fqdn",
+      "action":"select",
+      "supported":true,
+      "access_group":"any",
+      "summary":"Resolves the provided FQDNs to FQDN -> IP mappings.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"ipv6",
+            "type":"boolean",
+            "summary":"Resolve for the AAAA record?"
+          },
+          {
+            "name":"fqdn",
+            "type":"string",
+            "summary":"FQDN",
+            "required":true
+          },
+          {
+            "name":"fqdn",
+            "type":"array",
+            "summary":"List of FQDNs to be resolved"
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"nat46-ippools",
+      "action":"select",
+      "supported":true,
+      "access_group":"any",
+      "summary":"Retrieve a list of all IPv6 IP pools that are valid for NAT 46 policies.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"system",
+      "name":"usb-log",
+      "action":"select",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Retrieve information about connected USB drives, including estimated log sizes.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"system",
+      "name":"usb-log",
+      "action":"start",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Start backup of logs from current VDOM to USB drive.",
+      "request":{
+        "http_method":"POST"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"system",
+      "name":"usb-log",
+      "action":"stop",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Stop backup of logs to USB drive.",
+      "request":{
+        "http_method":"POST"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"system",
+      "name":"usb-device",
+      "action":"eject",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Eject USB drives for safe removal.",
+      "request":{
+        "http_method":"POST"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"system",
+      "name":"ipconf",
+      "action":"select",
+      "supported":true,
+      "access_group":"netgrp.cfg",
+      "summary":"Determine if there is an IP conflict for a specific IP using ARP.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"devs",
+            "type":"array",
+            "summary":"List of interfaces to check for conflict.",
+            "required":true
+          },
+          {
+            "name":"ipaddr",
+            "type":"string",
+            "summary":"IPv4 address to check for conflict.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"system",
+      "name":"fortiguard",
+      "action":"update",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Immediately update status for FortiGuard services.",
+      "request":{
+        "http_method":"POST"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"system",
+      "name":"fortiguard",
+      "action":"clear-statistics",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Immediately clear all FortiGuard statistics.",
+      "request":{
+        "http_method":"POST"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"system",
+      "name":"fortiguard",
+      "action":"test-availability",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Test availability of FortiGuard services.",
+      "request":{
+        "http_method":"POST"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"system",
+      "name":"fortiguard",
+      "action":"server-info",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Get FortiGuard server list and information.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"system",
+      "name":"fortimanager",
+      "action":"status",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Get FortiManager status.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"fortimanager",
+      "action":"config",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Configure FortiManager IP. Register FortiManager if 'fortimanager_ip' is provided.       Unregister FortiManager if only 'unregister' parameter is specified and set to true.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"fortimanager_ip",
+            "type":"string",
+            "summary":"FortiManager IP address."
+          },
+          {
+            "name":"unregister",
+            "type":"boolean",
+            "summary":"Unregister the FortiManager (default=false)."
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"fortimanager",
+      "action":"backup-summary",
+      "supported":true,
+      "access_group":"fwgrp",
+      "summary":"Get FortiManager backup summary.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"fortimanager",
+      "action":"backup-action",
+      "supported":true,
+      "access_group":"fwgrp",
+      "summary":"Import or update from FortiManager objects.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"operation",
+            "type":"string",
+            "summary":"Operation to perform on the given CMDB objects [import|update].",
+            "required":true
+          },
+          {
+            "name":"objects",
+            "type":"array",
+            "summary":"Array of CMDB tables and mkeys.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"fortimanager",
+      "action":"backup-details",
+      "supported":true,
+      "access_group":"fwgrp",
+      "summary":"Get the properties of a FortiManager object.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"mkey",
+            "type":"string",
+            "summary":"Object name.",
+            "required":true
+          },
+          {
+            "name":"datasource",
+            "type":"string",
+            "summary":"Object datasource.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"available-certificates",
+      "action":"select",
+      "supported":true,
+      "access_group":"any",
+      "summary":"Get available certificates.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"scope",
+            "type":"string",
+            "summary":"Scope of certificate [vdom*|global]."
+          }
+        ]
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"system",
+      "name":"certificate",
+      "action":"download",
+      "supported":true,
+      "access_group":"vpngrp",
+      "summary":"Download certificate.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"mkey",
+            "type":"string",
+            "summary":"Name of certificate.",
+            "required":true
+          },
+          {
+            "name":"type",
+            "type":"string",
+            "summary":"Type of certificate [local|csr|remote|ca|crl].",
+            "required":true
+          },
+          {
+            "name":"scope",
+            "type":"string",
+            "summary":"Scope of certificate [vdom*|global]."
+          }
+        ]
+      },
+      "response":{
+        "file_download":true,
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"debug",
+      "action":"download",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Download debug report for technical support.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "file_download":true,
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"com-log",
+      "action":"dump",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Dump system com-log to file.",
+      "request":{
+        "http_method":"POST"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"system",
+      "name":"com-log",
+      "action":"update",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Fetch system com-log file dump progress.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"system",
+      "name":"com-log",
+      "action":"download",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Download com-log file (after file dump is complete).",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "file_download":true,
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"botnet",
+      "action":"stat",
+      "supported":true,
+      "etag":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Retrieve statistics for FortiGuard botnet database.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"botnet",
+      "action":"select",
+      "supported":true,
+      "etag":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"List all known IP-based botnet entries in FortiGuard botnet database.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"start",
+            "type":"int",
+            "summary":"Starting entry index."
+          },
+          {
+            "name":"count",
+            "type":"int",
+            "summary":"Maximum number of entries to return."
+          },
+          {
+            "name":"include_hit_only",
+            "type":"boolean",
+            "summary":"Include entries with hits only."
+          }
+        ]
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"system",
+      "name":"botnet-domains",
+      "action":"select",
+      "supported":true,
+      "etag":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"List all known domain-based botnet entries in FortiGuard botnet database.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"start",
+            "type":"int",
+            "summary":"Starting entry index."
+          },
+          {
+            "name":"count",
+            "type":"int",
+            "summary":"Maximum number of entries to return."
+          }
+        ]
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"system",
+      "name":"botnet-domains",
+      "action":"stat",
+      "supported":true,
+      "etag":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"List statistics on domain-based botnet entries in FortiGuard botnet database.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"botnet-domains",
+      "action":"hits",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"List hit botnet domains with hit count > 0.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"system",
+      "name":"ha-statistics",
+      "action":"select",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"List of statistics for members of HA cluster.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"system",
+      "name":"ha-history",
+      "action":"select",
+      "supported":true,
+      "etag":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Get HA cluster historical logs.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"ha-checksums",
+      "action":"select",
+      "supported":true,
+      "etag":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"List of checksums for members of HA cluster.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"system",
+      "name":"ha-peer",
+      "action":"select",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Get configuration of peer(s) in HA cluster. Uptime is expressed in seconds.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"serial_no",
+            "type":"string",
+            "summary":"Serial number of the HA member. If not specified, fetch information for all HA members"
+          },
+          {
+            "name":"vcluster_id",
+            "type":"int",
+            "summary":"Virtual cluster number. If not specified, fetch information for all active vclusters"
+          }
+        ]
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"system",
+      "name":"ha-peer",
+      "action":"update",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Update configuration of peer in HA cluster.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"serial_no",
+            "type":"string",
+            "summary":"Serial number of the HA member.",
+            "required":true
+          },
+          {
+            "name":"vcluster_id",
+            "type":"int",
+            "summary":"Virtual cluster number."
+          },
+          {
+            "name":"priority",
+            "type":"int",
+            "summary":"Priority to assign to HA member."
+          },
+          {
+            "name":"hostname",
+            "type":"string",
+            "summary":"Name to assign the HA member."
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"ha-peer",
+      "action":"disconnect",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Update configuration of peer in HA cluster.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"serial_no",
+            "type":"string",
+            "summary":"Serial number of the HA member.",
+            "required":true
+          },
+          {
+            "name":"interface",
+            "type":"string",
+            "summary":"Name of the interface which should be assigned for management.",
+            "required":true
+          },
+          {
+            "name":"ip",
+            "type":"string",
+            "summary":"IP to assign to the selected interface.",
+            "required":true
+          },
+          {
+            "name":"mask",
+            "type":"string",
+            "summary":"Full network mask to assign to the selected interface.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"link-monitor",
+      "action":"select",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Retrieve per-interface statistics for active link monitors.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"mkey",
+            "type":"string",
+            "summary":"Name of link monitor."
+          }
+        ]
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"system",
+      "name":"compliance",
+      "action":"run",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Immediately run compliance checks for the selected VDOM.",
+      "request":{
+        "http_method":"POST"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"system",
+      "name":"config",
+      "action":"restore",
+      "supported":true,
+      "access_group":"sysgrp.mnt",
+      "summary":"Restore system configuration from uploaded file or from USB.",
+      "request":{
+        "http_method":"POST",
+        "file_upload":true,
+        "parameters":[
+          {
+            "name":"source",
+            "type":"string",
+            "summary":"Configuration file data source [upload | usb | revision].",
+            "required":true
+          },
+          {
+            "name":"usb_filename",
+            "type":"string",
+            "summary":"When using 'usb' source: the filename to restore from the connected USB device."
+          },
+          {
+            "name":"config_id",
+            "type":"int",
+            "summary":"When using 'revision' source: valid ID of configuration stored on disk to revert to. "
+          },
+          {
+            "name":"password",
+            "type":"string",
+            "summary":"Password to decrypt configuration data."
+          },
+          {
+            "name":"scope",
+            "type":"string",
+            "summary":"Specify global or VDOM only restore [global | vdom].",
+            "required":true
+          },
+          {
+            "name":"vdom",
+            "type":"string",
+            "summary":"If 'vdom' scope specified, the name of the VDOM to restore configuration."
+          },
+          {
+            "name":"file_content",
+            "type":"string",
+            "summary":"Provided when uploading a file: base64 encoded file data. Must not contain whitespace or other invalid base64 characters. Must be included in HTTP body."
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"config",
+      "action":"backup",
+      "supported":true,
+      "access_group":"sysgrp.mnt",
+      "summary":"Backup system config",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"destination",
+            "type":"string",
+            "summary":"Configuration file destination [file* | usb]"
+          },
+          {
+            "name":"usb_filename",
+            "type":"string",
+            "summary":"When using 'usb' destination: the filename to save to on the connected USB device"
+          },
+          {
+            "name":"password",
+            "type":"string",
+            "summary":"Password to encrypt configuration data."
+          },
+          {
+            "name":"scope",
+            "type":"string",
+            "summary":"Specify global or VDOM only backup [global | vdom].",
+            "required":true
+          },
+          {
+            "name":"vdom",
+            "type":"string",
+            "summary":"If 'vdom' scope specified, the name of the VDOM to backup configuration."
+          }
+        ]
+      },
+      "response":{
+        "file_download":true,
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"config",
+      "action":"usb-filelist",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"List configuration files available on connected USB drive.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"system",
+      "name":"sandbox",
+      "action":"stats",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Retrieve sandbox statistics.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"sandbox",
+      "action":"status",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Retrieve sandbox status.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"sandbox",
+      "action":"test-connect",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Test the connectivity of a given FortiSandbox IP.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"server",
+            "type":"string",
+            "summary":"IP of the FortiSandbox to test.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"object",
+      "action":"usage",
+      "supported":true,
+      "access_group":"any",
+      "summary":"Retrieve all objects that are currently using as well as objects that can use the given object.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"q_path",
+            "type":"string",
+            "summary":"The CMDB table's path"
+          },
+          {
+            "name":"q_name",
+            "type":"string",
+            "summary":"The CMDB table's name"
+          },
+          {
+            "name":"qtypes",
+            "type":"array",
+            "summary":"List of CMDB table qTypes"
+          },
+          {
+            "name":"mkey",
+            "type":"string",
+            "summary":"The mkey for the object",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"object-tagging",
+      "action":"usage",
+      "supported":true,
+      "access_group":"any",
+      "summary":"Retrieve usage count for tags in all tag categories.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"system",
+      "name":"status",
+      "action":"select",
+      "supported":true,
+      "access_group":"any",
+      "summary":"Retrieve basic system status.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"timezone",
+      "action":"select",
+      "supported":true,
+      "access_group":"any",
+      "summary":"Get world timezone and daylight saving time.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"system",
+      "name":"vmlicense",
+      "action":"upload",
+      "supported":false,
+      "access_group":"sysgrp.cfg",
+      "summary":"Update VM license using uploaded file. Reboots immediately if successful.",
+      "request":{
+        "http_method":"POST",
+        "file_upload":true,
+        "parameters":[
+          {
+            "name":"file_content",
+            "type":"string",
+            "summary":"Provided when uploading a file: base64 encoded file data. Must not contain whitespace or other invalid base64 characters. Must be included in HTTP body."
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"sensor-info",
+      "action":"select",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Retrieve system sensor status.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"security-rating",
+      "action":"select",
+      "supported":true,
+      "access_group":"secfabgrp",
+      "summary":"Retrieve a Security Rating result. Without file specified, returns the most recent result.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"id",
+            "type":"int",
+            "summary":"Security Rating result ID."
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"security-rating",
+      "action":"history",
+      "supported":true,
+      "access_group":"secfabgrp",
+      "summary":"Retrieve Security Rating history.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"security-rating",
+      "action":"trigger",
+      "supported":true,
+      "access_group":"secfabgrp",
+      "summary":"Trigger a Security Rating.",
+      "request":{
+        "http_method":"POST"
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"security-rating",
+      "action":"status",
+      "supported":true,
+      "access_group":"secfabgrp",
+      "summary":"Check if a Security Rating is currently running.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"security-rating",
+      "action":"lang",
+      "supported":true,
+      "access_group":"secfabgrp",
+      "summary":"Returns the requested Security Rating language mapping.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"key",
+            "type":"string",
+            "summary":"Requested language mapping (en, fr, big5, euc-kr, GB2312, pg, sp, x-sjis)."
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"fortiguard-blacklist",
+      "action":"select",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Retrieve blacklist information for a specified IP.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"ip",
+            "type":"string",
+            "summary":"IPv4 address to check against.",
+            "required":true
+          },
+          {
+            "name":"timeout",
+            "type":"int",
+            "summary":"Timeout period in seconds (defaults to 5)."
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"check-port-availability",
+      "action":"select",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Check whether a list of TCP port ranges is available for a certain service.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"port_ranges",
+            "type":"array",
+            "summary":"List of TCP port range objects to check against.",
+            "required":true
+          },
+          {
+            "name":"service",
+            "type":"string",
+            "summary":"The service in which the ports could be available. 'service' options are [reserved | sysglobal | webproxy | ftpproxy | sslvpn | slaprobe | fsso | ftm_push]. If 'service' is not specified, the port ranges availability is checked against all services."
+          }
+        ]
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"system",
+      "name":"external-resource",
+      "action":"entry-list",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Retrieve resource file status with a list of valid\/invalid entries (skip empty and comment lines) for the specific external resource.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"mkey",
+            "type":"string",
+            "summary":"The external resource name to query.",
+            "required":true
+          },
+          {
+            "name":"status_only",
+            "type":"boolean",
+            "summary":"Retrieve resource file status only and skip entries."
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"extender-controller",
+      "name":"extender",
+      "action":"select",
+      "supported":true,
+      "access_group":"netgrp.cfg",
+      "summary":"Retrieve statistics for specific configured FortiExtender units.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"id",
+            "type":"array",
+            "summary":"List of FortiExtender IDs to query.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"extender-controller",
+      "name":"extender",
+      "action":"reset",
+      "supported":true,
+      "access_group":"netgrp.cfg",
+      "summary":"Reset a specific FortiExtender unit.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"id",
+            "type":"string",
+            "summary":"FortiExtender ID to reset.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"system",
+      "name":"sdn-connector",
+      "action":"status",
+      "supported":true,
+      "access_group":"sysgrp.cfg",
+      "summary":"Retrieve connection status for SDN connectors.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"mkey",
+            "type":"string",
+            "summary":"Filter: SDN Connector ID."
+          },
+          {
+            "name":"type",
+            "type":"string",
+            "summary":"Filter: SDN Connector type."
+          }
+        ]
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"system",
+      "name":"sdn-connector",
+      "action":"validate-gcp-key",
+      "supported":true,
+      "access_group":"any",
+      "summary":"Validate a string representing a private key from GCP in PEM format.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"private-key",
+            "type":"string",
+            "summary":"Private key in PEM format.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"user",
+      "name":"firewall",
+      "action":"select",
+      "supported":true,
+      "access_group":"authgrp",
+      "summary":"List authenticated firewall users.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"start",
+            "type":"int",
+            "summary":"Starting entry index."
+          },
+          {
+            "name":"count",
+            "type":"int",
+            "summary":"Maximum number of entries to return."
+          },
+          {
+            "name":"ipv4",
+            "type":"boolean",
+            "summary":"Include IPv4 user (default=true)."
+          },
+          {
+            "name":"ipv6",
+            "type":"boolean",
+            "summary":"Include IPv6 users."
+          }
+        ]
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"user",
+      "name":"firewall",
+      "action":"deauth",
+      "supported":true,
+      "access_group":"authgrp",
+      "summary":"Deauthenticate single, multiple, or all firewall users.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"user_type",
+            "type":"string",
+            "summary":"User type [proxy|firewall]. Required for both proxy and firewall users."
+          },
+          {
+            "name":"id",
+            "type":"int",
+            "summary":"User ID. Required for both proxy and firewall users."
+          },
+          {
+            "name":"ip",
+            "type":"string",
+            "summary":"User IP address. Required for both proxy and firewall users."
+          },
+          {
+            "name":"ip_version",
+            "type":"string",
+            "summary":"IP version [ip4|ip6]. Only required if user_type is firewall."
+          },
+          {
+            "name":"method",
+            "type":"string",
+            "summary":"Authentication method [fsso|rsso|ntlm|firewall|wsso|fsso_citrix|sso_guest]. Only required if user_type is firewall."
+          },
+          {
+            "name":"all",
+            "type":"boolean",
+            "summary":"Set to true to deauthenticate all users. Other parameters will be ignored."
+          },
+          {
+            "name":"users",
+            "type":"array",
+            "summary":"Array of user objects to deauthenticate. Use this to deauthenticate multiple users at once. Each object should include the above properties."
+          }
+        ]
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"user",
+      "name":"banned",
+      "action":"select",
+      "supported":true,
+      "access_group":"authgrp",
+      "summary":"Return a list of all banned users by IP.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"user",
+      "name":"banned",
+      "action":"clear_users",
+      "supported":true,
+      "access_group":"authgrp",
+      "summary":"Immediately clear a list of specific banned users by IP.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"ip_addresses",
+            "type":"array",
+            "summary":"List of banned user IPs to clear. IPv4 and IPv6 addresses are allowed.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"user",
+      "name":"banned",
+      "action":"add_users",
+      "supported":true,
+      "access_group":"authgrp",
+      "summary":"Immediately add one or more users to the banned list.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"ip_addresses",
+            "type":"array",
+            "summary":"List of IP Addresses to ban. IPv4 and IPv6 addresses are allowed.",
+            "required":true
+          },
+          {
+            "name":"expiry",
+            "type":"int",
+            "summary":"Time until expiry in seconds. 0 for indefinite ban."
+          }
+        ]
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"user",
+      "name":"banned",
+      "action":"clear_all",
+      "supported":true,
+      "access_group":"authgrp",
+      "summary":"Immediately clear all banned users.",
+      "request":{
+        "http_method":"POST"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"user",
+      "name":"fortitoken",
+      "action":"select",
+      "supported":true,
+      "access_group":"authgrp",
+      "summary":"Retrieve a map of FortiTokens and their status.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"user",
+      "name":"fortitoken",
+      "action":"activate",
+      "supported":true,
+      "access_group":"authgrp",
+      "summary":"Activate a set of FortiTokens by serial number.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"tokens",
+            "type":"array",
+            "summary":"List of FortiToken serial numbers to activate. If omitted, all tokens will be used."
+          }
+        ]
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"user",
+      "name":"detected-device",
+      "action":"select",
+      "supported":true,
+      "access_group":"authgrp",
+      "summary":"Retrieve a list of detected devices.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"expand_child_macs",
+            "type":"boolean",
+            "summary":"Include child devices as separate entries in the list."
+          },
+          {
+            "name":"with_compliance",
+            "type":"boolean",
+            "summary":"Retrieve compliance status."
+          },
+          {
+            "name":"with_dhcp",
+            "type":"boolean",
+            "summary":"Retrieve DHCP lease information."
+          },
+          {
+            "name":"with_endpoint",
+            "type":"boolean",
+            "summary":"Retrieve FortiClient endpoint information."
+          },
+          {
+            "name":"with_endpoint_advanced",
+            "type":"boolean",
+            "summary":"Retrieve advanced FortiClient endpoint information."
+          },
+          {
+            "name":"with_fortilink",
+            "type":"boolean",
+            "summary":"Retrieve FortiLink information."
+          },
+          {
+            "name":"with_fortiap",
+            "type":"boolean",
+            "summary":"Retrieve FortiAP information."
+          }
+        ]
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"user",
+      "name":"device",
+      "action":"select",
+      "supported":true,
+      "etag":true,
+      "access_group":"authgrp",
+      "summary":"Retrieve a list of detected devices.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"master_only",
+            "type":"boolean",
+            "summary":"List of master device only."
+          },
+          {
+            "name":"compliance_visibility",
+            "type":"boolean",
+            "summary":"Add compliance status to indicate if a device is 'exempt' or 'non-compliant' by interface's FortiClient host check."
+          },
+          {
+            "name":"intf_name",
+            "type":"string",
+            "summary":"Filter: Name of interface where the device was detected. Only available when compliance_visibility is true."
+          },
+          {
+            "name":"master_mac",
+            "type":"string",
+            "summary":"Filter: Master MAC of a device. Multiple entries could be returned."
+          }
+        ]
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"user",
+      "name":"device-type",
+      "action":"select",
+      "supported":true,
+      "access_group":"any",
+      "summary":"Retrieve a list of device types.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"user",
+      "name":"device-category",
+      "action":"select",
+      "supported":true,
+      "access_group":"any",
+      "summary":"Retrieve a list of device categories.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"user",
+      "name":"fortitoken",
+      "action":"refresh",
+      "supported":true,
+      "access_group":"authgrp",
+      "summary":"Refresh a set of FortiTokens by serial number.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"tokens",
+            "type":"array",
+            "summary":"List of FortiToken serial numbers to refresh. If omitted, all tokens will be used."
+          }
+        ]
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"user",
+      "name":"fortitoken",
+      "action":"provision",
+      "supported":true,
+      "access_group":"authgrp",
+      "summary":"Provision a set of FortiTokens by serial number.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"tokens",
+            "type":"array",
+            "summary":"List of FortiToken serial numbers to provision. If omitted, all tokens will be used."
+          }
+        ]
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"user",
+      "name":"fortitoken",
+      "action":"send-activation",
+      "supported":true,
+      "access_group":"authgrp",
+      "summary":"Send a FortiToken activation code to a user via SMS or Email.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"token",
+            "type":"string",
+            "summary":"FortiToken serial number. The token must be assigned to a user\/admin.",
+            "required":true
+          },
+          {
+            "name":"method",
+            "type":"string",
+            "summary":"Method to send activation code [email|sms]. If not set, SMS will be attempted first, then email."
+          },
+          {
+            "name":"email",
+            "type":"string",
+            "summary":"Override email address."
+          },
+          {
+            "name":"sms_phone",
+            "type":"string",
+            "summary":"Override SMS phone number. SMS provider must be set in the assigned user\/admin."
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"user",
+      "name":"fortitoken",
+      "action":"import-trial",
+      "supported":true,
+      "access_group":"authgrp",
+      "summary":"Import trial mobile FortiTokens.",
+      "request":{
+        "http_method":"POST"
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"user",
+      "name":"fortitoken",
+      "action":"import-mobile",
+      "supported":true,
+      "access_group":"authgrp",
+      "summary":"Import a list of tokens from FortiGuard to the FortiGate unit.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"code",
+            "type":"string",
+            "summary":"Activation code on redemption certificate.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"user",
+      "name":"fortitoken",
+      "action":"import-seed",
+      "supported":true,
+      "access_group":"authgrp",
+      "summary":"Import a FortiToken seed file.",
+      "request":{
+        "http_method":"POST",
+        "file_upload":true,
+        "parameters":[
+          {
+            "name":"file_content",
+            "type":"string",
+            "summary":"Provided when uploading a file: base64 encoded file data. Must not contain whitespace or other invalid base64 characters. Must be included in HTTP body."
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"user",
+      "name":"fsso",
+      "action":"refresh-server",
+      "supported":true,
+      "access_group":"authgrp",
+      "summary":"Refresh remote agent group list for all fsso agents.",
+      "request":{
+        "http_method":"POST"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"user",
+      "name":"fsso",
+      "action":"select",
+      "supported":true,
+      "access_group":"authgrp",
+      "summary":"Get a list of fsso and fsso polling status.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"user",
+      "name":"radius",
+      "action":"test-connect",
+      "supported":true,
+      "access_group":"authgrp",
+      "summary":"Test the connectivity of the given RADIUS server and, optionally, the validity of a username & password.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"mkey",
+            "type":"string",
+            "summary":"Name of FortiGate's RADIUS object whose settings to test."
+          },
+          {
+            "name":"ordinal",
+            "type":"string",
+            "summary":"If 'mkey' is provided, the server-secret pair to use from the object: 'primary', 'secondary' or 'tertiary'. Defaults to 'primary'."
+          },
+          {
+            "name":"server",
+            "type":"string",
+            "summary":"Host name or IP of a RADIUS server. If 'mkey' is provided, this overrides the 'server' value in the object."
+          },
+          {
+            "name":"secret",
+            "type":"string",
+            "summary":"Secret password for the RADIUS server. If 'mkey' is provided, this overrides the 'secret' value in the object."
+          },
+          {
+            "name":"user",
+            "type":"string",
+            "summary":"User name whose access to check."
+          },
+          {
+            "name":"password",
+            "type":"string",
+            "summary":"User's password."
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"user",
+      "name":"tacacs-plus",
+      "action":"test",
+      "supported":true,
+      "access_group":"authgrp",
+      "summary":"Test the connectivity of the given TACACS+ server.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"mkey",
+            "type":"string",
+            "summary":"Name of FortiGate's TACACS+ object whose settings to test."
+          },
+          {
+            "name":"ordinal",
+            "type":"string",
+            "summary":"If 'mkey' is provided, the server-key pair to use from the object: 'primary', 'secondary' or 'tertiary'. Defaults to 'primary'."
+          },
+          {
+            "name":"server",
+            "type":"string",
+            "summary":"Host name of IP of a TACACS+ server. If 'mkey' is provided, this overrides the 'server' value in the object."
+          },
+          {
+            "name":"secret",
+            "type":"string",
+            "summary":"Secret key for the TACACS+ server. If 'mkey' is provided, this overrides the 'key' value in the object."
+          },
+          {
+            "name":"port",
+            "type":"int",
+            "summary":"Port number of the TACACS+ server. If 'mkey' is provided, this overrides the 'port' value in the object. Defaults to 49."
+          },
+          {
+            "name":"source_ip",
+            "type":"string",
+            "summary":"Source IP for communications to TACACS+ server. If 'mkey' is provided, this overrides the 'source-ip' value in the object."
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"utm",
+      "name":"rating-lookup",
+      "action":"select",
+      "supported":true,
+      "access_group":"utmgrp.webfilter",
+      "summary":"Lookup FortiGuard rating for a specific URL.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"url",
+            "type":"string",
+            "summary":"URL to query.",
+            "required":true
+          },
+          {
+            "name":"url",
+            "type":"array",
+            "summary":"List of URLs to query."
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"utm",
+      "name":"app-lookup",
+      "action":"select",
+      "supported":true,
+      "access_group":"any",
+      "summary":"Query remote FortiFlow database to resolve hosts to application control entries.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"hosts",
+            "type":"array",
+            "summary":"List of hosts to resolve."
+          }
+        ]
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"utm",
+      "name":"application-categories",
+      "action":"select",
+      "supported":true,
+      "access_group":"any",
+      "summary":"Retrieve a list of application control categories.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"utm",
+      "name":"antivirus",
+      "action":"stats",
+      "supported":true,
+      "access_group":"utmgrp.antivirus",
+      "summary":"Retrieve antivirus scanning statistics.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"virtual-wan",
+      "name":"health-check",
+      "action":"select",
+      "supported":true,
+      "access_group":"netgrp.cfg",
+      "summary":"Retrieve health-check statistics for each SD-WAN link.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"virtual-wan",
+      "name":"members",
+      "action":"select",
+      "supported":true,
+      "access_group":"netgrp.cfg",
+      "summary":"Retrieve interface statistics for each SD-WAN link.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"webfilter",
+      "name":"override",
+      "action":"select",
+      "supported":true,
+      "access_group":"utmgrp.webfilter",
+      "summary":"List all administrative and user initiated webfilter overrides.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"webfilter",
+      "name":"override",
+      "action":"delete",
+      "supported":true,
+      "access_group":"utmgrp.webfilter",
+      "summary":"Delete a configured webfilter override.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"mkey",
+            "type":"string",
+            "summary":"ID of webfilter override to delete."
+          }
+        ]
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"webfilter",
+      "name":"malicious-urls",
+      "action":"select",
+      "supported":true,
+      "etag":true,
+      "access_group":"utmgrp.webfilter",
+      "summary":"List all URLs in FortiSandbox malicious URL database.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"webfilter",
+      "name":"malicious-urls",
+      "action":"stat",
+      "supported":true,
+      "etag":true,
+      "access_group":"utmgrp.webfilter",
+      "summary":"Retrieve statistics for the FortiSandbox malicious URL database.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"webfilter",
+      "name":"category-quota",
+      "action":"select",
+      "supported":true,
+      "access_group":"utmgrp.webfilter",
+      "summary":"Retrieve quota usage statistics for webfilter categories.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"profile",
+            "type":"string",
+            "summary":"Webfilter profile."
+          },
+          {
+            "name":"user",
+            "type":"string",
+            "summary":"User or IP (required if profile specified)."
+          }
+        ]
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"webfilter",
+      "name":"category-quota",
+      "action":"reset",
+      "supported":true,
+      "access_group":"utmgrp.webfilter",
+      "summary":"Reset webfilter quota for user or IP.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"profile",
+            "type":"string",
+            "summary":"Webfilter profile to reset."
+          },
+          {
+            "name":"user",
+            "type":"string",
+            "summary":"User or IP to reset with."
+          }
+        ]
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"webfilter",
+      "name":"fortiguard-categories",
+      "action":"select",
+      "supported":true,
+      "access_group":"any",
+      "summary":"Return FortiGuard web filter categories.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"include_unrated",
+            "type":"boolean",
+            "summary":"Include Unrated category in result list."
+          },
+          {
+            "name":"convert_unrated_id",
+            "type":"boolean",
+            "summary":"Convert Unrated category id to the one for CLI use."
+          }
+        ]
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"webfilter",
+      "name":"trusted-urls",
+      "action":"select",
+      "supported":true,
+      "etag":true,
+      "access_group":"utmgrp.webfilter",
+      "summary":"List all URLs in FortiGuard trusted URL database.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"vpn",
+      "name":"ipsec",
+      "action":"select",
+      "supported":true,
+      "access_group":"vpngrp",
+      "summary":"Return an array of active IPsec VPNs.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"tunnel",
+            "type":"string",
+            "summary":"Filter for a specific IPsec tunnel name."
+          },
+          {
+            "name":"start",
+            "type":"int",
+            "summary":"Starting entry index."
+          },
+          {
+            "name":"count",
+            "type":"int",
+            "summary":"Maximum number of entries to return."
+          }
+        ]
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"vpn",
+      "name":"ipsec",
+      "action":"tunnel_up",
+      "supported":true,
+      "access_group":"vpngrp",
+      "summary":"Bring up a specific IPsec VPN tunnel.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"p1name",
+            "type":"string",
+            "summary":"IPsec phase1 name.",
+            "required":true
+          },
+          {
+            "name":"p2name",
+            "type":"string",
+            "summary":"IPsec phase2 name.",
+            "required":true
+          },
+          {
+            "name":"p2serial",
+            "type":"int",
+            "summary":"IPsec phase2 serial."
+          }
+        ]
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"vpn",
+      "name":"ipsec",
+      "action":"tunnel_down",
+      "supported":true,
+      "access_group":"vpngrp",
+      "summary":"Bring down a specific IPsec VPN tunnel.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"p1name",
+            "type":"string",
+            "summary":"IPsec phase1 name.",
+            "required":true
+          },
+          {
+            "name":"p2name",
+            "type":"string",
+            "summary":"IPsec phase2 name.",
+            "required":true
+          },
+          {
+            "name":"p2serial",
+            "type":"int",
+            "summary":"IPsec phase2 serial."
+          }
+        ]
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"vpn",
+      "name":"ipsec",
+      "action":"tunnel_reset_stats",
+      "supported":true,
+      "access_group":"vpngrp",
+      "summary":"Reset statistics for a specific IPsec VPN tunnel.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"p1name",
+            "type":"string",
+            "summary":"IPsec phase1 name.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"vpn",
+      "name":"one-click",
+      "action":"members",
+      "supported":true,
+      "access_group":"vpngrp",
+      "summary":"Get information on devices registered in the Overlay Controller VPN cloud assisted group.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"vpn",
+      "name":"one-click",
+      "action":"status",
+      "supported":true,
+      "access_group":"vpngrp",
+      "summary":"Get the last status message from FortiCloud Overlay Controller VPN cloud service.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"vpn",
+      "name":"ssl",
+      "action":"select",
+      "supported":true,
+      "access_group":"vpngrp",
+      "summary":"Retrieve a list of all SSL-VPN sessions and sub-sessions.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"vpn",
+      "name":"ssl",
+      "action":"clear_tunnel",
+      "supported":true,
+      "access_group":"vpngrp",
+      "summary":"Remove all active tunnel sessions in current virtual domain.",
+      "request":{
+        "http_method":"POST"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"vpn",
+      "name":"ssl",
+      "action":"delete",
+      "supported":true,
+      "access_group":"vpngrp",
+      "summary":"Terminate the provided SSL-VPN session.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"type",
+            "type":"string",
+            "summary":"The session type [websession|subsession].",
+            "required":true
+          },
+          {
+            "name":"index",
+            "type":"int",
+            "summary":"The session index.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"vpn",
+      "name":"ssl",
+      "action":"stats",
+      "supported":true,
+      "access_group":"vpngrp",
+      "summary":"Return statistics about the SSL-VPN.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"vpn-certificate",
+      "name":"ca",
+      "action":"import",
+      "supported":true,
+      "access_group":"vpngrp",
+      "summary":"Import CA certificate.",
+      "request":{
+        "http_method":"POST",
+        "file_upload":true,
+        "parameters":[
+          {
+            "name":"import_method",
+            "type":"string",
+            "summary":"Method of importing CA certificate.[file|scep]",
+            "required":true
+          },
+          {
+            "name":"scep_url",
+            "type":"string",
+            "summary":"SCEP server URL. Required for import via SCEP"
+          },
+          {
+            "name":"scep_ca_id",
+            "type":"string",
+            "summary":"SCEP server CA identifier for import via SCEP."
+          },
+          {
+            "name":"scope",
+            "type":"string",
+            "summary":"Scope of CA certificate [vdom*|global]. Global scope is only accessible for global administrators"
+          },
+          {
+            "name":"file_content",
+            "type":"string",
+            "summary":"Provided when uploading a file: base64 encoded file data. Must not contain whitespace or other invalid base64 characters. Must be included in HTTP body."
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"vpn-certificate",
+      "name":"crl",
+      "action":"import",
+      "supported":true,
+      "access_group":"vpngrp",
+      "summary":"Import certificate revocation lists (CRL) from file content.",
+      "request":{
+        "http_method":"POST",
+        "file_upload":true,
+        "parameters":[
+          {
+            "name":"scope",
+            "type":"string",
+            "summary":"Scope of CRL [vdom*|global]. Global scope is only accessible for global administrators"
+          },
+          {
+            "name":"file_content",
+            "type":"string",
+            "summary":"Provided when uploading a file: base64 encoded file data. Must not contain whitespace or other invalid base64 characters. Must be included in HTTP body."
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"vpn-certificate",
+      "name":"local",
+      "action":"import",
+      "supported":true,
+      "access_group":"vpngrp",
+      "summary":"Import local certificate.",
+      "request":{
+        "http_method":"POST",
+        "file_upload":true,
+        "parameters":[
+          {
+            "name":"type",
+            "type":"string",
+            "summary":"Type of certificate.[local|pkcs12|regular]",
+            "required":true
+          },
+          {
+            "name":"certname",
+            "type":"string",
+            "summary":"Certificate name for pkcs12 and regular certificate types."
+          },
+          {
+            "name":"password",
+            "type":"string",
+            "summary":"Optional password for pkcs12 and regular certificate types."
+          },
+          {
+            "name":"key_file_content",
+            "type":"string",
+            "summary":"Key content encoded in BASE64 for regular certificate type."
+          },
+          {
+            "name":"scope",
+            "type":"string",
+            "summary":"Scope of local certificate [vdom*|global]. Global scope is only accessible for global administrators"
+          },
+          {
+            "name":"file_content",
+            "type":"string",
+            "summary":"Provided when uploading a file: base64 encoded file data. Must not contain whitespace or other invalid base64 characters. Must be included in HTTP body."
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"vpn-certificate",
+      "name":"remote",
+      "action":"import",
+      "supported":true,
+      "access_group":"vpngrp",
+      "summary":"Import remote certificate.",
+      "request":{
+        "http_method":"POST",
+        "file_upload":true,
+        "parameters":[
+          {
+            "name":"file_content",
+            "type":"string",
+            "summary":"Provided when uploading a file: base64 encoded file data. Must not contain whitespace or other invalid base64 characters. Must be included in HTTP body."
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"vpn-certificate",
+      "name":"csr",
+      "action":"generate",
+      "supported":true,
+      "access_group":"vpngrp",
+      "summary":"Generate a certificate signing request (CSR) and a private key. The CSR can be retrieved \/ downloaded from CLI, GUI and REST API.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"certname",
+            "type":"string",
+            "summary":"Certicate name. Used to retrieve \/ download the CSR. Not included in CSR and key content.",
+            "required":true
+          },
+          {
+            "name":"subject",
+            "type":"string",
+            "summary":"Subject (Host IP\/Domain Name\/E-Mail). Common Name (CN) of the certificate subject.",
+            "required":true
+          },
+          {
+            "name":"keytype",
+            "type":"string",
+            "summary":"Generate a RSA or an elliptic curve certificate request [rsa|ec]. The Elliptic Curve option is unavailable if the FortiGate is a Low Encryption Device (LENC)",
+            "required":true
+          },
+          {
+            "name":"keysize",
+            "type":"int",
+            "summary":"Key size.[1024|1536|2048|4096]. 512 only if the FortiGate is a Low Encryption Device (LENC). Required when keytype is RSA."
+          },
+          {
+            "name":"curvename",
+            "type":"string",
+            "summary":"Elliptic curve name. [secp256r1|secp384r1|secp521r1]. Unavailable if the FortiGate is a Low Encryption Device (LENC). Required when keytype is ec."
+          },
+          {
+            "name":"orgunits",
+            "type":"array",
+            "summary":"List of organization units. Organization Units (OU) of the certificate subject."
+          },
+          {
+            "name":"org",
+            "type":"string",
+            "summary":"Organization (O) of the certificate subject."
+          },
+          {
+            "name":"city",
+            "type":"string",
+            "summary":"Locality (L) of the certificate subject."
+          },
+          {
+            "name":"state",
+            "type":"string",
+            "summary":"State (ST) of the certificate subject."
+          },
+          {
+            "name":"countrycode",
+            "type":"string",
+            "summary":"Country (C) of the certificate subject."
+          },
+          {
+            "name":"email",
+            "type":"string",
+            "summary":"Email of the certificate subject."
+          },
+          {
+            "name":"sub_alt_name",
+            "type":"string",
+            "summary":"Subject alternative name (SAN) of the certificate."
+          },
+          {
+            "name":"password",
+            "type":"string",
+            "summary":"Password \/ pass phrase for the private key. If not provided, FortiGate generates a random one."
+          },
+          {
+            "name":"scep_url",
+            "type":"string",
+            "summary":"SCEP server URL. If provided, use the url to enroll the csr through SCEP."
+          },
+          {
+            "name":"scep_password",
+            "type":"string",
+            "summary":"SCEP challenge password. Some SCEP servers may require challege password. Provide it when SCEP server requires."
+          },
+          {
+            "name":"scope",
+            "type":"string",
+            "summary":"Scope of CSR [vdom*|global]. Global scope is only accessible for global administrators"
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"wanopt",
+      "name":"history",
+      "action":"select",
+      "supported":true,
+      "access_group":"wanoptgrp",
+      "summary":"Retrieve WAN opt. statistics history.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"period",
+            "type":"string",
+            "summary":"Statistics period [10-min*|hour|day|week|30-day]."
+          }
+        ]
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"wanopt",
+      "name":"history",
+      "action":"reset",
+      "supported":true,
+      "access_group":"wanoptgrp",
+      "summary":"Reset WAN opt. statistics.",
+      "request":{
+        "http_method":"POST"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"wanopt",
+      "name":"webcache",
+      "action":"select",
+      "supported":true,
+      "access_group":"wanoptgrp",
+      "summary":"Retrieve webcache statistics history.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"period",
+            "type":"string",
+            "summary":"Statistics period [10-min*|hour|day|week|30-day]."
+          }
+        ]
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"wanopt",
+      "name":"webcache",
+      "action":"reset",
+      "supported":true,
+      "access_group":"wanoptgrp",
+      "summary":"Reset webcache statistics.",
+      "request":{
+        "http_method":"POST"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"wanopt",
+      "name":"peer_stats",
+      "action":"select",
+      "supported":true,
+      "access_group":"wanoptgrp",
+      "summary":"Retrieve a list of WAN opt peer statistics.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"wanopt",
+      "name":"peer_stats",
+      "action":"reset",
+      "supported":true,
+      "access_group":"wanoptgrp",
+      "summary":"Reset WAN opt peer statistics.",
+      "request":{
+        "http_method":"POST"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"webproxy",
+      "name":"pacfile",
+      "action":"download",
+      "supported":true,
+      "access_group":"netgrp.cfg",
+      "summary":"Download webproxy PAC file.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+        "file_download":true,
+        "type":"object"
+      }
+    },
+    {
+      "path":"webcache",
+      "name":"stats",
+      "action":"select",
+      "supported":true,
+      "access_group":"wanoptgrp",
+      "summary":"Retrieve webcache statistics.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"period",
+            "type":"string",
+            "summary":"Statistics period [10min|hour|day|month]."
+          }
+        ]
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"webcache",
+      "name":"stats",
+      "action":"reset",
+      "supported":true,
+      "access_group":"wanoptgrp",
+      "summary":"Reset all webcache statistics.",
+      "request":{
+        "http_method":"POST"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"wifi",
+      "name":"client",
+      "action":"select",
+      "supported":true,
+      "access_group":"wifi",
+      "summary":"Retrieve a list of connected WiFi clients.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"start",
+            "type":"int",
+            "summary":"Starting entry index."
+          },
+          {
+            "name":"count",
+            "type":"int",
+            "summary":"Maximum number of entries to return."
+          },
+          {
+            "name":"type",
+            "type":"string",
+            "summary":"Request type [all*|fail-login]."
+          }
+        ]
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"wifi",
+      "name":"managed_ap",
+      "action":"select",
+      "supported":true,
+      "access_group":"wifi",
+      "summary":"Retrieve a list of managed FortiAPs.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"wtp_id",
+            "type":"string",
+            "summary":"Filter: single managed FortiAP by ID."
+          },
+          {
+            "name":"incl_local",
+            "type":"boolean",
+            "summary":"Enable to include the local FortiWiFi device in the results."
+          }
+        ]
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"wifi",
+      "name":"managed_ap",
+      "action":"set_status",
+      "supported":true,
+      "access_group":"wifi",
+      "summary":"Update administrative state for a given FortiAP (enable or disable authorization).",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"wtpname",
+            "type":"string",
+            "summary":"FortiAP name."
+          },
+          {
+            "name":"admin",
+            "type":"string",
+            "summary":"New FortiAP administrative state [enable|disable|discovered]."
+          }
+        ]
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"wifi",
+      "name":"firmware",
+      "action":"select",
+      "supported":true,
+      "access_group":"wifi",
+      "summary":"Retrieve a list of current and recommended firmware for FortiAPs in use.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"timeout",
+            "type":"string",
+            "summary":"FortiGuard connection timeout (defaults to 2 seconds)."
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"wifi",
+      "name":"firmware",
+      "action":"download",
+      "supported":true,
+      "access_group":"wifi",
+      "summary":"Download FortiAP firmware from FortiGuard to the FortiGate according to FortiAP image ID.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"image_id",
+            "type":"string",
+            "summary":"FortiAP image ID.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"wifi",
+      "name":"firmware",
+      "action":"push",
+      "supported":true,
+      "access_group":"wifi",
+      "summary":"Push FortiAP firmware to the given device.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"serial",
+            "type":"string",
+            "summary":"The target device's serial.",
+            "required":true
+          },
+          {
+            "name":"image_id",
+            "type":"string",
+            "summary":"FortiAP image ID.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"wifi",
+      "name":"firmware",
+      "action":"upload",
+      "supported":true,
+      "access_group":"wifi",
+      "summary":"Upload FortiAP firmware to the management FortiGate and then push to target FortiAPs.",
+      "request":{
+        "http_method":"POST",
+        "file_upload":true,
+        "parameters":[
+          {
+            "name":"serials",
+            "type":"array",
+            "summary":"A list of target devices' serials."
+          },
+          {
+            "name":"serials",
+            "type":"string",
+            "summary":"The target device's serial."
+          },
+          {
+            "name":"file_content",
+            "type":"string",
+            "summary":"Provided when uploading a file: base64 encoded file data. Must not contain whitespace or other invalid base64 characters. Must be included in HTTP body."
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    },
+    {
+      "path":"wifi",
+      "name":"managed_ap",
+      "action":"restart",
+      "supported":true,
+      "access_group":"wifi",
+      "summary":"Restart a given FortiAP.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"wtpname",
+            "type":"string",
+            "summary":"FortiAP name."
+          }
+        ]
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"wifi",
+      "name":"ap_status",
+      "action":"select",
+      "supported":true,
+      "access_group":"wifi",
+      "summary":"Retrieve statistics for all managed FortiAPs.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"wifi",
+      "name":"interfering_ap",
+      "action":"select",
+      "supported":true,
+      "access_group":"wifi",
+      "summary":"Retrieve a list of interfering APs for one FortiAP radio.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"wtp",
+            "type":"string",
+            "summary":"FortiAP ID to query."
+          },
+          {
+            "name":"radio",
+            "type":"int",
+            "summary":"Radio ID."
+          },
+          {
+            "name":"start",
+            "type":"int",
+            "summary":"Starting entry index."
+          },
+          {
+            "name":"count",
+            "type":"int",
+            "summary":"Maximum number of entries to return."
+          }
+        ]
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"wifi",
+      "name":"euclid",
+      "action":"select",
+      "supported":true,
+      "access_group":"wifi",
+      "summary":"Retrieve presence analytics statistics.",
+      "request":{
+        "http_method":"GET"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"wifi",
+      "name":"euclid",
+      "action":"reset",
+      "supported":true,
+      "access_group":"wifi",
+      "summary":"Reset presence analytics statistics.",
+      "request":{
+        "http_method":"POST"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"wifi",
+      "name":"rogue_ap",
+      "action":"select",
+      "supported":true,
+      "access_group":"wifi",
+      "summary":"Retrieve a list of detected rogue APs.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"start",
+            "type":"int",
+            "summary":"Starting entry index."
+          },
+          {
+            "name":"count",
+            "type":"int",
+            "summary":"Maximum number of entries to return."
+          }
+        ]
+      },
+      "response":{
+        "type":"array"
+      }
+    },
+    {
+      "path":"wifi",
+      "name":"rogue_ap",
+      "action":"clear_all",
+      "supported":true,
+      "access_group":"wifi",
+      "summary":"Clear all detected rogue APs.",
+      "request":{
+        "http_method":"POST"
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"wifi",
+      "name":"rogue_ap",
+      "action":"set_status",
+      "supported":true,
+      "access_group":"wifi",
+      "summary":"Mark detected APs as rogue APs.",
+      "request":{
+        "http_method":"POST",
+        "parameters":[
+          {
+            "name":"bssid",
+            "type":"array",
+            "summary":"List of rogue AP MAC addresses."
+          },
+          {
+            "name":"ssid",
+            "type":"array",
+            "summary":"Corresponding list of rogue AP SSIDs."
+          },
+          {
+            "name":"status",
+            "type":"string",
+            "summary":"Status to assign matching APs [unclassified|rogue|accepted|suppressed]."
+          }
+        ]
+      },
+      "response":{
+      }
+    },
+    {
+      "path":"wifi",
+      "name":"spectrum",
+      "action":"select",
+      "supported":true,
+      "access_group":"wifi",
+      "summary":"Retrieve spectrum analysis information for a specific FortiAP.",
+      "request":{
+        "http_method":"GET",
+        "parameters":[
+          {
+            "name":"wtp_id",
+            "type":"string",
+            "summary":"FortiAP ID to query.",
+            "required":true
+          }
+        ]
+      },
+      "response":{
+        "type":"object"
+      }
+    }
+  ],
+  "serial":"FG36E1TB19900034",
+  "version":"v6.0.0",
+  "build":365
+}
