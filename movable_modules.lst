@@ -1,4 +1,4 @@
 [
-    "firewall_policy"
+    "firewall_policy",
     "firewall_central_snat_map"
 ]

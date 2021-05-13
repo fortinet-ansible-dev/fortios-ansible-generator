@@ -63,6 +63,25 @@ options:
         type: str
         default: root
         required: false
+    filters:
+        description:
+            - A list of expressions to filter the returned results.
+            - The items of the list are combined as LOGICAL AND with operator ampersand.
+            - One item itself could be concatenated with a comma as LOGICAL OR.
+        type: list
+        required: false
+    sorters:
+        description:
+            - A list of expressions to sort the returned results.
+            - The items of the list are in ascending order with operator ampersand.
+            - One item itself could be in decending order with a comma inside.
+        type: list
+        required: false
+    formatters:
+        description:
+            - A list of fields to display for returned results.
+        type: list
+        required: false
     selector:
         description:
             - selector of the retrieved fortimanager facts
@@ -72,6 +91,11 @@ options:
          {% for selector in selector_definitions.keys() -%}
           - {{ selector }}
          {% endfor %}
+    selectors:
+        description:
+            - A list of selectors. if parameter selector not specified, the module will use selectors.
+        type: list
+        required: false
     params:
         description:
             - the parameter for each selector, see definition in above list.
@@ -99,6 +123,21 @@ EXAMPLES = '''
         - selector: system_interface
         - selector: log_eventfilter
           params: {}
+
+  - name: fact gathering
+    fortios_configuration_fact:
+        vdom: "{{ vdom }}"
+        filters:
+            - name==port1
+            - vlanid==0
+        sorters:
+            - name,vlanid
+            - management-ip
+        formatters:
+         - name
+         - management-ip
+         - vlanid
+        selector: 'system_interface'
 
   - name: get all
     fortios_configuration_fact:
@@ -234,12 +273,31 @@ def fortios_configuration_fact(params, fos):
     mkey_value = selector_params.get(mkey_name) if selector_params else None
 
     [path, name] = selector.split('_')
+    # XXX: The plugin level do not accept duplicated url keys, so we make only keep one key here.
+    url_params = dict()
+    if params['filters'] and len(params['filters']):
+        filter_body = params['filters'][0]
+        for filter_item in params['filters'][1:]:
+            filter_body = "%s&filter=%s" % (filter_body, filter_item)
+        url_params['filter'] = filter_body
+
+    if params['sorters'] and len(params['sorters']):
+        sorter_body = params['sorters'][0]
+        for sorter_item in params['sorters'][1:]:
+            sorter_body = "%s&sort=%s" % (sorter_body, sorter_item)
+        url_params['sort'] = sorter_body
+
+    if params['formatters'] and len(params['formatters']):
+        formatter_body = params['formatters'][0]
+        for formatter_item in params['formatters'][1:]:
+            formatter_body = '%s|%s' % (formatter_body, formatter_item)
+        url_params['format'] = formatter_body
 
     fact = None
     if mkey_value:
-        fact = fos.get(path, name, vdom=params['vdom'], mkey=mkey_value)
+        fact = fos.get(path, name, vdom=params['vdom'], mkey=mkey_value, parameters=url_params)
     else:
-        fact = fos.get(path, name, vdom=params['vdom'])
+        fact = fos.get(path, name, vdom=params['vdom'], parameters=url_params)
 
     return not is_successful_status(fact), False, fact
 
@@ -248,6 +306,9 @@ def main():
         "access_token": {"required": False, "type": "str", "no_log": True},
         "vdom": {"required": False, "type": "str", "default": "root"},
         "enable_log": {"required": False, "type": bool},
+        "filters": {"required": False, "type": 'list'},
+        "sorters": {"required": False, "type": 'list'},
+        "formatters": {"required": False, "type": 'list'},
         "params": {"required": False, "type": "dict" },
         "selector": {
             "required": False,
