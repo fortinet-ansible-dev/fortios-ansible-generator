@@ -8,7 +8,7 @@ What's Access Token?
 ~~~~~~~~~~~~~~~~~~~~
 
 Access Token here is an API token which is used to authenticate an API request, an api token is associated with an API user once generated in FortiOS.
-FortiOS Ansible supports api token based authentication, please see `Run Your Playbook`_ for how to use ``access_token`` in Ansible playbook. 
+FortiOS Ansible supports api token based authentication, please see `Run Your Playbook`_ for how to use ``access_token`` in Ansible playbook.
 
 Sometimes we also want to dynamically generate an API token via FortiOS ansible module, we have a demo to show how to generate an API token:
 
@@ -59,7 +59,7 @@ Backup settings to local file.
 
 FortiOS Ansible collection doesn't provide any modules for local file operations, here we use builtin ``copy`` module to copy plain configuration text into a file.
 
-:: 
+::
 
    - name: Backup a virtual domain.
      fortios_monitor_fact:
@@ -78,7 +78,7 @@ FortiOS Ansible collection doesn't provide any modules for local file operations
 Restore settings from local file.
 ..................................
 
-FortiOS only accepts base64 encoded text, the configuration text must be encoded before being uploaded. 
+FortiOS only accepts base64 encoded text, the configuration text must be encoded before being uploaded.
 
 
 ::
@@ -96,7 +96,7 @@ FortiOS only accepts base64 encoded text, the configuration text must be encoded
 Restore settings from other sources.
 ....................................
 
-no matter wthat source is, just make sure content is encoded. 
+no matter what source is, just make sure content is encoded.
 
 ::
 
@@ -120,7 +120,7 @@ no matter wthat source is, just make sure content is encoded.
 
 
 
-For more options to restore, see module ``fortios_monitor`` and its selector ``restore.system.config``, 
+For more options to restore, see module ``fortios_monitor`` and its selector ``restore.system.config``,
 for more options to backup, see module ``fortios_monitor_fact`` and its selector ``system_config_backup``.
 
 How To Import A License?
@@ -190,7 +190,7 @@ How does Ansible work with login banner?
 what's login banner?
 ............................
 
-FOS puts a barrier in login process if pre- and(or) post- login bannner are enabled, and ansible authentication is restricted: **only access token based authentication is allowed**. 
+FOS puts a barrier in login process if pre- and(or) post- login bannner are enabled, and ansible authentication is restricted: **only access token based authentication is allowed**.
 
 How to safely generate access token?
 ........................................................
@@ -254,7 +254,7 @@ then in subsequent tasks, we read the token directly from saved file:
     ansible_httpapi_validate_certs: no
     ansible_httpapi_port: 443
     saved_access_token: "{{ lookup( 'file', './access_token.save') | string }}"
-   
+
    tasks:
     - name: do another api request with saved access_token
       fortios_configuration_fact:
@@ -269,7 +269,7 @@ How To Work With Raw FotiOS CLI?
 
 In FortiOS, some CLI commands are not exported as RestAPI, as a reasult, Ansible FortiOS collection has no identical module for those CLI commands.
 And FortiOS default CLI shell is not a standard Unix shell, so Ansible builtin modules like ``shell`` and ``command`` are of no use.
-To work this around in Ansible, we use a verbose but very efficient and flexible way to execute some FortiOS CLI commands from Ansible. 
+To work this around in Ansible, we use a verbose but very efficient and flexible way to execute some FortiOS CLI commands from Ansible.
 
 
 Below are two examples of the template:
@@ -352,6 +352,57 @@ Below are two examples of the template:
              chmod +x {{ script_path }} && {{ script_path }} enable enable
       args:
         executable: /bin/bash
+
+How to use the set_fact module in a task?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In Ansible, there's an important module that works with variables and is used to get or set variable values, which is ``set_fact``.
+This module is used to set new variables and these variables are available to subsequent plays in a playbook.
+Using set_fact, we can store the value after preparing it on the fly using certain task.
+
+The following example will show you how set_fact module can be used in a task to configure the firewall address group.
+
+**Configuring the firewall address group with a string type of variable that contains all the grouped firewall addresses:**
+
+::
+
+  - hosts: fortigateslab
+    connection: httpapi
+    collections:
+      - fortinet.fortios
+    vars:
+      vdom: 'root'
+      ansible_httpapi_use_ssl: yes
+      ansible_httpapi_validate_certs: no
+      ansible_httpapi_port: 443
+      demo_input: 'login.microsoftonline.com, login.microsoft.com, login.windows.net'
+      demo_members: []
+    tasks:
+      - name: Process input content
+        set_fact:
+          demo_members: "{{ demo_members + [{'name': item.strip(' ')}] }}"
+        with_items:
+          - "{{demo_input.split(',')}}"
+
+      - debug:
+          var: demo_members
+
+      - name: Configure Firewall Schedule Recurring
+        fortios_firewall_addrgrp:
+          vdom:  '{{ vdom }}'
+          state: 'present'
+          enable_log: True
+          access_token: '{{ fortios_access_token }}'
+          firewall_addrgrp:
+            name: 'group_1'
+            comment: 'created via Ansible'
+            visibility: 'enable'
+            member: '{{ demo_members }}'
+
+In the example, the first task is preprocessing the input content.
+Specifically, it splits the input content with comma to get a list of the firewall addresses.
+Then it appends the each address to the variable demo_members.
+So the demo_members variable can be assigned to the variable members in the subsequent play.
 
 
 .. _Run Your Playbook: playbook.html

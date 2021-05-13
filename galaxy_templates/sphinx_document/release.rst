@@ -4,6 +4,26 @@ Release Notes
 
 |
 
+Release Galaxy 2.0.2
+--------------------
+
+Release Targets
+^^^^^^^^^^^^^^^
+
+FortiOS Galaxy 2.0.2 is based on 2.0.1
+
+Features
+^^^^^^^^^^^^^^^
+- Support ``check_mode`` in all cofigurationAPI-based modules.
+- Improve ``fortios_configuration_fact`` to use multiple selectors concurrently.
+- Support moving policy in ``firewall_central_snat_map``.
+
+Bug Fixes
+^^^^^^^^^^^^^^^
+- Fix the authorization fails at log in with username and password in FOS7.0.
+- Github Issue #103
+- Github Issue #105
+
 Release Galaxy 2.0.1
 --------------------
 
@@ -30,7 +50,7 @@ Features
 - Ported FortiOS generic module: ``fortios_json_generic``.
 - Unified collections for all 6.x FOS releases, Ansible detects versioning mismatch at runtime.
 - Explicit logging option: ``enable_log``.
-- Deprecated second-layer ``state`` module parameter. 
+- Deprecated second-layer ``state`` module parameter.
 
 Compatibility Notes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
