@@ -15,6 +15,11 @@ This toolchain generates Galaxy collection repo and Sphinx document for FortiOS
     }
 }
 ```
+- Generate merged Schemas
+```
+$./scripts/merge_monitor_schema.py monitor_schemas/*.json
+$./scripts/merge_schema.py schemas/*.json
+```
 - run the generator
 ```
 $ ./scripts/generate 1.0.8
