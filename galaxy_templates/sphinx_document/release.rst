@@ -17,6 +17,8 @@ Features
 - Support ``check_mode`` in all cofigurationAPI-based modules.
 - Improve ``fortios_configuration_fact`` to use multiple selectors concurrently.
 - Support moving policy in ``firewall_central_snat_map``.
+- Support filtering for fact gathering modules ``fortios_configuration_fact`` and ``fortios_monitor_fact``.
+- Unify schemas for monitor API.
 
 Bug Fixes
 ^^^^^^^^^^^^^^^
