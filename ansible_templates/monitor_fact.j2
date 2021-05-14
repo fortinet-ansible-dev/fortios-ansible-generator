@@ -268,7 +268,7 @@ def fortios_monitor_fact(fos):
             formatter_body = '%s|%s' % (formatter_body, formatter_item)
         url_params['format'] = formatter_body
     if params['params']:
-        for selector_param_key, selector_param in params['params']:
+        for selector_param_key, selector_param in params['params'].items():
             url_params[selector_param_key] = selector_param
 
     fact = fos.monitor_get(module_selectors_defs[selector]['url'], params['vdom'], url_params)
