@@ -34,3 +34,20 @@ releases:
     fragments:
     - 2.0.1.yml
     release_date: '2021-04-07'
+  2.0.2:
+    changes:
+      bugfixes:
+      - Fix the authorization fails at log in with username and password in FOS7.0.
+      - Github Issue 103
+      - Github Issue 105
+      major_changes:
+      - Improve ``fortios_configuration_fact`` to use multiple selectors concurrently.
+      - Support ``check_mode`` in all cofigurationAPI-based modules.
+      - Support filtering for fact gathering modules ``fortios_configuration_fact``
+        and ``fortios_monitor_fact``.
+      - Support moving policy in ``firewall_central_snat_map``.
+      - Unify schemas for monitor API.
+      release_summary: patch release of 2.0.2
+    fragments:
+    - release_2.0.2.yml
+    release_date: '2021-05-14'
