@@ -1,4 +1,3 @@
-
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.connection import Connection
 from ansible_collections.fortinet.fortios.plugins.module_utils.fortios.fortios import FortiOSHandler
@@ -6,6 +5,8 @@ from ansible_collections.fortinet.fortios.plugins.module_utils.fortios.fortios i
 from ansible_collections.fortinet.fortios.plugins.module_utils.fortios.fortios import schema_to_module_spec
 from ansible_collections.fortinet.fortios.plugins.module_utils.fortios.fortios import check_schema_versioning
 from ansible_collections.fortinet.fortios.plugins.module_utils.fortimanager.common import FAIL_SOCKET_MSG
+from ansible_collections.fortinet.fortios.plugins.module_utils.fortios.comparison import is_same_comparison
+from ansible_collections.fortinet.fortios.plugins.module_utils.fortios.comparison import serialize
 
 
 def filter_{{path}}_{{name}}_data(json):
@@ -73,55 +74,6 @@ def valid_attr_to_invalid_attrs(data):
         data = new_data
 
     return data
-{% endif -%}
-
-{% if supports_check_mode -%}
-def serialize(data):
-    if type(data) == str and ' ' in data:
-        return serialize(data.split(' '))
-    if type(data) == list and len(data) > 0:
-        if type(data[0]) == dict:
-            list_to_order = []
-            for dt in data:
-                ret = {}
-                for key, value in dt.items():
-                    ret[key] = serialize(value)
-                list_to_order.append(ret)
-
-            return sorted(list_to_order, key=lambda dt: str(dt.items()))
-        else:
-            return sorted(data)
-
-    if type(data) == dict:
-        result = {}
-        for key, value in data.items():
-            result[key] = serialize(value)
-
-        return result
-
-    return data
-
-def is_same_comparison(reorder_current, reorder_filtered):
-    for key, value in reorder_filtered.items():
-        if key not in reorder_current:
-            return False
-
-        if type(value) == dict:
-            if not is_same_comparison(reorder_current[key], value):
-                return False
-        elif type(value) == list:
-            if len(value) != len(reorder_current[key]):
-                return False
-            if type(value[0]) == dict:
-                for current_dict in reorder_current[key]:
-                    if not is_same_comparison(current_dict, value[0]):
-                        return False
-            elif reorder_current[key] != value:
-                return False
-        elif reorder_current[key] != value:
-            return False
-
-    return True
 {% endif -%}
 
 {% if supports_check_mode -%}
