@@ -5,6 +5,25 @@ Fortinet.Fortios Release Notes
 .. contents:: Topics
 
 
+v2.0.2
+======
+
+Breaking Changes / Porting Guide
+--------------------------------
+
+- Unify schemas for monitor API.
+- Enable check_mode in all cofigurationAPI-based modules.
+- Enable fortios_configuration_fact to use multiple selectors concurrently.
+- Support moving policy in firewall_central_snat_map.
+- Support filtering for fact gathering modules fortios_configuration_fact and fortios_monitor_fact.
+
+Bugfixes
+--------
+
+- Fix the authorization fails at log in with username and password in FOS7.0.
+- Github Issue #103
+- Github Issue #105
+
 v2.0.1
 ======
 
