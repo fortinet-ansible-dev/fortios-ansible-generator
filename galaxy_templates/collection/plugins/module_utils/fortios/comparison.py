@@ -1,6 +1,10 @@
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 import re
 
-IP_PREFIX = re.compile("^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}")
+
+IP_PREFIX = re.compile("^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}")
+
 
 def bits(netmask):
     count = 0
@@ -8,6 +12,7 @@ def bits(netmask):
         count += netmask & 1
         netmask >>= 1
     return count
+
 
 def is_same_ip_address(current_ip, applied_ip):
 
@@ -26,7 +31,6 @@ def is_same_ip_address(current_ip, applied_ip):
         splitted_applied_ip = applied_ip.split(' ')
     elif '/' in applied_ip:
         splitted_applied_ip = applied_ip.split('/')
-    #raise Exception(splitted_current_ip, splitted_applied_ip, current_ip, applied_ip)
 
     if current_ip[0] != splitted_applied_ip[0]:
         return False
@@ -42,6 +46,7 @@ def is_same_ip_address(current_ip, applied_ip):
             total_bits_applied_ip = int(splitted_applied_ip[1])
 
         return total_bits_current_ip == total_bits_applied_ip
+
 
 def is_same_comparison(reorder_current, reorder_filtered):
     for key, value in reorder_filtered.items():
@@ -67,6 +72,7 @@ def is_same_comparison(reorder_current, reorder_filtered):
             return False
 
     return True
+
 
 def serialize(data):
     if type(data) == str and ' ' in data:
