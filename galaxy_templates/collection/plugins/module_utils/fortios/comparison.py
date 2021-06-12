@@ -65,7 +65,7 @@ def is_same_comparison(reorder_current, reorder_filtered):
                         return False
             elif reorder_current[key] != value:
                 return False
-        elif IP_PREFIX.match(value):
+        elif type(value) == str and IP_PREFIX.match(value):
             return is_same_ip_address(reorder_current[key], value)
 
         elif reorder_current[key] != value:

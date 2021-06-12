@@ -123,14 +123,14 @@ Parameters
         {% endfor -%}
         {% for selector in ns.selectors | sort -%}
         {% if 'diagnose__' not in selector and 'execute__' not in selector and 'test_' not in selector and '_notification' != selector -%}
-        <li><span class="li-normal">{{selector}}</span> {% if selectors[selector]['mkey'] %} <span class="li-required">param: {{ selectors[selector]['mkey'] }}</span>  <span class="li-required">type: {{ selectors[selector]['mkey_type'] }}</span>{% endif%}</li>
+        <li><span class="li-normal">{{selector}}</span> {% if selectors[selector]['mkey'] %} <span class="li-required">param: {{ selectors[selector]['mkey'] }}</span>  <span class="li-required">type: {{ selectors[selector]['mkey_type'] }}  required: True </span>{% endif%}</li>
         {% endif -%}
         {% endfor -%}
         </ul>
         </div>
         </section>
     <li><span class="li-head">params</span> - the parameter for each selector, see definition in above list.<span class="li-normal">type: dict</span></li>
-    <li><span class="li-head">selectors</span> - selectors list allows to pass more than one selector and its parameters in the same task.<span class="li-normal">type: list</span></li>
+    <li><span class="li-head">selectors</span> - selectors list allows to pass more than one selector and its parameters in a task.<span class="li-normal">type: list</span></li>
 
 Notes
 -----
@@ -154,7 +154,7 @@ Examples
 --------
 
 .. code-block:: yaml+jinja
-    
+
     - hosts: fortigateslab
       connection: httpapi
       collections:
@@ -165,7 +165,7 @@ Examples
         ansible_httpapi_port: 443
         vdom: "root"
       tasks:
-      - name: Get multiple selectors info at one time
+      - name: Get multiple selectors info concurrently
         fortios_configuration_fact:
             selectors:
                 - selector: firewall_address

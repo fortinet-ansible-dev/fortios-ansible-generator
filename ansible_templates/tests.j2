@@ -2,7 +2,7 @@
       {%- set counter = {'id':2} %}
       {%- for key, value in dict| dictsort %}
         {%- if value['category'] != 'table' and value['category'] != 'complex' and value['name'] not in special_attributes_flattened %}{% if loop.first %}
-            {% endif %}'{% if hyphens %}{{value['name'].replace('_','-')}}{%else %}{{value['name'].replace('-','_')}}{%endif%}': 
+            {% endif %}'{% if hyphens %}{{value['name'].replace('_','-')}}{%else %}{{value['name'].replace('-','_')}}{%endif%}':
             {%- if counter.update({'id': counter['id']+1 }) -%}{%-endif-%}
             {%- set id = counter['id']-%}
             {%- if key == 'comment' %} '{{value['help']}}'
@@ -16,8 +16,8 @@
             {%- elif key == 'url' %} 'myurl_{{id}}.com'
             {%- elif ("host" in key) and value['type']=='string' %} 'myhostname{{id}}'
             {%- else %} 'test_value_{{id}}'
-            {%- endif -%} 
-            {%- if not loop.last -%}, 
+            {%- endif -%}
+            {%- if not loop.last -%},
             {% endif %}
         {%- endif -%}
       {%- endfor -%}
