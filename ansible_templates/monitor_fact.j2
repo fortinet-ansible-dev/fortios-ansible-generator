@@ -26,7 +26,7 @@ module: fortios_monitor_fact
 version_added: "2.10"
 short_description: Retrieve Facts of FortiOS Monitor Objects.
 description:
-    - Collects monitor facts from network devices running the fortios operating system. 
+    - Collects monitor facts from network devices running the fortios operating system.
       This facts module will only collect those facts which user specified in playbook.
 author:
     - Jie Xue (@JieX19)
@@ -198,7 +198,8 @@ module_selectors_defs = {
         "params": {
             {%- for param_name, param in def['params'].items() %}
             "{{ param_name }}": {
-                "type": "{{ param['type'] }}"
+                "type": "{{ param['type'] }}",
+                "required": "{{ param['required'] }}"
             }{%- if not loop.last%},{%endif -%}
             {%- endfor %}
         }
@@ -223,21 +224,21 @@ def validate_parameters(fos):
             if type(param_value) not in [bool, int, str]:
                 return False, {'message': 'value of param:%s must be atomic' % (param_key)}
 
-    required_param_names = list(module_selectors_defs[selector]['params'].keys())
+    acceptable_param_names = list(module_selectors_defs[selector]['params'].keys())
     provided_param_names = list(params.keys() if params else [])
 
     params_valid = True
-    for param_name in required_param_names:
-        if param_name not in provided_param_names:
+    for param_name in acceptable_param_names:
+        if param_name not in provided_param_names and eval(module_selectors_defs[selector]['params'][param_name]['required']):
             params_valid = False
             break
     if params_valid:
         for param_name in provided_param_names:
-            if param_name not in required_param_names:
+            if param_name not in acceptable_param_names:
                 params_valid = False
                 break
     if not params_valid:
-        param_summary = ['%s(%s)' % (param_name, param['type']) for param_name, param in module_selectors_defs[selector]['params'].items()]
+        param_summary = ['%s(%s, %s)' % (param_name, param['type'], 'required' if eval(param['required']) else 'optional') for param_name, param in module_selectors_defs[selector]['params'].items()]
         fos._module.warn("selector:%s expects params:%s" % (selector, str(param_summary)))
     return True, {}
 

@@ -61,10 +61,12 @@ def generate_monitor_fact(version):
             for param in api_item['request']['parameters']:
                 param_name = param['name']
                 param_type = param['type']
+                param_required = True if 'required' in param and param['required'] else False
                 param_desc = param['summary'] if 'summary' in param else ''
                 schemas[selector]['params'][param_name] = dict()
                 schemas[selector]['params'][param_name]['type'] = param_type
                 schemas[selector]['params'][param_name]['description'] = param_desc
+                schemas[selector]['params'][param_name]['required'] = param_required
                 schemas[selector]['description'] = api_item['summary'] if 'summary' in api_item else ''
     file_loader = FileSystemLoader('ansible_templates')
     env = Environment(loader=file_loader,
@@ -123,10 +125,12 @@ def generate_monitor_modules(version):
             for param in api_item['request']['parameters']:
                 param_name = param['name']
                 param_type = param['type']
+                param_required = True if 'required' in param and param['required'] else False
                 param_desc = param['summary'] if 'summary' in param else ''
                 schemas[selector]['params'][param_name] = dict()
                 schemas[selector]['params'][param_name]['type'] = param_type
                 schemas[selector]['params'][param_name]['description'] = param_desc
+                schemas[selector]['params'][param_name]['required'] = param_required
                 schemas[selector]['description'] = api_item['summary'] if 'summary' in api_item else ''
 
     data = template.render(selectors=schemas)
@@ -166,9 +170,11 @@ def generate_monitor_rst(version):
             for param in api_item['request']['parameters']:
                 param_name = param['name']
                 param_type = param['type']
+                param_required = True if 'required' in param and param['required'] else False
                 param_desc = param['summary']
                 schemas[api_item_key]['params'][param_name] = dict()
                 schemas[api_item_key]['params'][param_name]['type'] = param_type
+                schemas[api_item_key]['params'][param_name]['required'] = param_required
                 schemas[api_item_key]['params'][param_name]['description'] = param_desc
     template = env.get_template('monitor.rst.j2')
     data = template.render(actions=schemas)

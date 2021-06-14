@@ -54,7 +54,7 @@ Parameters
         {% if actions[action]['params'] != {} -%}
             <ul class="ul-self">
                 {% for param_name in actions[action]['params'] -%}
-                    <li><span class="li-required">{{ param_name }}</span> - {{ actions[action]['params'][param_name]['description'] }} <span class="li-normal">type: {{ actions[action]['params'][param_name]['type'] }} </span> </li>
+                    <li><span class="li-required">{{ param_name }}</span> - {{ actions[action]['params'][param_name]['description'] }} <span class="li-normal">type: {{ actions[action]['params'][param_name]['type'] }}  required: {{ actions[action]['params'][param_name]['required'] }} </span> </li>
                 {% endfor %}
             </ul>
         {% endif %}
@@ -86,7 +86,7 @@ Examples
 --------
 
 .. code-block:: yaml+jinja
-    
+
  - hosts: fortigate03
    connection: httpapi
    collections:

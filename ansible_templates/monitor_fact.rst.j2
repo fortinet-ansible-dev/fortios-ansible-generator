@@ -122,12 +122,13 @@ Parameters
         {% set ns.selectors = ns.selectors + [selector] -%}
         {% endfor -%}
         {% for selector in ns.selectors | sort -%}
+        {{ selector }}
         {% if 'diagnose__' not in selector and 'execute__' not in selector -%}
         <li><span class="li-head">{{selector}}</span> {% if selectors[selector]['description'] %}- {{ selectors[selector]['description'] }} {% endif %}
         {% if selectors[selector]['params'] != {} -%}
             <ul class="ul-self">
                 {% for param_name in selectors[selector]['params'] -%}
-                    <li><span class="li-required">{{ param_name }}</span> - {{ selectors[selector]['params'][param_name]['description'] }} <span class="li-normal">type: {{ selectors[selector]['params'][param_name]['type'] }} </span> </li>
+                    <li><span class="li-required">{{ param_name }}</span> - {{ selectors[selector]['params'][param_name]['description'] }} <span class="li-normal">type: {{ selectors[selector]['params'][param_name]['type'] }}  required: {{ selectors[selector]['params'][param_name]['required'] }} </span> </li>
                 {% endfor %}
             </ul>
         {% endif %}
@@ -161,7 +162,7 @@ Examples
 --------
 
 .. code-block:: yaml+jinja
-    
+
  - hosts: fortigate03
    connection: httpapi
    collections:

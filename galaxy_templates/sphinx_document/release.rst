@@ -4,6 +4,23 @@ Release Notes
 
 |
 
+Release Galaxy 2.1.0
+--------------------
+
+Release Targets
+^^^^^^^^^^^^^^^
+
+FortiOS Galaxy 2.1.0 is based on 2.0.2
+
+Features
+^^^^^^^^^^^^^^^
+- Support Log APIs.
+
+Bug Fixes
+^^^^^^^^^^^^^^^
+- Fix the warning issue in ``fortios_monitor_fact`` and ``fortios_monitor``.
+- Disable check_mode feature from all global objects of configuration modules due to 'state' issue.
+
 Release Galaxy 2.0.2
 --------------------
 
