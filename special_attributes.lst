@@ -14,5 +14,6 @@
     "vpn_ipsec_phase2_interface": [ ["proposal"] ],
     "vpn_ipsec_phase1_interface": [ ["proposal"] ],
     "vpn_ssl_settings": [ ["banned_cipher"] ],
-    "firewall_schedule_recurring": [ ["day"] ]
+    "firewall_schedule_recurring": [ ["day"] ],
+    "system_central-management": [ ["server_list", "server_type"] ]
 }

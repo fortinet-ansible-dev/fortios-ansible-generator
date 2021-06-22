@@ -24,17 +24,24 @@ def filter_{{path}}_{{name}}_data(json):
     return dictionary
 
 {% if special_attributes != [] -%}
+def flatten_single_path(data, path, index):
+    if not data or index == len(path):
+        return
+
+    if index == len(path) - 1:
+        data[path[index]] = ' '.join(str(elem) for elem in data[path[index]])
+    elif isinstance(data[path[index]], list):
+        for value in data[path[index]]:
+            flatten_single_path(value, path, index + 1)
+    else:
+        flatten_single_path(data[path[index]], path, index + 1)
+
+
 def flatten_multilists_attributes(data):
     multilist_attrs = {{special_attributes}}
 
     for attr in multilist_attrs:
-        try:
-            path = "data['" + "']['".join(elem for elem in attr) + "']"
-            current_val = eval(path)
-            flattened_val = ' '.join(elem for elem in current_val)
-            exec(path + '= flattened_val')
-        except:
-            pass
+        flatten_single_path(data, attr, 0)
 
     return data
 {% endif-%}
