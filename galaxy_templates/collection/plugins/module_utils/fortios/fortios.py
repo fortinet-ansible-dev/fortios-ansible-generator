@@ -206,9 +206,7 @@ def check_schema_versioning_internal(results, trace, schema, params, version):
                     trace.append(key_string)
                     check_schema_versioning_internal(results, trace, schema['children'][key], value, version)
                     del trace[-1]
-        else:
-            if 'options' not in schema:
-                raise AssertionError()
+        elif 'options' in schema:
             for param in params:
                 if type(param) not in [int, bool, str]:
                     raise AssertionError()
