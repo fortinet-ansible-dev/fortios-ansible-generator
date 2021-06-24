@@ -306,6 +306,12 @@ class FortiOSHandler(object):
                 url += '?vdom=' + vdom
         return url
 
+    def log_url(self, path, name, mkey=None):
+        url = '/api/v2/log/' + path + '/' + name
+        if mkey:
+            url = url + '/' + urlencoding.quote(str(mkey), safe='')
+        return url
+
     def schema(self, path, name, vdom=None):
         if vdom is None:
             url = self.cmdb_url(path, name) + "?action=schema"
@@ -336,6 +342,16 @@ class FortiOSHandler(object):
             except KeyError:
                 return None
         return mkey
+
+
+    def log_get(self, url, parameters=None):
+        slash_index = url.find('/')
+        full_url = self.log_url(url[: slash_index], url[slash_index + 1:])
+
+        status, result_data = self._conn.send_request(url=full_url, params=parameters, method='GET')
+
+        return self.formatresponse(result_data)
+
 
     def monitor_get(self, url, vdom=None, parameters=None):
         slash_index = url.find('/')

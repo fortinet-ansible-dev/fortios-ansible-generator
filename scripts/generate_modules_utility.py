@@ -2,6 +2,7 @@ from jinja2 import Template, Environment, FileSystemLoader
 import json
 import os
 
+
 def generate_cofiguration_fact_rst(schema_results, version):
     file_loader = FileSystemLoader('ansible_templates')
     env = Environment(loader=file_loader,
@@ -139,6 +140,7 @@ def generate_monitor_modules(version):
         f.write(data)
         f.flush()
 
+
 def generate_monitor_rst(version):
     file_loader = FileSystemLoader('ansible_templates')
     env = Environment(loader=file_loader,
@@ -182,6 +184,82 @@ def generate_monitor_rst(version):
     with open(output_path, 'w') as f:
         f.write(data)
         f.flush()
+
+
+def generate_log_retrieval(version):
+    log_schema_file = open('log_schema.json').read()
+    log_schema = json.loads(log_schema_file)
+    get_api_items = dict()
+    assert('directory' in log_schema)
+    for api_item in log_schema['directory']:
+        assert('request' in api_item)
+        assert('http_method' in api_item['request'])
+        if api_item['request']['http_method'] != 'GET':
+            continue
+
+        for path in ['disk', 'memory', 'fortianalyzer', 'forticloud']:
+            name = api_item['name']
+            action = api_item['action']
+            if name == 'virus':
+                names = [name]
+            elif name == ':type' and action in ['archive', 'archive-download']:
+                names = ['ips', 'app-ctrl']
+            elif name == ':type' and action == 'raw':
+                names = ['virus', 'webfilter', 'waf', 'ips', 'anomaly', 'app-ctrl', 'cifs',
+                    'emailfilter', 'dlp', 'voip', 'gtp', 'dns', 'ssh', 'ssl', 'file-filter']
+            else:
+                names = ['event', 'traffic']
+            for actual_name in names:
+                actions = [action]
+                if action == '?subtype':
+                    if actual_name == 'event':
+                        actions = ['vpn', 'user', 'router', 'wireless',
+                        'wad', 'endpoint', 'ha', 'compliance-check', 'system',
+                        'connector', 'security-rating', 'fortiextender']
+                    else:
+                        actions = ['forward', 'local', 'multicast', 'sniffer',
+                        'fortiview', 'threat']
+                for actual_action in actions:
+                    key = '%s/%s/%s' % (path, actual_name, actual_action)
+                    assert(key not in get_api_items)
+                    get_api_items[key] = api_item
+    schemas = dict()
+    for api_item_key in get_api_items:
+        api_item = get_api_items[api_item_key]
+        selector = api_item_key.replace('/', '_')
+        assert(selector not in schemas)
+        schemas[selector] = dict()
+        schemas[selector]['url'] = api_item_key
+        schemas[selector]['params'] = dict()
+        assert(api_item['request']['http_method'] == 'GET')
+        if 'parameters' in api_item['request']:
+            for param in api_item['request']['parameters']:
+                param_name = param['name']
+                param_type = param['type']
+                param_desc = param['summary'] if 'summary' in param else ''
+                schemas[selector]['params'][param_name] = dict()
+                schemas[selector]['params'][param_name]['type'] = param_type
+                schemas[selector]['params'][param_name]['description'] = param_desc
+                schemas[selector]['description'] = api_item['summary'] if 'summary' in api_item else ''
+    file_loader = FileSystemLoader('ansible_templates')
+    env = Environment(loader=file_loader,
+                      lstrip_blocks=False, trim_blocks=False)
+
+    # Render module code
+    template = env.get_template('log_retrieval.j2')
+    data = template.render(selectors=schemas)
+    output_path = 'output/' + version + '/fortios_log_retrieval.py'
+    with open(output_path, 'w') as f:
+        f.write(data)
+        f.flush()
+    # Render Sphinx doc
+    # template = env.get_template('log_retrieval.rst.j2')
+    # data = template.render(selectors=schemas)
+    # output_path = 'output/' + version + '/fortios_log_retrieval.rst'
+    # with open(output_path, 'w') as f:
+    #     f.write(data)
+    #     f.flush()
+
 
 if __name__ == '__main__':
     generate_cofiguration_fact_rst()

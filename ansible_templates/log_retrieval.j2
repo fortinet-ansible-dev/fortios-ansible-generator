@@ -22,12 +22,11 @@ ANSIBLE_METADATA = {'status': ['preview'],
                     'metadata_version': '1.1'}
 DOCUMENTATION = '''
 ---
-module: fortios_monitor_fact
+module: fortios_log_retrieval
 version_added: "2.10"
-short_description: Retrieve Facts of FortiOS Monitor Objects.
+short_description: Retrieve different kinds of log data of the Fortigate device.
 description:
-    - Collects monitor facts from network devices running the fortios operating system.
-      This facts module will only collect those facts which user specified in playbook.
+    - Retrieve log from disk, memory, fortianalyzer and forticloud.
 author:
     - Jie Xue (@JieX19)
     - Link Zheng (@chillancezen)
@@ -35,12 +34,10 @@ author:
     - Frank Shen (@fshen01)
 notes:
     - Different selector may have different parameters, users are expected to look up them for a specific selector.
-    - For some selectors, the objects are global, no params are allowed to appear.
     - Not all parameters are required for a slector.
-    - This module is exclusivly for FortiOS monitor API.
-    - The result of API request is stored in results.
+    - This module is exclusivly for FortiOS Log API.
 requirements:
-    - install galaxy collection fortinet.fortios >= 2.0.0.
+    - install galaxy collection fortinet.fortios >= 2.1.0.
 options:
     access_token:
         description:
@@ -229,7 +226,7 @@ def validate_parameters(fos):
 
     params_valid = True
     for param_name in acceptable_param_names:
-        if param_name not in provided_param_names and eval(module_selectors_defs[selector]['params'][param_name]['required']):
+        if param_name not in provided_param_names:
             params_valid = False
             break
     if params_valid:
@@ -238,11 +235,11 @@ def validate_parameters(fos):
                 params_valid = False
                 break
     if not params_valid:
-        param_summary = ['%s(%s, %s)' % (param_name, param['type'], 'required' if eval(param['required']) else 'optional') for param_name, param in module_selectors_defs[selector]['params'].items()]
+        param_summary = ['%s(%s)' % (param_name, param['type']) for param_name, param in module_selectors_defs[selector]['params'].items()]
         fos._module.warn("selector:%s expects params:%s" % (selector, str(param_summary)))
     return True, {}
 
-def fortios_monitor_fact(fos):
+def fortios_log_retrieval(fos):
     valid, result = validate_parameters(fos)
     if not valid:
         return True, False, result
@@ -271,9 +268,9 @@ def fortios_monitor_fact(fos):
         for selector_param_key, selector_param in params['params'].items():
             url_params[selector_param_key] = selector_param
 
-    fact = fos.monitor_get(module_selectors_defs[selector]['url'], params['vdom'], url_params)
+    log_data = fos.log_get(module_selectors_defs[selector]['url'], url_params)
 
-    return not is_successful_status(fact), False, fact
+    return not is_successful_status(log_data), False, log_data
 
 def main():
     fields = {
@@ -313,7 +310,7 @@ def main():
 
         fos = FortiOSHandler(connection, module)
 
-        is_error, has_changed, result = fortios_monitor_fact(fos)
+        is_error, has_changed, result = fortios_log_retrieval(fos)
     else:
         module.fail_json(**FAIL_SOCKET_MSG)
 
