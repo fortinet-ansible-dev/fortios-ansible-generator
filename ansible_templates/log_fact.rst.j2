@@ -1,10 +1,10 @@
-:source: fortios_monitor_fact.py
+:source: fortios_log_fact.py
 
 :orphan:
 
 .. :
 
-fortios_monitor_fact -- Retrieve Facts of FortiOS Monitor Objects.
+fortios_log_fact -- Retrieve Log Data of Fortios Log Objects.
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. versionadded:: 2.10
@@ -16,7 +16,7 @@ fortios_monitor_fact -- Retrieve Facts of FortiOS Monitor Objects.
 
 Synopsis
 --------
-- Collects monitor facts from network devices running the fortios operating system.  This facts module will only collect those facts which user specified in playbook.
+- Collects log data from network devices running the fortios operating system.  This module will only collect the log data specified in the playbook.
 
 
 
@@ -24,7 +24,7 @@ Requirements
 ------------
 The below requirements are needed on the host that executes this module.
 
-- install galaxy collection fortinet.fortios >= ``2.0.0``.
+- install galaxy collection fortinet.fortios >= ``2.1.0``.
 
 
 Parameters
@@ -109,7 +109,7 @@ Parameters
        </div>
     </li>
     <li> <span class="li-head">formatters</span> - A list of fields to display for returned results. <span class="li-normal">type: list</span> <span class="li-required">required: False</span> </li>
-    <li><span class="li-head">selector</span> - selector of the retrieved fortigate facts <span class="li-normal">type: str</span> <span class="li-required">choices:</span></li>
+    <li><span class="li-head">selector</span> - selector of the retrieved log data <span class="li-normal">type: str</span> <span class="li-required">choices:</span></li>
         <li style="list-style: none;"><section class="accordion">
         <input type="checkbox" name="collapse" id="handle2">
         <h2 class="handle">
@@ -128,7 +128,7 @@ Parameters
         {% if selectors[selector]['params'] != {} -%}
             <ul class="ul-self">
                 {% for param_name in selectors[selector]['params'] -%}
-                    <li><span class="li-required">{{ param_name }}</span> - {{ selectors[selector]['params'][param_name]['description'] }} <span class="li-normal">type: {{ selectors[selector]['params'][param_name]['type'] }}  required: {{ selectors[selector]['params'][param_name]['required'] }} </span> </li>
+                    <li><span class="li-required">{{ param_name }}</span> - {{ selectors[selector]['params'][param_name]['description'] }} <span class="li-normal">type: {{ selectors[selector]['params'][param_name]['type'] }} </span> </li>
                 {% endfor %}
             </ul>
         {% endif %}
@@ -173,29 +173,17 @@ Examples
     ansible_httpapi_validate_certs: no
     ansible_httpapi_port: 443
    tasks:
+   - name: Get system event log with logid==0100032038
+     fortios_log_fact:
+       filters:
+         - logid==0100032038
+       selector: "disk_event_system"
+       params:
+         rows: 100
 
-   - fortios_monitor_fact:
-        vdom: "{{ vdom }}"
-        enable_log: true
-        formatters:
-            - model_name
-        filters:
-            - model_name==FortiGat
-        selector: 'system_status'
-
-   - name: fact gathering
-     fortios_monitor_fact:
-        vdom: "{{ vdom }}"
-        access_token: "{{ fortios_access_token }}"
-        selector: 'firewall_acl'
-
-   - name: fact gathering
-     fortios_monitor_fact:
-        vdom: "{{ vdom }}"
-        access_token: "{{ fortios_access_token }}"
-        selector: 'firewall_security-policy'
-        params:
-            policyid: '1'
+   - name: Get a description of the quarantined virus file
+     fortios_log_fact:
+       selector: "forticloud_virus_archive"
 
 
 Return Values
@@ -207,16 +195,15 @@ Common return values are documented: https://docs.ansible.com/ansible/latest/ref
     <ul>
 
     <li> <span class="li-return">build</span> - Build number of the fortigate image <span class="li-normal">returned: always</span> <span class="li-normal">type: str</span> <span class="li-normal">sample: 1547</span></li>
-    <li> <span class="li-return">http_method</span> - Last method used to provision the content into FortiGate <span class="li-normal">returned: always</span> <span class="li-normal">type: str</span> <span class="li-normal">sample: GET</span></li>
-    <li> <span class="li-return">name</span> - Name of the table used to fulfill the request <span class="li-normal">returned: always</span> <span class="li-normal">type: str</span> <span class="li-normal">sample: firmware</span></li>
-    <li> <span class="li-return">path</span> - Path of the table used to fulfill the request <span class="li-normal">returned: always</span> <span class="li-normal">type: str</span> <span class="li-normal">sample: system</span></li>
-    <li> <span class="li-return">results</span> - Object list retrieved from device. <span class="li-normal">returned: always</span> <span class="li-normal">type: list</span></li>
-    <li> <span class="li-return">revision</span> - Internal revision number <span class="li-normal">returned: always</span> <span class="li-normal">type: str</span> <span class="li-normal">sample: 17.0.2.10658</span></li>
+    <li> <span class="li-return">rows</span> - Number of rows to return <span class="li-normal">returned: always</span> <span class="li-normal">type: int</span> <span class="li-normal">sample: 400</span></li>
     <li> <span class="li-return">serial</span> - Serial number of the unit <span class="li-normal">returned: always</span> <span class="li-normal">type: str</span> <span class="li-normal">sample: FGVMEVYYQT3AB5352</span></li>
+    <li> <span class="li-return">session_id</span> - Session id for the request <span class="li-normal">returned: always</span> <span class="li-normal">type: int</span> <span class="li-normal">sample: 7</span></li>
+    <li> <span class="li-return">start</span> - Row number for the first row to return <span class="li-normal">returned: always</span> <span class="li-normal">type: int</span> <span class="li-normal">sample: 0</span></li>
     <li> <span class="li-return">status</span> - Indication of the operation's result <span class="li-normal">returned: always</span> <span class="li-normal">type: str</span> <span class="li-normal">sample: success</span></li>
+    <li> <span class="li-return">subcategory</span> - Type of log that can be retrieved <span class="li-normal">returned: always</span> <span class="li-normal">type: str</span> <span class="li-normal">sample: system</span></li>
+    <li> <span class="li-return">total_lines</span> - Total lines returned from the result <span class="li-normal">returned: always</span> <span class="li-normal">type: int</span> <span class="li-normal">sample: 510</span></li>
     <li> <span class="li-return">vdom</span> - Virtual domain used <span class="li-normal">returned: always</span> <span class="li-normal">type: str</span> <span class="li-normal">sample: root</span></li>
     <li> <span class="li-return">version</span> - Version of the FortiGate <span class="li-normal">returned: always</span> <span class="li-normal">type: str</span> <span class="li-normal">sample: v5.6.3</span></li>
-    <li> <span class="li-return">ansible_facts</span> - The list of fact subsets collected from the device <span class="li-normal">returned: always</span> <span class="li-normal">type: dict</span></li>
     </ul>
 
 Status
