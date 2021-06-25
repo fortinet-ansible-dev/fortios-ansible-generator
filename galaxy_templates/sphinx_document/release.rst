@@ -14,12 +14,16 @@ FortiOS Galaxy 2.1.0 is based on 2.0.2
 
 Features
 ^^^^^^^^^^^^^^^
+- Support Fortios 7.0.
 - Support Log APIs.
+- New module fortios_monitor_fact.
 
 Bug Fixes
 ^^^^^^^^^^^^^^^
-- Fix the warning issue in ``fortios_monitor_fact`` and ``fortios_monitor``.
+- Fix the unexpected warning caused by optinal params in ``fortios_monitor_fact`` and ``fortios_monitor``.
 - Disable check_mode feature from all global objects of configuration modules due to 'state' issue.
+- Fix a bug in IP_PREFIX.match().
+- Fix the issue that the ``server_type`` is not updated in ``fortios_system_central_management``.
 
 Release Galaxy 2.0.2
 --------------------

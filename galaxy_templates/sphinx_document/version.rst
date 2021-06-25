@@ -14,7 +14,9 @@ are expected to find the version compatibility information for each module and i
 +---------------+---------------------+----------------+-----------------------------------------------------------------+
 | unified       | 2.0.1               | 2021/4/7       | ``ansible-galaxy collection install fortinet.fortios:2.0.1``    |
 +---------------+---------------------+----------------+-----------------------------------------------------------------+
-| unified       | 2.0.2 ``latest``    | 2021/5/14      | ``ansible-galaxy collection install fortinet.fortios:2.0.2``    |
+| unified       | 2.0.2               | 2021/5/14      | ``ansible-galaxy collection install fortinet.fortios:2.0.2``    |
++---------------+---------------------+----------------+-----------------------------------------------------------------+
+| unified       | 2.1.0 ``latest``    | 2021/6/25      | ``ansible-galaxy collection install fortinet.fortios:2.1.0``    |
 +---------------+---------------------+----------------+-----------------------------------------------------------------+
 
 Legacy FortiOS Galaxy Versions

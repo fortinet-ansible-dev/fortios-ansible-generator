@@ -5,6 +5,29 @@ Fortinet.Fortios Release Notes
 .. contents:: Topics
 
 
+v2.1.0
+======
+
+Release Summary
+---------------
+
+minor release of 2.1.0
+
+Major Changes
+-------------
+
+- New module fortios_monitor_fact.
+- Support Fortios 7.0.
+- Support Log APIs.
+
+Bugfixes
+--------
+
+- Disable check_mode feature from all global objects of configuration modules due to 'state' issue.
+- Fix a bug in IP_PREFIX.match().
+- Fix the issue that the ``server_type`` is not updated in ``fortios_system_central_management``.
+- Fix the unexpected warning caused by optinal params in ``fortios_monitor_fact`` and ``fortios_monitor``.
+
 v2.0.2
 ======
 
