@@ -16,6 +16,7 @@ Features
 ^^^^^^^^^^^^^^^
 - Support Fortios 7.0.
 - Support Log APIs.
+- New module fortios_monitor_fact.
 
 Bug Fixes
 ^^^^^^^^^^^^^^^

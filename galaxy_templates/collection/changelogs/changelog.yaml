@@ -52,4 +52,19 @@ releases:
     - release_2.0.2.yml
     release_date: '2021-05-14'
   2.1.0:
+    changes:
+      bugfixes:
+      - Disable check_mode feature from all global objects of configuration modules
+        due to 'state' issue.
+      - Fix a bug in IP_PREFIX.match().
+      - Fix the issue that the ``server_type`` is not updated in ``fortios_system_central_management``.
+      - Fix the unexpected warning caused by optinal params in ``fortios_monitor_fact``
+        and ``fortios_monitor``.
+      major_changes:
+      - New module fortios_monitor_fact.
+      - Support Fortios 7.0.
+      - Support Log APIs.
+      release_summary: minor release of 2.1.0
+    fragments:
+    - release_2.1.0.yml
     release_date: '2021-06-25'
