@@ -447,7 +447,7 @@ def jinjaExecutor(number=None):
 
     print("\n\n\033[0mExecuting autopep8 ....")
     # Note this is done with popen and not with autopep8.fix_code in order to get the multiprocessig optimization, only available from CLI
-    # os.popen('autopep8 --aggressive --max-line-length 160 --jobs 8 --ignore E402 --in-place --recursive ' + autopep_files)
+    os.popen('autopep8 --aggressive --max-line-length 160 --jobs 8 --ignore E402 --in-place --recursive ' + autopep_files)
     # Avoid this check since it conflicts with Ansible guidelines:
     # E402 - Fix module level import not at top of file
 
