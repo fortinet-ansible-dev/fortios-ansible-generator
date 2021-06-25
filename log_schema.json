@@ -1,0 +1,340 @@
+{
+    "directory":[
+      {
+        "path":":source",
+        "name":"virus",
+        "action":"archive",
+        "supported":true,
+        "access_group":"loggrp.data-access",
+        "summary":"Return a description of the quarantined virus file.",
+        "request":{
+          "http_method":"GET",
+          "parameters":[
+            {
+              "name":"mkey",
+              "type":"int",
+              "summary":"checksum column from the virus log."
+            },
+            {
+              "name":"filename",
+              "type":"string",
+              "summary":"Filename of the antivirus archive. (virus type only)"
+            }
+          ]
+        },
+        "response":{
+          "title":"Virus Quarantine Archive Metadata",
+          "description":"Metadata describing the quarantined virus archive data.",
+          "type":"object",
+          "properties":{
+            "status":{
+              "title":"Quarantine Status",
+              "type":"string",
+              "enum":[
+                "Infected",
+                "Heuristics",
+                "Intercepted"
+              ],
+              "description":"Quarantine status of the virus archive."
+            },
+            "status_description":{
+              "title":"Status Description",
+              "type":"string",
+              "description":"Description of the archived virus."
+            },
+            "checksum":{
+              "title":"File Checksum",
+              "description":"Checksum of the archived virus.",
+              "type":"string",
+              "pattern":"^[a-f\\d]"
+            },
+            "filename":{
+              "title":"File Name",
+              "description":"Initial name of the file input.",
+              "type":"string"
+            },
+            "timestamp":{
+              "title":"Timestamp",
+              "description":"Time when the file was scanned. Milliseconds since Unix Epoch.",
+              "type":"integer"
+            },
+            "service":{
+              "title":"Service",
+              "description":"Name of the service which requested the quarantine.",
+              "type":"string"
+            },
+            "duplicates":{
+              "title":"Duplicates",
+              "description":"Number of times a duplicate file matching this sample has been submitted.",
+              "type":"integer"
+            },
+            "ttl":{
+              "title":"Time to Live",
+              "description":"Time until this quarantine entry expires or \"FOREVER\".",
+              "type":"string",
+              "pattern":"^FOREVER|Exp.\\d{2}:\\d{2}$"
+            }
+          },
+          "required":[
+            "status",
+            "status_description",
+            "checksum",
+            "filename",
+            "timestamp",
+            "service",
+            "duplicates",
+            "ttl"
+          ],
+          "id":"http:\/\/schema.fortinet.com\/fos\/api\/v2\/log\/:source\/virus.json",
+          "$schema":"http:\/\/json-schema.org\/draft-07\/schema#"
+        }
+      },
+      {
+        "path":":source",
+        "name":":type",
+        "action":"archive",
+        "supported":true,
+        "access_group":"loggrp.data-access",
+        "summary":"Return a list of archived items for the desired type. :type can be app-ctrl or ips",
+        "request":{
+          "http_method":"GET",
+          "parameters":[
+            {
+              "name":"mkey",
+              "type":"int",
+              "summary":"Archive identifier."
+            },
+            {
+              "name":"roll",
+              "type":"int",
+              "summary":"Log roll number. (required if source is not fortianalyzer)"
+            }
+          ]
+        },
+        "response":{
+          "title":"Packet Capture Archive",
+          "description":"Summary of Packet Capture data from IPS or Application Control.",
+          "type":"array",
+          "items":{
+            "title":"Archived Packet Capture Details",
+            "description":"Details of a captured packet.",
+            "type":"object",
+            "properties":{
+              "src":{
+                "type":"string",
+                "title":"Source IP",
+                "description":"Source IP address."
+              },
+              "dst":{
+                "type":"string",
+                "title":"Destination IP",
+                "description":"Destination IP address."
+              },
+              "proto":{
+                "type":"string",
+                "title":"Protocol",
+                "description":"Protocol of the captured packet(s).",
+                "enum":[
+                  "all",
+                  "igmp",
+                  "tcp",
+                  "udp",
+                  "sctp",
+                  "icmp",
+                  "icmp6",
+                  "gre",
+                  "esp",
+                  "ah",
+                  "ospf",
+                  "pim",
+                  "vrrp"
+                ]
+              },
+              "src_port":{
+                "type":"integer",
+                "title":"Source Port",
+                "description":"Source Port for the captured packet(s)."
+              },
+              "dst_port":{
+                "type":"integer",
+                "title":"Destination Port",
+                "description":"Destination Port for the captured packet(s)."
+              },
+              "len":{
+                "type":"integer",
+                "title":"Length",
+                "description":"Size in bytes of the captured packet data."
+              },
+              "data":{
+                "title":"Data",
+                "description":"Array of bytes representing the content of the captured packet.",
+                "type":"array",
+                "items":{
+                  "title":"Byte Data",
+                  "description":"Byte data of the captured packet.",
+                  "type":"integer",
+                  "minimum":0,
+                  "maximum":255
+                }
+              }
+            },
+            "required":[
+              "src",
+              "dst",
+              "proto",
+              "src_port",
+              "dst_port",
+              "len",
+              "data"
+            ]
+          },
+          "id":"http:\/\/schema.fortinet.com\/fos\/api\/v2\/log\/:source\/:type.json",
+          "$schema":"http:\/\/json-schema.org\/draft-07\/schema#"
+        }
+      },
+      {
+        "path":":source",
+        "name":":type",
+        "action":"archive-download",
+        "supported":true,
+        "access_group":"loggrp.data-access",
+        "summary":"Download an archived file.",
+        "request":{
+          "http_method":"GET",
+          "parameters":[
+            {
+              "name":"mkey",
+              "type":"int",
+              "summary":"Archive identifier."
+            },
+            {
+              "name":"roll",
+              "type":"int",
+              "summary":"Log roll number (required if source is not fortianalyzer)."
+            },
+            {
+              "name":"filename",
+              "type":"string",
+              "summary":"File name to use when saving the file in the browser."
+            }
+          ]
+        },
+        "response":{
+          "file_download":true
+        }
+      },
+      {
+        "path":"search",
+        "name":"abort",
+        "action":":session_id",
+        "supported":true,
+        "access_group":"loggrp.data-access",
+        "summary":"Abort a running log search session.",
+        "request":{
+          "http_method":"POST"
+        },
+        "response":{
+        }
+      },
+      {
+        "path":":source",
+        "name":":type",
+        "action":"raw",
+        "supported":true,
+        "access_group":"loggrp.data-access",
+        "summary":"Log data for the given log type in raw format.",
+        "request":{
+          "http_method":"GET",
+          "parameters":[
+            {
+              "name":"start",
+              "type":"int",
+              "summary":"Row number for the first row to return."
+            },
+            {
+              "name":"rows",
+              "type":"int",
+              "summary":"Number of rows to return."
+            },
+            {
+              "name":"session_id",
+              "type":"int",
+              "summary":"Provide a session_id to continue getting data for that request."
+            },
+            {
+              "name":"serial_no",
+              "type":"string",
+              "summary":"Retrieve log from the specified device."
+            },
+            {
+              "name":"is_ha_member",
+              "type":"boolean",
+              "summary":"Is the specified device an HA member."
+            },
+            {
+              "name":"filter",
+              "type":"string",
+              "summary":"Filter expression(s)."
+            }
+          ]
+        },
+        "response":{
+          "type":"string"
+        }
+      },
+      {
+        "path":":source",
+        "name":":type",
+        "action":"?subtype",
+        "supported":true,
+        "access_group":"loggrp.data-access",
+        "summary":"Log data for the given log type (and subtype). Append '\/raw' to retrieve in raw format.",
+        "request":{
+          "http_method":"GET",
+          "parameters":[
+            {
+              "name":"start",
+              "type":"int",
+              "summary":"Row number for the first row to return."
+            },
+            {
+              "name":"rows",
+              "type":"int",
+              "summary":"Number of rows to return."
+            },
+            {
+              "name":"session_id",
+              "type":"int",
+              "summary":"Provide a session_id to continue getting data for that request."
+            },
+            {
+              "name":"serial_no",
+              "type":"string",
+              "summary":"Retrieve log from the specified device."
+            },
+            {
+              "name":"is_ha_member",
+              "type":"boolean",
+              "summary":"Is the specified device an HA member."
+            },
+            {
+              "name":"filter",
+              "type":"string",
+              "summary":"Filter expression(s)."
+            },
+            {
+              "name":"extra",
+              "type":"string",
+              "summary":"Flag(s) for extra data to be included [reverse_lookup|country_id]."
+            }
+          ]
+        },
+        "response":{
+          "type":"array"
+        }
+      }
+    ],
+    "serial":"FG380D3916800171",
+    "version":"v6.4.4",
+    "build":1803
+  }
