@@ -14,21 +14,19 @@ from __future__ import (absolute_import, division, print_function)
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 __metaclass__ = type
 
 ANSIBLE_METADATA = {'status': ['preview'],
                     'supported_by': 'community',
                     'metadata_version': '1.1'}
-
 DOCUMENTATION = '''
 ---
-module: fortios_configuration_fact
+module: fortios_log_fact
 version_added: "2.10"
-short_description: Retrieve Facts of FortiOS Configurable Objects.
+short_description: Retrieve log data of fortios log objects.
 description:
-    - Collects facts from network devices running the fortios operating system.
-      This module places the facts gathered in the fact tree keyed by the respective resource name.
-      This facts module will only collect those facts which user specified in playbook.
+    - Retrieve log related to disk, memory, fortianalyzer and forticloud.
 author:
     - Jie Xue (@JieX19)
     - Link Zheng (@chillancezen)
@@ -36,12 +34,11 @@ author:
     - Frank Shen (@fshen01)
 notes:
     - Different selector may have different parameters, users are expected to look up them for a specific selector.
-    - For some selectors, the objects are global, no params are allowed to appear.
-    - If params is empty a non-unique object, the whole object list is returned.
-    - This module has support for all configuration API, excluding any monitor API.
-    - The result of API request is stored in results as a list.
+    - For some selectors, the objects are global, no params are allowed to appear
+    - Not all parameters are required for a slector.
+    - This module is exclusivly for FortiOS Log API.
 requirements:
-    - install galaxy collection fortinet.fortios >= 2.0.0.
+    - install galaxy collection fortinet.fortios >= 2.1.0.
 options:
     access_token:
         description:
@@ -84,18 +81,13 @@ options:
         required: false
     selector:
         description:
-            - selector of the retrieved fortigate facts
+            - selector of the retrieved log type
         type: str
         required: true
         choices:
-         {% for selector in selector_definitions.keys() -%}
+         {% for selector in selectors.keys() -%}
           - {{ selector }}
          {% endfor %}
-    selectors:
-        description:
-            - A list of selectors. if parameter selector not specified, the module will use selectors.
-        type: list
-        required: false
     params:
         description:
             - the parameter for each selector, see definition in above list.
@@ -104,102 +96,71 @@ options:
 '''
 
 EXAMPLES = '''
-- hosts: fortigateslab
+- hosts: fortigate03
   connection: httpapi
   collections:
-    - fortinet.fortios
+  - fortinet.fortios
   vars:
-    ansible_httpapi_use_ssl: yes
-    ansible_httpapi_validate_certs: no
-    ansible_httpapi_port: 443
-    vdom: "root"
+   vdom: "root"
+   ansible_httpapi_use_ssl: yes
+   ansible_httpapi_validate_certs: no
+   ansible_httpapi_port: 443
   tasks:
-  - name: Get multiple selectors info concurrently
-    fortios_configuration_fact:
-      selectors:
-        - selector: firewall_address
-          params:
-            name: "gmail.com"
-        - selector: system_interface
-        - selector: log_eventfilter
-          params: {}
 
-  - name: fact gathering
-    fortios_configuration_fact:
-        vdom: "{{ vdom }}"
-        filters:
-            - name==port1
-            - vlanid==0
-        sorters:
-            - name,vlanid
-            - management-ip
-        formatters:
-         - name
-         - management-ip
-         - vlanid
-        selector: 'system_interface'
+  - name: Get system event log with logid==0100032038
+    fortios_log_fact:
+       filters:
+         - logid==0100032038
+       selector: "disk_event_system"
+       params:
+         rows: 100
 
-  - name: get all
-    fortios_configuration_fact:
-      vdom: ""
-      access_token: ""
-      selector: log_custom-field
-
-  - name: get single
-    fortios_configuration_fact:
-      vdom: ""
-      access_token: ""
-      selector: log_custom-field
-      #optionally list or single get
-      params:
-        id: "3"
-
-  - name: fetch one firewall address
-    fortios_configuration_fact:
-      selector: firewall_address
-      params:
-        name: "login.microsoft.com"
-
-  - name: fetch all firewall addresses
-    fortios_configuration_fact:
-      selector: firewall_address
+  - name: Get a description of the quarantined virus file
+    fortios_log_fact:
+       selector: "forticloud_virus_archive"
 '''
+
 RETURN = '''
 build:
   description: Build number of the fortigate image
   returned: always
   type: str
   sample: '1547'
-http_method:
-  description: Last method used to provision the content into FortiGate
+rows:
+  description: Number of rows to return
   returned: always
-  type: str
-  sample: 'GET'
-name:
-  description: Name of the table used to fulfill the request
-  returned: always
-  type: str
-  sample: "firmware"
-path:
-  description: Path of the table used to fulfill the request
-  returned: always
-  type: str
-  sample: "system"
-revision:
-  description: Internal revision number
-  returned: always
-  type: str
-  sample: "17.0.2.10658"
+  type: int
+  sample: 400
 serial:
   description: Serial number of the unit
   returned: always
   type: str
   sample: "FGVMEVYYQT3AB5352"
+session_id:
+  description: session id for the request
+  returned: always
+  type: int
+  sample: 7
+start:
+  description: Row number for the first row to return
+  returned: always
+  type: int
+  sample: 0
 status:
   description: Indication of the operation's result
   returned: always
   type: str
   sample: "success"
+subcategory:
+  description: Type of log that can be retrieved
+  returned: always
+  type: str
+  sample: "system"
+total_lines:
+  description: Total lines returned from the result
+  returned: always
+  type: int
+  sample: 510
 vdom:
   description: Virtual domain used
   returned: always
@@ -210,96 +171,96 @@ version:
   returned: always
   type: str
   sample: "v5.6.3"
-ansible_facts:
-  description: The list of fact subsets collected from the device
-  returned: always
-  type: dict
 
 '''
+
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.connection import Connection
 from ansible_collections.fortinet.fortios.plugins.module_utils.fortios.fortios import FortiOSHandler
 from ansible_collections.fortinet.fortios.plugins.module_utils.fortios.fortios import check_legacy_fortiosapi
 from ansible_collections.fortinet.fortios.plugins.module_utils.fortimanager.common import FAIL_SOCKET_MSG
 
-MODULE_MKEY_DEFINITONS = {
-    {% for selector, definition in selector_definitions.items() -%}
-    "{{selector}}": {
-        {% for k, v in definition.items() -%}
-             "{{k}}": {% if k != 'mkey_type' %} "{{v}}" {% else %} {{v}} {% endif %},
-        {% endfor -%}
-    },
-    {% endfor -%}
+module_selectors_defs = {
+    {%- for selector, def in selectors.items() %}
+    "{{ selector }}": {
+        "url": "{{def['url']}}",
+        "params": {
+            {%- for param_name, param in def['params'].items() %}
+            "{{ param_name }}": {
+                "type": "{{ param['type'] }}",
+                "required": "{{ param['required'] }}"
+            }{%- if not loop.last%},{%endif -%}
+            {%- endfor %}
+        }
+    }{%- if not loop.last%},{%endif -%}
+    {%- endfor%}
 }
 
 
 def is_successful_status(status):
     return status['status'] == "success" or \
-        status['http_method'] == "DELETE" and status['http_status'] == 404
+        'http_method' in status and status['http_method'] == "DELETE" and status['http_status'] == 404
 
-def validate_mkey(params):
-    selector = params['selector']
-    selector_params = params.get('params', {})
 
-    if selector not in MODULE_MKEY_DEFINITONS:
-      return False, { "message": "unknown selector: " + selector }
+def validate_parameters(fos):
+    #parameter validation will not block task, warning will be provided in case of parameters validation.
+    mod_params = fos._module.params
+    selector = mod_params['selector']
+    params = mod_params['params']
 
-    definition = MODULE_MKEY_DEFINITONS.get(selector, {})
+    if params:
+        for param_key, param_value in params.items():
+            if type(param_value) not in [bool, int, str]:
+                return False, {'message': 'value of param:%s must be atomic' % (param_key)}
 
-    if not selector_params or len(selector_params) == 0 or len(definition) == 0:
-        return True, {}
+    acceptable_param_names = list(module_selectors_defs[selector]['params'].keys())
+    provided_param_names = list(params.keys() if params else [])
 
-    mkey = definition['mkey']
-    mkey_type = definition['mkey_type']
-    if mkey_type == None:
-        return False, {"message": "params are not allowed for " + selector}
-    mkey_value = selector_params.get(mkey)
-
-    if not mkey_value:
-        return False, {"message": "param '" + mkey + "' is required"}
-    if type(mkey_value) != mkey_type:
-        return False, {"message": "param '" + mkey + "' does not match, " + str(mkey_type) + " required"}
+    params_valid = True
+    for param_name in acceptable_param_names:
+        if param_name not in provided_param_names:
+            params_valid = False
+            break
+    if params_valid:
+        for param_name in provided_param_names:
+            if param_name not in acceptable_param_names:
+                params_valid = False
+                break
 
     return True, {}
 
-def fortios_configuration_fact(params, fos):
-    isValid, result = validate_mkey(params)
-    if not isValid:
+def fortios_log_fact(fos):
+    valid, result = validate_parameters(fos)
+    if not valid:
         return True, False, result
 
-    selector = params['selector']
-    selector_params = params['params']
-    mkey_name = MODULE_MKEY_DEFINITONS[selector]['mkey']
-    mkey_value = selector_params.get(mkey_name) if selector_params else None
+    params = fos._module.params
 
-    [path, name] = selector.split('_')
-    # XXX: The plugin level do not accept duplicated url keys, so we make only keep one key here.
+    selector = params['selector']
+
     url_params = dict()
     if params['filters'] and len(params['filters']):
         filter_body = params['filters'][0]
         for filter_item in params['filters'][1:]:
             filter_body = "%s&filter=%s" % (filter_body, filter_item)
         url_params['filter'] = filter_body
-
     if params['sorters'] and len(params['sorters']):
         sorter_body = params['sorters'][0]
         for sorter_item in params['sorters'][1:]:
             sorter_body = "%s&sort=%s" % (sorter_body, sorter_item)
         url_params['sort'] = sorter_body
-
     if params['formatters'] and len(params['formatters']):
         formatter_body = params['formatters'][0]
         for formatter_item in params['formatters'][1:]:
             formatter_body = '%s|%s' % (formatter_body, formatter_item)
         url_params['format'] = formatter_body
+    if params['params']:
+        for selector_param_key, selector_param in params['params'].items():
+            url_params[selector_param_key] = selector_param
 
-    fact = None
-    if mkey_value:
-        fact = fos.get(path, name, vdom=params['vdom'], mkey=mkey_value, parameters=url_params)
-    else:
-        fact = fos.get(path, name, vdom=params['vdom'], parameters=url_params)
+    log_data = fos.log_get(module_selectors_defs[selector]['url'], url_params)
 
-    return not is_successful_status(fact), False, fact
+    return not is_successful_status(log_data), False, log_data
 
 def main():
     fields = {
@@ -311,18 +272,13 @@ def main():
         "formatters": {"required": False, "type": 'list'},
         "params": {"required": False, "type": "dict" },
         "selector": {
-            "required": False,
+            "required": True,
             "type": "str",
             "options": [
-                {% for selector in selector_definitions.keys() -%}
+                {% for selector in selectors.keys() -%}
                 "{{selector}}",
                 {% endfor -%}
             ],
-        },
-        "selectors": {
-            "required": False,
-            "type": "list",
-            "elements": "dict",
         }
     }
 
@@ -330,16 +286,13 @@ def main():
     module = AnsibleModule(argument_spec=fields,
                            supports_check_mode=False)
 
-    # Only selector or selectors is provided.
-    if module.params['selector'] and module.params['selectors'] or \
-        not module.params['selector'] and not module.params['selectors']:
-        module.fail_json(msg="Only one of selector or selectors should be provided.")
-
     versions_check_result = None
     if module._socket_path:
         connection = Connection(module._socket_path)
         if 'access_token' in module.params:
             connection.set_option('access_token', module.params['access_token'])
+
+        # Logging for fact module could be disabled/enabled.
         if 'enable_log' in module.params:
             connection.set_option('enable_log', module.params['enable_log'])
         else:
@@ -347,25 +300,7 @@ def main():
 
         fos = FortiOSHandler(connection, module)
 
-        if module.params['selector']:
-            is_error, has_changed, result = fortios_configuration_fact(module.params, fos)
-        else:
-            params = module.params
-            selectors = params['selectors']
-            is_error = False
-            has_changed = False
-            result = []
-            for selector_obj in selectors:
-                per_selector = {
-                    'vdom': params.get('vdom'),
-                    'selector': selector_obj.get('selector'),
-                    'params': selector_obj.get('params'),
-                }
-                is_error_local, has_changed_local, result_local = fortios_configuration_fact(per_selector, fos)
-
-                is_error = is_error or is_error_local
-                has_changed = has_changed or has_changed_local
-                result.append(result_local)
+        is_error, has_changed, result = fortios_log_fact(fos)
     else:
         module.fail_json(**FAIL_SOCKET_MSG)
 

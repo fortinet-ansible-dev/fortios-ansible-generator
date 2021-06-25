@@ -186,7 +186,7 @@ def generate_monitor_rst(version):
         f.flush()
 
 
-def generate_log_retrieval(version):
+def generate_log_fact(version):
     log_schema_file = open('log_schema.json').read()
     log_schema = json.loads(log_schema_file)
     get_api_items = dict()
@@ -246,19 +246,19 @@ def generate_log_retrieval(version):
                       lstrip_blocks=False, trim_blocks=False)
 
     # Render module code
-    template = env.get_template('log_retrieval.j2')
+    template = env.get_template('log_fact.j2')
     data = template.render(selectors=schemas)
-    output_path = 'output/' + version + '/fortios_log_retrieval.py'
+    output_path = 'output/' + version + '/fortios_log_fact.py'
     with open(output_path, 'w') as f:
         f.write(data)
         f.flush()
     # Render Sphinx doc
-    # template = env.get_template('log_retrieval.rst.j2')
-    # data = template.render(selectors=schemas)
-    # output_path = 'output/' + version + '/fortios_log_retrieval.rst'
-    # with open(output_path, 'w') as f:
-    #     f.write(data)
-    #     f.flush()
+    template = env.get_template('log_fact.rst.j2')
+    data = template.render(selectors=schemas)
+    output_path = 'output/' + version + '/fortios_log_fact.rst'
+    with open(output_path, 'w') as f:
+        f.write(data)
+        f.flush()
 
 
 if __name__ == '__main__':
