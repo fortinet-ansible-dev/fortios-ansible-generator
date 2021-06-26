@@ -26,7 +26,7 @@ do
     cp $docfile $sphinxdoc_root/gen
 done
 
-files_to_move_upward='fortios_configuration_fact.rst fortios_monitor_fact.rst fortios_monitor.rst'
+files_to_move_upward='fortios_configuration_fact.rst fortios_monitor_fact.rst fortios_monitor.rst fortios_log_fact.rst'
 for f in $files_to_move_upward
 do
     mv $sphinxdoc_root/gen/$f $sphinxdoc_root/
