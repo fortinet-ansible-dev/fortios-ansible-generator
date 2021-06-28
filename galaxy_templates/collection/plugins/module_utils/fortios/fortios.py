@@ -281,7 +281,6 @@ class FortiOSHandler(object):
         self._module = mod
         self._mkeyname = module_mkeyname
 
-
     def cmdb_url(self, path, name, vdom=None, mkey=None):
 
         url = '/api/v2/cmdb/' + path + '/' + name
@@ -294,7 +293,6 @@ class FortiOSHandler(object):
                 url += '?vdom=' + vdom
         return url
 
-
     def mon_url(self, path, name, vdom=None, mkey=None):
         url = '/api/v2/monitor/' + path + '/' + name
         if mkey:
@@ -306,13 +304,11 @@ class FortiOSHandler(object):
                 url += '?vdom=' + vdom
         return url
 
-
     def log_url(self, path, name, mkey=None):
         url = '/api/v2/log/' + path + '/' + name
         if mkey:
             url = url + '/' + urlencoding.quote(str(mkey), safe='')
         return url
-
 
     def schema(self, path, name, vdom=None):
         if vdom is None:
@@ -330,10 +326,8 @@ class FortiOSHandler(object):
         else:
             return json.loads(to_text(result_data))
 
-
     def get_mkeyname(self, path, name, vdom=None):
         return self._mkeyname
-
 
     def get_mkey(self, path, name, data, vdom=None):
 
@@ -347,7 +341,6 @@ class FortiOSHandler(object):
                 return None
         return mkey
 
-
     def log_get(self, url, parameters=None):
         slash_index = url.find('/')
         full_url = self.log_url(url[: slash_index], url[slash_index + 1:])
@@ -356,13 +349,11 @@ class FortiOSHandler(object):
 
         return self.formatresponse(result_data)
 
-
     def monitor_get(self, url, vdom=None, parameters=None):
         slash_index = url.find('/')
         full_url = self.mon_url(url[: slash_index], url[slash_index + 1:], vdom)
         status, result_data = self._conn.send_request(url=full_url, params=parameters, method='GET')
         return self.formatresponse(result_data, vdom=vdom)
-
 
     def monitor_post(self, url, data=None, vdom=None, mkey=None, parameters=None):
         slash_index = url.find('/')
@@ -372,7 +363,6 @@ class FortiOSHandler(object):
 
         return self.formatresponse(result_data, vdom=vdom)
 
-
     def get(self, path, name, vdom=None, mkey=None, parameters=None):
         url = self.cmdb_url(path, name, vdom, mkey=mkey)
 
@@ -380,14 +370,12 @@ class FortiOSHandler(object):
 
         return self.formatresponse(result_data, vdom=vdom)
 
-
     def monitor(self, path, name, vdom=None, mkey=None, parameters=None):
         url = self.mon_url(path, name, vdom, mkey)
 
         status, result_data = self._conn.send_request(url=url, params=parameters, method='GET')
 
         return self.formatresponse(result_data, vdom=vdom)
-
 
     def set(self, path, name, data, mkey=None, vdom=None, parameters=None):
 
@@ -405,7 +393,6 @@ class FortiOSHandler(object):
         else:
             return self.formatresponse(result_data, vdom=vdom)
 
-
     def post(self, path, name, data, vdom=None,
              mkey=None, parameters=None):
 
@@ -419,7 +406,6 @@ class FortiOSHandler(object):
 
         return self.formatresponse(result_data, vdom=vdom)
 
-
     def execute(self, path, name, data, vdom=None,
                 mkey=None, parameters=None, timeout=300):
         url = self.mon_url(path, name, vdom, mkey=mkey)
@@ -428,14 +414,12 @@ class FortiOSHandler(object):
 
         return self.formatresponse(result_data, vdom=vdom)
 
-
     def delete(self, path, name, vdom=None, mkey=None, parameters=None, data=None):
         if not mkey:
             mkey = self.get_mkey(path, name, data, vdom=vdom)
         url = self.cmdb_url(path, name, vdom, mkey)
         status, result_data = self._conn.send_request(url=url, params=parameters, data=json.dumps(data), method='DELETE')
         return self.formatresponse(result_data, vdom=vdom)
-
 
     def __to_local(self, data, is_array=False):
         try:
@@ -450,7 +434,6 @@ class FortiOSHandler(object):
             resp['status'] = 'success'
         return resp
 
-
     def formatresponse(self, res, vdom=None):
         if vdom == "global":
             resp = self.__to_local(to_text(res), True)[0]
@@ -458,7 +441,6 @@ class FortiOSHandler(object):
         else:
             resp = self.__to_local(to_text(res), False)
         return resp
-
 
     def jsonraw(self, method, path, data, specific_params, vdom=None, parameters=None):
         url = path
