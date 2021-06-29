@@ -4,6 +4,18 @@ Release Notes
 
 |
 
+Release Galaxy 2.1.1
+--------------------
+
+Release Targets
+^^^^^^^^^^^^^^^
+
+FortiOS Galaxy 2.1.1 is based on 2.1.0
+
+Bug Fixes
+^^^^^^^^^^^^^^^
+- Fix the KeyError caused by non-required multi-value attributes in an object.
+
 Release Galaxy 2.1.0
 --------------------
 

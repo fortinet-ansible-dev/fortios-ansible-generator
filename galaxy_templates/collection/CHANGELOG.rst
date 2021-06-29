@@ -5,6 +5,19 @@ Fortinet.Fortios Release Notes
 .. contents:: Topics
 
 
+v2.1.1
+======
+
+Release Summary
+---------------
+
+patch release of 2.1.1
+
+Bugfixes
+--------
+
+- Fix the KeyError caused by non-required multi-value attributes in an object.
+
 v2.1.0
 ======
 
