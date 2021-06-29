@@ -68,3 +68,11 @@ releases:
     fragments:
     - release_2.1.0.yml
     release_date: '2021-06-25'
+  2.1.1:
+    changes:
+      bugfixes:
+      - Fix the KeyError caused by non-required multi-value attributes in an object.
+      release_summary: patch release of 2.1.1
+    fragments:
+    - 2.1.1_release.yml
+    release_date: '2021-06-29'
