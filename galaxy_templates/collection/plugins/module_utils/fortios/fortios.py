@@ -199,7 +199,9 @@ def check_schema_versioning_internal(results, trace, schema, params, version):
                 raise AssertionError()
             for list_item in params:
                 if type(list_item) is not dict:
-                    raise AssertionError()
+                    # Parameter inconsistency here is not covered by Ansible, we gracefully throw a warning
+                    results['mismatches'].append('option [%s]\' playload is inconsitent with schmea.' % (__concat_attribute_sequence(trace)))
+                    continue
                 for key in list_item:
                     value = list_item[key]
                     key_string = '%s(%s)' % (key, value) if type(value) in [int, bool, str] else key
