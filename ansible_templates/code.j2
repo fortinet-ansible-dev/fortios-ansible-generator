@@ -25,7 +25,7 @@ def filter_{{path}}_{{name}}_data(json):
 
 {% if special_attributes != [] -%}
 def flatten_single_path(data, path, index):
-    if not data or index == len(path) or path[index] not in data:
+    if not data or index == len(path) or path[index] not in data or not data[path[index]]:
         return
 
     if index == len(path) - 1:
