@@ -76,3 +76,12 @@ releases:
     fragments:
     - 2.1.1_release.yml
     release_date: '2021-06-29'
+  2.1.2:
+    changes:
+      bugfixes:
+      - Fix a regression bug caused by non-required attributes.
+      - Fix an intentional exception for listed options.
+      release_summary: patch release of 2.1.2
+    fragments:
+    - 2.1.2_release.yml
+    release_date: '2021-07-15'

@@ -4,6 +4,19 @@ Release Notes
 
 |
 
+Release Galaxy 2.1.2
+--------------------
+
+Release Targets
+^^^^^^^^^^^^^^^
+
+FortiOS Galaxy 2.1.2 is based on 2.1.1
+
+Bug Fixes
+^^^^^^^^^^^^^^^
+- Fix a regression bug caused by non-required attributes.
+- Fix an intentional exception for listed options.
+
 Release Galaxy 2.1.1
 --------------------
 
