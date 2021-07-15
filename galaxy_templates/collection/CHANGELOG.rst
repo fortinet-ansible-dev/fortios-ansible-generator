@@ -5,6 +5,20 @@ Fortinet.Fortios Release Notes
 .. contents:: Topics
 
 
+v2.1.2
+======
+
+Release Summary
+---------------
+
+patch release of 2.1.2
+
+Bugfixes
+--------
+
+- Fix a regression bug caused by non-required attributes.
+- Fix an intentional exception for listed options.
+
 v2.1.1
 ======
 
